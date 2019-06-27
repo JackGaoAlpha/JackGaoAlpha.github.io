@@ -1,11 +1,11 @@
 # Basic
 title: 陈草头
 subtitle: 越名教而任自然
-welcome_message: <a href="https://caotouchan.github.io/caotouchan" target="_blank">我的主页</a>
+welcome_message: <a href="https://caotouchan.github.io" target="_blank">我的主页</a>
 description: 90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮
-creator: <a href="https://caotouchan.github.io/caotouchan">@caotouchan</a>
+creator: <a href="https://caotouchan.github.io">@caotouchan</a>
 
-url: "http://caotouchan.github.io/caotouchan/"
+url: "http://caotouchan.github.io/"
 
 permalink: /:year/:month/:title/
 
