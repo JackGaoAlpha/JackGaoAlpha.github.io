@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Elasticsearch 实战（01）综述
+title: Elasticsearch 实战（02）安装 —— ES / Kibana / Logstash
 date: 2019-06-26 19:46:01.000000000 +09:00
 ---
 ## Elasticsearch 安装和简单配置

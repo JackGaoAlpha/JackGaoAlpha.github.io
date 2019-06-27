@@ -5,8 +5,8 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 Jun 2019 20:07:15 +0800</pubDate>
-    <lastBuildDate>Thu, 27 Jun 2019 20:07:15 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 20:10:45 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 20:10:45 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -166,7 +166,7 @@
       </item>
     
       <item>
-        <title>Elasticsearch 实战（01）综述</title>
+        <title>Elasticsearch 实战（02）安装 —— ES / Kibana / Logstash</title>
         <description>&lt;h2 id=&quot;elasticsearch-安装和简单配置&quot;&gt;Elasticsearch 安装和简单配置&lt;/h2&gt;
 
 &lt;p&gt;ES 安装的地址请 &lt;a href=&quot;https://www.elastic.co/cn/downloads/elasticsearch&quot;&gt;点击这儿&lt;/a&gt;&lt;/p&gt;
