@@ -11,7 +11,7 @@ Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分
 
 ## 分布式架构
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561517219962.png)
+![分布式架构](http://ww2.sinaimg.cn/large/006tNc79ly1g4fyr77qigj30fb0bv74n.jpg)
 
 集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot & Warm 架构。
 

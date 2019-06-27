@@ -5,8 +5,8 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 Jun 2019 19:50:03 +0800</pubDate>
-    <lastBuildDate>Thu, 27 Jun 2019 19:50:03 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 20:01:24 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 20:01:24 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -19,7 +19,7 @@
 
 &lt;h2 id=&quot;分布式架构&quot;&gt;分布式架构&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561517219962.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4fyr77qigj30fb0bv74n.jpg&quot; alt=&quot;分布式架构&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot &amp;amp; Warm 架构。&lt;/p&gt;
 
