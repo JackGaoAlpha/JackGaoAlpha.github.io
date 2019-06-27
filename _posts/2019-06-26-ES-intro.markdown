@@ -1,0 +1,110 @@
+---
+layout: post
+title: Elasticsearch 实战（01）综述
+date: 2019-06-26 19:46:01.000000000 +09:00
+---
+## 综述
+
+Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分析，其高性能和易扩展、易使用性受到众多公司的青睐。
+
+这个系列文章基于 Elasticsearch 7.0 进行探索和实践，参考 极客时间的 《 Elasticsearch核心技术与实战 》 系列专栏。
+
+## 分布式架构
+
+![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561517219962.png)
+
+集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot & Warm 架构。
+
+## 集成方式
+
+* 支持多种编程语言类库，如 Java/.NET/Python/PHP/Perl etc.
+
+* RESTful API （推荐） 和 Transport API
+
+* JDBC & ODBC
+
+## 版本对比
+
+### 5.x 新特性
+
+* 基于 Lucene 6.x，默认打分从 TF-IDF 改为 BM25
+
+* 支持 Ingest 节点、Painless Scripting、Completion suggestion
+
+* Type 标记成 deprecated， 支持 Keyword 类型
+
+* Instant aggregation，支持分片上聚合的缓存
+
+* 新增 Profile API
+
+### 6.x 新特性
+
+* 基于 Lucene 7.x
+
+* 支持跨集群复制 （CCR）、索引生命周期管理、SQL
+
+* 数据迁移优化
+
+* 优化稀疏字段存储
+
+* 索引时进行排序，加快查询
+
+### 7.x 新特性
+
+* 基于 Lucene 8.0，正式废除单索引多 Type 的支持
+
+* Security 功能免费
+
+* ECK —— Elasticsearch Operator on Kubernetes
+
+* New Cluster coordination
+
+* Feature-Complete High Level REST Client
+
+* Script Score Query
+
+* 默认 Primary Shard 从 5 变成 1
+
+## 产品生态圈
+
+![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561518751256.png)
+
+* Logstash ：开源服务器端数据处理管道，支持不同来源的数据采集、转换、存储，实现解析和转换数据，可拓展（插件安装，Log、DB、Arcsign、Netflow），可靠性，数据传输加密、监控
+
+* Kibana ： 数据可视化
+
+* BEATS ： 轻量的数据采集器
+
+* X-Pack ： 商业化套件，OSS、Basic、黄金级、白金级，基础班免费
+
+## 应用场景
+
+* 搜索类 ：集成数据库同步数据、不推荐作为独立数据存储使用
+
+* 日志类 ： Logstash 和 Beats 满足不用的数据源， Kafka 作为消息队列
+
+![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561519481335.png)
+
+
+## 参考链接与相关阅读
+
+[1] Elasticsearch核心技术与实战 （极客时间 阮一鸣）[https://time.geekbang.org/course/intro/197](https://time.geekbang.org/course/intro/197)
+
+[2] Elasticsearch Certification [https://www.elastic.co/cn/training/certification](https://www.elastic.co/cn/training/certification)
+
+[3] ElasticSearch Engineering I training [https://www.elastic.co/cn/training/elasticsearch-engineer-1](https://www.elastic.co/cn/training/elasticsearch-engineer-1)
+
+[4] ElasticSearch Engineering II training [https://www.elastic.co/cn/training/elasticsearch-engineer-2](https://www.elastic.co/cn/training/elasticsearch-engineer-2)
+
+[5] ES 7.0 发布 [https://www.elastic.co/blog/elasticsearch-7-0-0-released](https://www.elastic.co/blog/elasticsearch-7-0-0-released)
+
+[6] X-Pack 开源 [https://www.elastic.co/products/x-pack/open](https://www.elastic.co/products/x-pack/open)
+
+[7] 用户案例 [https://www.elastic.co/cn/use-cases/](https://www.elastic.co/cn/use-cases/)
+
+[8] Top 5 Elasticsearch Use Cases [https://www.objectrocket.com/blog/elasticsearch/top-elasticsearch-use-cases/](https://www.objectrocket.com/blog/elasticsearch/top-elasticsearch-use-cases/)
+
+[9] Elastic Stack — A Brief Introduction [https://hackernoon.com/elastic-stack-a-brief-introduction-794bc7ff7d4f](https://hackernoon.com/elastic-stack-a-brief-introduction-794bc7ff7d4f)
+
+
+

@@ -5,9 +5,165 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 Jun 2019 19:35:34 +0800</pubDate>
-    <lastBuildDate>Thu, 27 Jun 2019 19:35:34 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 19:46:33 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 19:46:33 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Elasticsearch 实战（01）综述</title>
+        <description>&lt;h2 id=&quot;综述&quot;&gt;综述&lt;/h2&gt;
+
+&lt;p&gt;Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分析，其高性能和易扩展、易使用性受到众多公司的青睐。&lt;/p&gt;
+
+&lt;p&gt;这个系列文章基于 Elasticsearch 7.0 进行探索和实践，参考 极客时间的 《 Elasticsearch核心技术与实战 》 系列专栏。&lt;/p&gt;
+
+&lt;h2 id=&quot;分布式架构&quot;&gt;分布式架构&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561517219962.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot &amp;amp; Warm 架构。&lt;/p&gt;
+
+&lt;h2 id=&quot;集成方式&quot;&gt;集成方式&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;支持多种编程语言类库，如 Java/.NET/Python/PHP/Perl etc.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;RESTful API （推荐） 和 Transport API&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;JDBC &amp;amp; ODBC&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;版本对比&quot;&gt;版本对比&lt;/h2&gt;
+
+&lt;h3 id=&quot;5x-新特性&quot;&gt;5.x 新特性&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于 Lucene 6.x，默认打分从 TF-IDF 改为 BM25&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;支持 Ingest 节点、Painless Scripting、Completion suggestion&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Type 标记成 deprecated， 支持 Keyword 类型&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Instant aggregation，支持分片上聚合的缓存&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;新增 Profile API&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;6x-新特性&quot;&gt;6.x 新特性&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于 Lucene 7.x&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;支持跨集群复制 （CCR）、索引生命周期管理、SQL&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;数据迁移优化&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;优化稀疏字段存储&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;索引时进行排序，加快查询&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;7x-新特性&quot;&gt;7.x 新特性&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;基于 Lucene 8.0，正式废除单索引多 Type 的支持&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Security 功能免费&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ECK —— Elasticsearch Operator on Kubernetes&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;New Cluster coordination&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Feature-Complete High Level REST Client&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Script Score Query&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;默认 Primary Shard 从 5 变成 1&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;产品生态圈&quot;&gt;产品生态圈&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561518751256.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Logstash ：开源服务器端数据处理管道，支持不同来源的数据采集、转换、存储，实现解析和转换数据，可拓展（插件安装，Log、DB、Arcsign、Netflow），可靠性，数据传输加密、监控&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kibana ： 数据可视化&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;BEATS ： 轻量的数据采集器&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;X-Pack ： 商业化套件，OSS、Basic、黄金级、白金级，基础班免费&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;应用场景&quot;&gt;应用场景&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;搜索类 ：集成数据库同步数据、不推荐作为独立数据存储使用&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;日志类 ： Logstash 和 Beats 满足不用的数据源， Kafka 作为消息队列&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561519481335.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;参考链接与相关阅读&quot;&gt;参考链接与相关阅读&lt;/h2&gt;
+
+&lt;p&gt;[1] Elasticsearch核心技术与实战 （极客时间 阮一鸣）&lt;a href=&quot;https://time.geekbang.org/course/intro/197&quot;&gt;https://time.geekbang.org/course/intro/197&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[2] Elasticsearch Certification &lt;a href=&quot;https://www.elastic.co/cn/training/certification&quot;&gt;https://www.elastic.co/cn/training/certification&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[3] ElasticSearch Engineering I training &lt;a href=&quot;https://www.elastic.co/cn/training/elasticsearch-engineer-1&quot;&gt;https://www.elastic.co/cn/training/elasticsearch-engineer-1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[4] ElasticSearch Engineering II training &lt;a href=&quot;https://www.elastic.co/cn/training/elasticsearch-engineer-2&quot;&gt;https://www.elastic.co/cn/training/elasticsearch-engineer-2&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[5] ES 7.0 发布 &lt;a href=&quot;https://www.elastic.co/blog/elasticsearch-7-0-0-released&quot;&gt;https://www.elastic.co/blog/elasticsearch-7-0-0-released&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[6] X-Pack 开源 &lt;a href=&quot;https://www.elastic.co/products/x-pack/open&quot;&gt;https://www.elastic.co/products/x-pack/open&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[7] 用户案例 &lt;a href=&quot;https://www.elastic.co/cn/use-cases/&quot;&gt;https://www.elastic.co/cn/use-cases/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[8] Top 5 Elasticsearch Use Cases &lt;a href=&quot;https://www.objectrocket.com/blog/elasticsearch/top-elasticsearch-use-cases/&quot;&gt;https://www.objectrocket.com/blog/elasticsearch/top-elasticsearch-use-cases/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[9] Elastic Stack — A Brief Introduction &lt;a href=&quot;https://hackernoon.com/elastic-stack-a-brief-introduction-794bc7ff7d4f&quot;&gt;https://hackernoon.com/elastic-stack-a-brief-introduction-794bc7ff7d4f&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 26 Jun 2019 18:46:01 +0800</pubDate>
+        <link>http://localhost:4000/2019/06/ES-intro/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/ES-intro/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Hello World - Vno</title>
