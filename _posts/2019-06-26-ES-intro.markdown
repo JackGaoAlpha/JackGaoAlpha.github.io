@@ -67,7 +67,7 @@ Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分
 
 ## 产品生态圈
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561518751256.png)
+![产品生态圈](http://ww3.sinaimg.cn/large/006tNc79ly1g4fyu8h14oj30k00a1755.jpg)
 
 * Logstash ：开源服务器端数据处理管道，支持不同来源的数据采集、转换、存储，实现解析和转换数据，可拓展（插件安装，Log、DB、Arcsign、Netflow），可靠性，数据传输加密、监控
 
@@ -83,7 +83,7 @@ Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分
 
 * 日志类 ： Logstash 和 Beats 满足不用的数据源， Kafka 作为消息队列
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561519481335.png)
+![日志类技术栈](http://ww1.sinaimg.cn/large/006tNc79ly1g4fyurnrqfj30ij09hmyy.jpg)
 
 
 ## 参考链接与相关阅读
