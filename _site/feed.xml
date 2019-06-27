@@ -5,13 +5,13 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 Jun 2019 21:19:50 +0800</pubDate>
-    <lastBuildDate>Thu, 27 Jun 2019 21:19:50 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 21:24:00 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 21:24:00 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
         <title>Elasticsearch 实战（03）索引、文档、节点、分片</title>
-        <description>&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561598614858.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79ly1g4g145kf5dj30qk0dwgmo.jpg&quot; alt=&quot;基本概念&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;如上图所示，文档和分片、索引和节点，其实从开发和运维的两个不同视角下的产物。&lt;/p&gt;
 
@@ -67,7 +67,7 @@ _source : 文档原始 JSON
 
 &lt;p&gt;示例如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561599584076.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4g14tahrqj30nw0g20vc.jpg&quot; alt=&quot;文档&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;索引&quot;&gt;索引&lt;/h2&gt;
 
@@ -127,7 +127,7 @@ _source : 文档原始 JSON
 
 &lt;p&gt;Kibana 中管理索引的界面：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561600743445.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4g15epyy1j31mg0u0k10.jpg&quot; alt=&quot;Kibana操作&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;在 Kibana 的 dev tools 下操作索引的相关 API ：&lt;/p&gt;
 
@@ -251,7 +251,7 @@ Red ： 有主分片未能正常分配，例如服务器磁盘占用超过 85% �
 
 &lt;p&gt;以下是一个三节点集群的分片情况：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561603564415.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4g15wryeyj314a0eugnu.jpg&quot; alt=&quot;分片示例&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;集群节点相关操作&quot;&gt;集群、节点相关操作&lt;/h2&gt;
 

@@ -4,7 +4,7 @@ title: Elasticsearch 实战（03）索引、文档、节点、分片
 date: 2019-06-27 10:52:01.000000000 +09:00
 ---
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561598614858.png)
+![基本概念](http://ww1.sinaimg.cn/large/006tNc79ly1g4g145kf5dj30qk0dwgmo.jpg)
 
 如上图所示，文档和分片、索引和节点，其实从开发和运维的两个不同视角下的产物。
 
@@ -36,7 +36,7 @@ date: 2019-06-27 10:52:01.000000000 +09:00
 
 示例如下：
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561599584076.png)
+![文档](http://ww3.sinaimg.cn/large/006tNc79ly1g4g14tahrqj30nw0g20vc.jpg)
 
 ## 索引
 
@@ -98,7 +98,7 @@ Setting 定义了不同的数据分布。
 
 Kibana 中管理索引的界面：
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561600743445.png)
+![Kibana操作](http://ww4.sinaimg.cn/large/006tNc79ly1g4g15epyy1j31mg0u0k10.jpg)
 
 在 Kibana 的 dev tools 下操作索引的相关 API ：
 
@@ -191,7 +191,7 @@ Coordinating node 接受客户端请求，将请求分发得到结果后汇总�
 
 以下是一个三节点集群的分片情况：
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561603564415.png)
+![分片示例](http://ww3.sinaimg.cn/large/006tNc79ly1g4g15wryeyj314a0eugnu.jpg)
 
 ## 集群、节点相关操作
 
