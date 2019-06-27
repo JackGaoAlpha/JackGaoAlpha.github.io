@@ -5,8 +5,8 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 Jun 2019 20:03:54 +0800</pubDate>
-    <lastBuildDate>Thu, 27 Jun 2019 20:03:54 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 20:07:15 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 20:07:15 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -161,6 +161,278 @@
         <pubDate>Wed, 26 Jun 2019 18:46:01 +0800</pubDate>
         <link>http://localhost:4000/2019/06/ES-intro/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/06/ES-intro/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Elasticsearch 实战（01）综述</title>
+        <description>&lt;h2 id=&quot;elasticsearch-安装和简单配置&quot;&gt;Elasticsearch 安装和简单配置&lt;/h2&gt;
+
+&lt;p&gt;ES 安装的地址请 &lt;a href=&quot;https://www.elastic.co/cn/downloads/elasticsearch&quot;&gt;点击这儿&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ES 在 7.0 开始内置了 JAVA 环境，不需要像之前版本一样设置 $JAVA_HOME。&lt;/p&gt;
+
+&lt;h3 id=&quot;目录结构&quot;&gt;目录结构&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;目录&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;配置&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;bin&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;脚本文件，包括启动 ES、安装插件、运行统计数据等&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;config&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;elasticsearch.yml&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;集群配置文件，user 、role based 相关配置&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;JDK&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;path.data&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;JAVA 运行环境&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;data&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;数据文件&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;lib&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;JAVA 类库&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;log&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;path.log&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;日志文件&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;modules&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;包含所有 ES 模块&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;pliugin&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;包含素有已安装插件&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;jvm-配置&quot;&gt;JVM 配置&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改 JVM  —— config/jvm.options&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;配置建议：Xms 和 Xmx 配置成一样，不要超过机器内存的 50%，不要超过 30 GB&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;测试&quot;&gt;测试&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//启动单节点
+bin/elasticsearch
+
+//安装插件
+bin/elasticsearch-plugin &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;analysis-icu
+//查看插件
+bin/elasticsearch-plugin list
+//查看安装的插件
+GET http://localhost:9200/_cat/plugins?v
+
+// 本机启动多节点集群 （-d 表示后台运行）
+bin/elasticsearch &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; node.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;node0 &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; cluster.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;geektime &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; path.data&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;node0_data &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
+bin/elasticsearch &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; node.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;node1 &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; cluster.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;geektime &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; path.data&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;node1_data &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
+bin/elasticsearch &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; node.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;node2 &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; cluster.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;geektime &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; path.data&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;node2_data &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
+bin/elasticsearch &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; node.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;node3 &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; cluster.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;geektime &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; path.data&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;node3_data &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
+
+//查看集群
+GET http://localhost:9200
+
+//查看nodes
+GET _cat/nodes
+GET _cluster/health
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;kibana-安装&quot;&gt;Kibana 安装&lt;/h2&gt;
+
+&lt;p&gt;Kibana 下载地址请 &lt;a href=&quot;https://www.elastic.co/cn/downloads/kibana&quot;&gt;点击这儿&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 启动 kibana
+bin/kibana
+
+// 插件
+bin/kibana-plugin list
+bin/kibana-plugin &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;plugin_location
+bin/kibana remove
+
+//查看
+GET http://localhost:5601
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;在-docker-中运行-eskibana-和-cerebro&quot;&gt;在 Docker 中运行 ES、Kibana 和 Cerebro&lt;/h2&gt;
+
+&lt;p&gt;切换到你想要的文件夹，新建一个文件 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose.yaml&lt;/code&gt; ，内容如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;version: &lt;span class=&quot;s1&quot;&gt;'2.2'&lt;/span&gt;
+services:
+  cerebro:
+    image: lmenezes/cerebro:0.8.3
+    container_name: cerebro
+    ports:
+      - &lt;span class=&quot;s2&quot;&gt;&quot;9000:9000&quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;:
+      - &lt;span class=&quot;nt&quot;&gt;-Dhosts&lt;/span&gt;.0.host&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http://elasticsearch:9200
+    networks:
+      - es7net
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.1.0
+    container_name: kibana7
+    environment:
+      - &lt;span class=&quot;nv&quot;&gt;I18N_LOCALE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;zh-CN
+      - &lt;span class=&quot;nv&quot;&gt;XPACK_GRAPH_ENABLED&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+      - &lt;span class=&quot;nv&quot;&gt;TIMELION_ENABLED&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+      - &lt;span class=&quot;nv&quot;&gt;XPACK_MONITORING_COLLECTION_ENABLED&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;
+    ports:
+      - &lt;span class=&quot;s2&quot;&gt;&quot;5601:5601&quot;&lt;/span&gt;
+    networks:
+      - es7net
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.0
+    container_name: es7_01
+    environment:
+      - cluster.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;geektime
+      - node.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;es7_01
+      - bootstrap.memory_lock&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+      - &lt;span class=&quot;s2&quot;&gt;&quot;ES_JAVA_OPTS=-Xms512m -Xmx512m&quot;&lt;/span&gt;
+      - discovery.seed_hosts&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;es7_01
+      - cluster.initial_master_nodes&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;es7_01,es7_02
+    ulimits:
+      memlock:
+        soft: &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;
+        hard: &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;
+    volumes:
+      - es7data1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - es7net
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.0
+    container_name: es7_02
+    environment:
+      - cluster.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;geektime
+      - node.name&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;es7_02
+      - bootstrap.memory_lock&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+      - &lt;span class=&quot;s2&quot;&gt;&quot;ES_JAVA_OPTS=-Xms512m -Xmx512m&quot;&lt;/span&gt;
+      - discovery.seed_hosts&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;es7_01
+      - cluster.initial_master_nodes&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;es7_01,es7_02
+    ulimits:
+      memlock:
+        soft: &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;
+        hard: &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;
+    volumes:
+      - es7data2:/usr/share/elasticsearch/data
+    networks:
+      - es7net
+
+
+volumes:
+  es7data1:
+    driver: &lt;span class=&quot;nb&quot;&gt;local
+  &lt;/span&gt;es7data2:
+    driver: &lt;span class=&quot;nb&quot;&gt;local
+
+&lt;/span&gt;networks:
+  es7net:
+    driver: bridge
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;用 docker-compose 启动：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//启动
+docker-compose up
+
+//停止容器
+docker-compose down
+
+//停止容器并且移除数据
+docker-compose down &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;logstach-的安装和数据导入&quot;&gt;Logstach 的安装和数据导入&lt;/h2&gt;
+
+&lt;p&gt;Logstash 下载地址请 &lt;a href=&quot;https://www.elastic.co/cn/downloads/logstash&quot;&gt;点击这儿&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//下载与ES相同版本号的logstash，并解压到相应目录
+//修改movielens目录下的logstash.conf文件
+//path修改为实际的movies.csv路径
+input &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  file &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    path &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;YOUR_FULL_PATH_OF_movies.csv&quot;&lt;/span&gt;
+    start_position &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;beginning&quot;&lt;/span&gt;
+    sincedb_path &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/dev/null&quot;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+//启动Elasticsearch实例，然后启动 logstash，并制定配置文件导入数据
+bin/logstash &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /YOUR_PATH_of_logstash.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料和相关阅读&quot;&gt;参考资料和相关阅读&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Elasticsearch核心技术与实战 （极客时间 阮一鸣） &lt;a href=&quot;https://time.geekbang.org/course/intro/197&quot;&gt;https://time.geekbang.org/course/intro/197&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;ES 安装 &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;ES 配置 &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ES 重要配置 &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/important-settings.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/current/important-settings.html&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;初识 Kibana &lt;a href=&quot;https://www.elastic.co/guide/en/kibana/current/setup.html&quot;&gt;https://www.elastic.co/guide/en/kibana/current/setup.html&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kibana 插件 &lt;a href=&quot;https://www.elastic.co/guide/en/kibana/current/known-plugins.html&quot;&gt;https://www.elastic.co/guide/en/kibana/current/known-plugins.html&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Elasticsearch on Kuvernetes &lt;a href=&quot;https://www.elastic.co/cn/blog/introducing-elastic-cloud-on-kubernetes-the-elasticsearch-operator-and-beyond&quot;&gt;https://www.elastic.co/cn/blog/introducing-elastic-cloud-on-kubernetes-the-elasticsearch-operator-and-beyond&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CAT Plugins API &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-plugins.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-plugins.html&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装 Docker &lt;a href=&quot;https://www.docker.com/products/docker-desktop&quot;&gt;https://www.docker.com/products/docker-desktop&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装 docker-compose &lt;a href=&quot;https://docs.docker.com/compose/install/&quot;&gt;https://docs.docker.com/compose/install/&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如何创建自己的 Docker Image - &lt;a href=&quot;https://www.elastic.co/cn/blog/how-to-make-a-dockerfile-for-elasticsearch&quot;&gt;https://www.elastic.co/cn/blog/how-to-make-a-dockerfile-for-elasticsearch&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如何在为 Docker Image 安装 Elasticsearch 插件 - &lt;a href=&quot;https://www.elastic.co/cn/blog/elasticsearch-docker-plugin-management&quot;&gt;https://www.elastic.co/cn/blog/elasticsearch-docker-plugin-management&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如何设置 Docker 网络 - &lt;a href=&quot;https://www.elastic.co/cn/blog/docker-networking&quot;&gt;https://www.elastic.co/cn/blog/docker-networking&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Cerebro 源码 &lt;a href=&quot;https://github.com/lmenezes/cerebro&quot;&gt;https://github.com/lmenezes/cerebro&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 26 Jun 2019 18:46:01 +0800</pubDate>
+        <link>http://localhost:4000/2019/06/ES-install/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/ES-install/</guid>
         
         
       </item>
