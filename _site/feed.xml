@@ -5,9 +5,171 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 Jun 2019 21:24:00 +0800</pubDate>
-    <lastBuildDate>Thu, 27 Jun 2019 21:24:00 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 21:31:13 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 21:31:13 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Elasticsearch 实战（04）CRUD 和批量操作</title>
+        <description>&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ========== 创建文档 ===========&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# create document 自动生成 _id&lt;/span&gt;
+POST &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;/_doc
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;user&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;Mike&quot;&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&quot;post_date&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;2019-04-15T14:12:12&quot;&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;trying out Kibana&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# create document 指定Id。如果id已经存在，报错&lt;/span&gt;
+PUT &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;/_doc/1?op_type&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;create
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;user&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&quot;post_date&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;2019-05-15T14:12:12&quot;&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;trying out Elasticsearch&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# create document. 指定 ID 如果已经存在，就报错&lt;/span&gt;
+PUT &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;/_create/1
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+     &lt;span class=&quot;s2&quot;&gt;&quot;user&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;Jack&quot;&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&quot;post_date&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;2019-05-15T14:12:12&quot;&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;trying out Elasticsearch&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# ======== 通过 ID 获取文档 =============&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Get the document by ID&lt;/span&gt;
+GET &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;/_doc/1
+
+
+&lt;span class=&quot;c&quot;&gt;# ===========  Index &amp;amp; Update ===========&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Update 指定 ID  (先删除，在写入)&lt;/span&gt;
+GET &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;/_doc/1
+
+PUT &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;/_doc/1
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;s2&quot;&gt;&quot;user&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;Mike&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;c&quot;&gt;# GET users/_doc/1&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#  在原文档上增加字段&lt;/span&gt;
+POST &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;/_update/1/
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;doc&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s2&quot;&gt;&quot;post_date&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;2019-05-15T14:12:12&quot;&lt;/span&gt;,
+        &lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;trying out Elasticsearch&quot;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+
+&lt;span class=&quot;c&quot;&gt;# ======= 通过 ID 删除 ===========&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 删除文档&lt;/span&gt;
+DELETE &lt;span class=&quot;nb&quot;&gt;users&lt;/span&gt;/_doc/1
+
+
+&lt;span class=&quot;c&quot;&gt;# ========= Bulk 操作 ===========&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 执行两次，查看每次的结果&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 执行第1次&lt;/span&gt;
+POST _bulk
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;index&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;field1&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;value1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;delete&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;create&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test2&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;3&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;field1&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;value3&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;update&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;doc&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;field2&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;value2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;c&quot;&gt;# 执行第2次&lt;/span&gt;
+POST _bulk
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;index&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;field1&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;value1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;delete&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;create&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test2&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;3&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;field1&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;value3&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;update&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;doc&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;field2&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;value2&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# =========== mget 操作 =============&lt;/span&gt;
+GET /_mget
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;docs&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;,
+            &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;,
+            &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;c&quot;&gt;# URI中指定index&lt;/span&gt;
+GET /test/_mget
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;docs&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+            &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+            &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+GET /_mget
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;docs&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;,
+            &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;,
+            &lt;span class=&quot;s2&quot;&gt;&quot;_source&quot;&lt;/span&gt; : &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;,
+            &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;,
+            &lt;span class=&quot;s2&quot;&gt;&quot;_source&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;field3&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;field4&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;_index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;,
+            &lt;span class=&quot;s2&quot;&gt;&quot;_id&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;3&quot;&lt;/span&gt;,
+            &lt;span class=&quot;s2&quot;&gt;&quot;_source&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;s2&quot;&gt;&quot;include&quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;user&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
+                &lt;span class=&quot;s2&quot;&gt;&quot;exclude&quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;user.location&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# ========== msearch 操作 ========&lt;/span&gt;
+POST kibana_sample_data_ecommerce/_msearch
+&lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;query&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;match_all&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{}}&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;size&quot;&lt;/span&gt;:1&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;index&quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&quot;kibana_sample_data_flights&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;query&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;match_all&quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{}}&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;size&quot;&lt;/span&gt;:2&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;c&quot;&gt;# ============ 清除测试数据 =========&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 清除数据&lt;/span&gt;
+DELETE &lt;span class=&quot;nb&quot;&gt;users
+&lt;/span&gt;DELETE &lt;span class=&quot;nb&quot;&gt;test
+&lt;/span&gt;DELETE test2
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Thu, 27 Jun 2019 11:52:01 +0800</pubDate>
+        <link>http://localhost:4000/2019/06/ES-CRUD/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/ES-CRUD/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Elasticsearch 实战（03）索引、文档、节点、分片</title>
