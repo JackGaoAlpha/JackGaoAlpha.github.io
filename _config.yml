@@ -22,7 +22,7 @@ blog_button:
 
 # Navigation buttons in the front page.
 nav:
-    # - {title: Projects, description: My Projects, url: 'https://github.com/CaoTouChan'}
+    - {title: 搜索, description: 搜索博客文章, url: 'https://caotouchan.github.io/2000/06/search'}
 
 # Pagination
 plugins: [jekyll-paginate]

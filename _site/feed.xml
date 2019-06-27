@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>陈草头</title>
-    <description>90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮</description>
+    <description>90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 Jun 2019 21:31:13 +0800</pubDate>
-    <lastBuildDate>Thu, 27 Jun 2019 21:31:13 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 22:32:16 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 22:32:16 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -895,6 +895,30 @@ bin/logstash &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /YOUR_PATH_of_logs
         <pubDate>Wed, 26 Jun 2019 18:46:01 +0800</pubDate>
         <link>http://localhost:4000/2019/06/ES-intro/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/06/ES-intro/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>搜索</title>
+        <description>&lt;div&gt;
+    &lt;form id=&quot;cloudsh&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;q&quot;/&gt;
+      &lt;button&gt;Search&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;div id=&quot;results&quot;&gt;&lt;/div&gt;
+    &lt;script src=&quot;https://app.cloudsh.com/js/cloudsh.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+    var CshConf = {
+        token: &quot;eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNWYzOGI3NDItYTRmZi00NWJiLWFlZTgtODg4NGIwMTgyYmViIiwiaW5kZXhfaWQiOiIzYWVmMTJkNC03NmI5LTQxODUtODgwZi04ODIzZWQ4ZDk2OWMiLCJpbmRleF91cmwiOiJodHRwOi8vY2FvdG91Y2hhbi5naXRodWIuaW8ifQ.7DenpSaI57JdUWcOBzjgigt0nSqP9yOCADxh6msquHk&quot;,
+        formId: &quot;#cloudsh&quot;,
+        resultsId: &quot;#results&quot;,
+    };
+    &lt;/script&gt;
+&lt;/div&gt;</description>
+        <pubDate>Thu, 01 Jun 2000 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2000/06/search/</link>
+        <guid isPermaLink="true">http://localhost:4000/2000/06/search/</guid>
         
         
       </item>
