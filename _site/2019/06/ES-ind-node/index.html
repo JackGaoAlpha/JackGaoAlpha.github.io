@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Elasticsearch 实战（03）索引、文档、节点、分片</title>
+  <meta name="description" content="">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Elasticsearch 实战（03）索引、文档、节点、分片">
+  <meta name="twitter:description" content="">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Elasticsearch 实战（03）索引、文档、节点、分片">
+  <meta property="og:description" content="">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/06/ES-ind-node/">
+  <link rel="alternate" type="application/rss+xml" title="陈草头" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 陈草头 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="陈草头 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 陈草头" class="blog-button">陈草头</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">越名教而任自然</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        <!-- 
+        <p class="panel-cover__description"><a href="https://caotouchan.github.io" target="_blank">我的主页</a></p>
+         -->
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">博客</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/lookka520" title="@lookka520 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/caotouchan" title="@caotouchan 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:caotouchan@outlook.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-06-27 09:52:01 +0800" itemprop="datePublished" class="post-meta__date date">2019-06-27</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">Elasticsearch 实战（03）索引、文档、节点、分片</h1>
+  </header>
+
+  <section class="post">
+    <p><img src="http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561598614858.png" alt="file" /></p>
+
+<p>如上图所示，文档和分片、索引和节点，其实从开发和运维的两个不同视角下的产物。</p>
+
+<p>和 RDBMS 的相关概念做一个不太准确的类比：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">RDBMS</th>
+      <th style="text-align: center">Elasticsearch</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">table</td>
+      <td style="text-align: center">index ( type )</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">row</td>
+      <td style="text-align: center">document</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">column</td>
+      <td style="text-align: center">field</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">schema</td>
+      <td style="text-align: center">mapping</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">SQL</td>
+      <td style="text-align: center">DSL</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="文档">文档</h2>
+
+<p>文档是 ES 中所有可搜索数据的 <strong>最小单位</strong>，比如：日志文件中的日志项、一张唱片的详情等。</p>
+
+<p>它会被序列化成 <strong>JSON</strong> 格式 （ 无需预定格式、类型可以指定也可以自动推算、可嵌套，支持数组 ）。</p>
+
+<p>每个文档都有一个 <strong>Unique ID</strong>，可以自己指定，也可以由 ES 自动生成。</p>
+
+<p>文档的元数据标注了文档相关信息：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_index : 文档所属索引名
+_type ： 文档所以类型名
+_id ：文档唯一 id
+_score ：相关性分数
+_source : 文档原始 JSON
+</code></pre></div></div>
+
+<p>示例如下：</p>
+
+<p><img src="http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561599584076.png" alt="file" /></p>
+
+<h2 id="索引">索引</h2>
+
+<p>索引是一类文档的集合，体现了逻辑空间的概念，有自己的 Mapping 定义，包含文档的字段名和字段类型。（分片体现的是物理空间的概念，索引中的数据分散在分片上）</p>
+
+<p>其中，索引的Mapping 定义文档字段的类型。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s2">"mapping"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">"@timestamp"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"alias"</span><span class="p">,</span>
+        <span class="s2">"path"</span><span class="p">:</span> <span class="s2">"timestamp"</span>
+      <span class="p">},</span>
+      <span class="s2">"agent"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span>
+        <span class="s2">"fields"</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">"keyword"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"keyword"</span><span class="p">,</span>
+            <span class="s2">"ignore_above"</span><span class="p">:</span> <span class="mi">256</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="s2">"bytes"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"long"</span>
+      <span class="p">},</span>
+      <span class="p">...</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Setting 定义了不同的数据分布。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="s2">"settings"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"index"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">"number_of_shards"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span>
+      <span class="s2">"auto_expand_replicas"</span><span class="p">:</span> <span class="s2">"0-1"</span><span class="p">,</span>
+      <span class="s2">"provided_name"</span><span class="p">:</span> <span class="s2">"kibana_sample_data_logs"</span><span class="p">,</span>
+      <span class="s2">"creation_date"</span><span class="p">:</span> <span class="s2">"1561535052961"</span><span class="p">,</span>
+      <span class="s2">"number_of_replicas"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span>
+      <span class="s2">"uuid"</span><span class="p">:</span> <span class="s2">"ZgZxux9QTfW4e-oVoP3ogA"</span><span class="p">,</span>
+      <span class="s2">"version"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"created"</span><span class="p">:</span> <span class="s2">"7010099"</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+</code></pre></div></div>
+
+<p>在 ES 7.0 之前，一个索引可以设置锁哥 Type，但是从 7.0 开始一个索引只能设置一个 Type —— 也就是 <code class="highlighter-rouge">_doc</code> 。</p>
+
+<p>7.0 弃用了接受类型的 API，引入了新的无类型 API，并移除了对 <code class="highlighter-rouge">_default_</code> 映射的支持。</p>
+
+<p>8.0 将移除接受类型的 API。</p>
+
+<h2 id="索引相关操作">索引相关操作</h2>
+
+<p>Kibana 中管理索引的界面：</p>
+
+<p><img src="http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561600743445.png" alt="file" /></p>
+
+<p>在 Kibana 的 dev tools 下操作索引的相关 API ：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//查看索引相关信息
+GET kibana_sample_data_logs
+
+//查看索引的文档总数
+GET kibana_sample_data_logs/_count
+
+//查看前10条文档，了解文档格式
+POST kibana_sample_data_logs/_search
+<span class="o">{</span>
+<span class="o">}</span>
+
+//_cat indices API
+//查看indices，使用通配符
+GET /_cat/indices/kibana<span class="k">*</span>?v&amp;s<span class="o">=</span>index
+
+//查看状态为绿的索引
+GET /_cat/indices?v&amp;health<span class="o">=</span>green
+
+//按照文档个数排序
+GET /_cat/indices?v&amp;s<span class="o">=</span>docs.count:desc
+
+//查看具体的字段
+GET /_cat/indices/kibana<span class="k">*</span>?pri&amp;v&amp;h<span class="o">=</span>health,index,pri,rep,docs.count,mt
+
+//How much memory is used per index?
+GET /_cat/indices?v&amp;h<span class="o">=</span>i,tm&amp;s<span class="o">=</span>tm:desc
+</code></pre></div></div>
+
+<h2 id="集群">集群</h2>
+
+<p>ES 中不同集群通过不同名字区分，默认是 “elasticsearch”。通过配置文件或者命令行指定 <code class="highlighter-rouge">-E cluster.name=xxx</code> 来指定。一个集群可以有一个或多个节点。</p>
+
+<p>集群的健康状态：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Green ：主分片和副本都分配正常
+Yellow ：主分片正常，副本分片未能正常分配
+Red ： 有主分片未能正常分配，例如服务器磁盘占用超过 85% 时试图创建索引
+</code></pre></div></div>
+
+<h2 id="节点">节点</h2>
+
+<p>节点时 ES 的一个实例，本质上是一个 JAVA 进程。一台机器可以运行多个 ES 进程，但工业环境一般一天机器只运行一个 ES 实例。</p>
+
+<p>每个节点都有一个名字，通过配置文件或者命令行  <code class="highlighter-rouge">-E node.name=xxx</code> 指定。</p>
+
+<p>每个节点启动后会分配一个 ID，保存在 data 目录下。</p>
+
+<h3 id="master-eligible-node-和-master-node">Master-eligible node 和 Master node</h3>
+
+<p>每个节点启动后都会成为 Master-eligible node，可以参与选举成为 Master node，可以设置 <code class="highlighter-rouge">node.master=false</code> 来禁止。</p>
+
+<p>只有 Master node 能修改集群信息。每个节点都保存了集群信息，包含：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>所有节点信息
+所有索引和相关 Mapping 和 Setting
+分片的路由信息
+</code></pre></div></div>
+
+<h3 id="data-node-和-coordinating-node">Data node 和 Coordinating node</h3>
+
+<p>Data node 保存分片的数据。</p>
+
+<p>Coordinating node 接受客户端请求，将请求分发得到结果后汇总。每个节点默认都有 Coordinating node 的职责。</p>
+
+<h3 id="其他类型的-node">其他类型的 node</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Hot &amp; Warm Node
+ Machine Learning Node
+ Tribe Node
+</code></pre></div></div>
+
+<h3 id="节点配置">节点配置</h3>
+
+<p>在生产环境中，每个节点都应该配置成 <strong>单一</strong> 的节点类型。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">节点类型</th>
+      <th style="text-align: center">配置参数</th>
+      <th style="text-align: center">默认值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">master eligible</td>
+      <td style="text-align: center">node.master</td>
+      <td style="text-align: center">true</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">data</td>
+      <td style="text-align: center">node.data</td>
+      <td style="text-align: center">true</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ingest</td>
+      <td style="text-align: center">node.ingest</td>
+      <td style="text-align: center">true</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">coordinating only</td>
+      <td style="text-align: center">无</td>
+      <td style="text-align: center">每个节点默认都是 coordinating，设置其他类型为 false</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">machine learning</td>
+      <td style="text-align: center">node.nl</td>
+      <td style="text-align: center">true ( 需 enable x-pack )</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="分片">分片</h2>
+
+<p>主分片 （ Primary Shard ）解决水平扩展，可以将数据分布到集群内所有节点。一个分片是一个 Lucene 实例。主分片数在在索引创建时指定，不允许修改（除非 reindex）。</p>
+
+<p>副本 （ Replica Shard ） 解决数据高可用，可以动态调整。</p>
+
+<p>以下是一个三节点集群的分片情况：</p>
+
+<p><img src="http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561603564415.png" alt="file" /></p>
+
+<h2 id="集群节点相关操作">集群、节点相关操作</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>get _cat/nodes?v
+GET /_nodes/es7_01,es7_02
+GET /_cat/nodes?v
+GET /_cat/nodes?v&amp;h<span class="o">=</span><span class="nb">id</span>,ip,port,v,m
+
+
+GET _cluster/health
+GET _cluster/health?level<span class="o">=</span>shards
+GET /_cluster/health/kibana_sample_data_logs
+GET /_cluster/health/kibana_sample_data_logs?level<span class="o">=</span>shards
+
+<span class="c">#### cluster state</span>
+<span class="c">#### The cluster state API allows access to metadata representing the state of the whole cluster. This includes information such as</span>
+GET /_cluster/state
+
+//cluster get settings
+GET /_cluster/settings
+GET /_cluster/settings?include_defaults<span class="o">=</span><span class="nb">true
+
+</span>GET _cat/shards
+GET _cat/shards?h<span class="o">=</span>index,shard,prirep,state,unassigned.reason
+</code></pre></div></div>
+
+<h2 id="参考资料和相关阅读">参考资料和相关阅读</h2>
+
+<ul>
+  <li>
+    <p>Elasticsearch核心技术与实战 （极客时间 阮一鸣） <a href="https://time.geekbang.org/course/intro/197">https://time.geekbang.org/course/intro/197</a></p>
+  </li>
+  <li>
+    <p>为什么不再支持单个Index下，多个Tyeps <a href="https://www.elastic.co/cn/blog/moving-from-types-to-typeless-apis-in-elasticsearch-7-0">https://www.elastic.co/cn/blog/moving-from-types-to-typeless-apis-in-elasticsearch-7-0</a></p>
+  </li>
+  <li>
+    <p>CAT Index API <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-indices.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-indices.html</a></p>
+  </li>
+  <li>
+    <p>CAT Nodes API <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-nodes.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-nodes.html</a></p>
+  </li>
+  <li>
+    <p>Cluster API <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cluster.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cluster.html</a></p>
+  </li>
+  <li>
+    <p>CAT Shards API <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-shards.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-shards.html</a></p>
+  </li>
+</ul>
+
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-install/" title="link to Elasticsearch 实战（02）安装 —— ES / Kibana / Logstash">Elasticsearch 实战（02）安装 —— ES / Kibana / Logstash</a></h2>
+       <p class="excerpt">Elasticsearch 安装和简单配置ES 安装的地址请 点击这儿ES 在 7.0 开始内置了 JAVA 环境，不需要像之前版本一样设置 $JAVA_HOME。目录结构            目录      配置      描述                  bin             脚本文件，包括启动 ES、安装插件、运行统计数据等              config      elasticsearch.yml      集群配置文件，user 、role based...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-26 18:50:01 +0800" class="post-list__meta--date date">2019-06-26</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-install/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2019/06/ES-ind-node/";
+        this.page.identifier = "/2019/06/ES-ind-node/";
+    };
+
+    var disqus_shortname = 'caotouchan';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2019-06-27 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站由 <a href="https://caotouchan.github.io">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>

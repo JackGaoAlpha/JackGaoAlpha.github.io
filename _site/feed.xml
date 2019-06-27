@@ -5,9 +5,309 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 一枚算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 Jun 2019 20:11:50 +0800</pubDate>
-    <lastBuildDate>Thu, 27 Jun 2019 20:11:50 +0800</lastBuildDate>
+    <pubDate>Thu, 27 Jun 2019 21:19:50 +0800</pubDate>
+    <lastBuildDate>Thu, 27 Jun 2019 21:19:50 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
+    
+      <item>
+        <title>Elasticsearch 实战（03）索引、文档、节点、分片</title>
+        <description>&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561598614858.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如上图所示，文档和分片、索引和节点，其实从开发和运维的两个不同视角下的产物。&lt;/p&gt;
+
+&lt;p&gt;和 RDBMS 的相关概念做一个不太准确的类比：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;RDBMS&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Elasticsearch&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;table&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;index ( type )&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;row&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;document&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;column&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;field&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;schema&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;mapping&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;SQL&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;DSL&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;文档&quot;&gt;文档&lt;/h2&gt;
+
+&lt;p&gt;文档是 ES 中所有可搜索数据的 &lt;strong&gt;最小单位&lt;/strong&gt;，比如：日志文件中的日志项、一张唱片的详情等。&lt;/p&gt;
+
+&lt;p&gt;它会被序列化成 &lt;strong&gt;JSON&lt;/strong&gt; 格式 （ 无需预定格式、类型可以指定也可以自动推算、可嵌套，支持数组 ）。&lt;/p&gt;
+
+&lt;p&gt;每个文档都有一个 &lt;strong&gt;Unique ID&lt;/strong&gt;，可以自己指定，也可以由 ES 自动生成。&lt;/p&gt;
+
+&lt;p&gt;文档的元数据标注了文档相关信息：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;_index : 文档所属索引名
+_type ： 文档所以类型名
+_id ：文档唯一 id
+_score ：相关性分数
+_source : 文档原始 JSON
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;示例如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561599584076.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;索引&quot;&gt;索引&lt;/h2&gt;
+
+&lt;p&gt;索引是一类文档的集合，体现了逻辑空间的概念，有自己的 Mapping 定义，包含文档的字段名和字段类型。（分片体现的是物理空间的概念，索引中的数据分散在分片上）&lt;/p&gt;
+
+&lt;p&gt;其中，索引的Mapping 定义文档字段的类型。&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s2&quot;&gt;&quot;mapping&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;properties&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;@timestamp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;alias&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s2&quot;&gt;&quot;path&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;timestamp&quot;&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;agent&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;text&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s2&quot;&gt;&quot;fields&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+          &lt;span class=&quot;s2&quot;&gt;&quot;keyword&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;keyword&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;s2&quot;&gt;&quot;ignore_above&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;
+          &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;bytes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s2&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;long&quot;&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Setting 定义了不同的数据分布。&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;s2&quot;&gt;&quot;settings&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;index&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;number_of_shards&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;auto_expand_replicas&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;0-1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;provided_name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;kibana_sample_data_logs&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;creation_date&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1561535052961&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;number_of_replicas&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;uuid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;ZgZxux9QTfW4e-oVoP3ogA&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;s2&quot;&gt;&quot;version&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s2&quot;&gt;&quot;created&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;7010099&quot;&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在 ES 7.0 之前，一个索引可以设置锁哥 Type，但是从 7.0 开始一个索引只能设置一个 Type —— 也就是 &lt;code class=&quot;highlighter-rouge&quot;&gt;_doc&lt;/code&gt; 。&lt;/p&gt;
+
+&lt;p&gt;7.0 弃用了接受类型的 API，引入了新的无类型 API，并移除了对 &lt;code class=&quot;highlighter-rouge&quot;&gt;_default_&lt;/code&gt; 映射的支持。&lt;/p&gt;
+
+&lt;p&gt;8.0 将移除接受类型的 API。&lt;/p&gt;
+
+&lt;h2 id=&quot;索引相关操作&quot;&gt;索引相关操作&lt;/h2&gt;
+
+&lt;p&gt;Kibana 中管理索引的界面：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561600743445.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在 Kibana 的 dev tools 下操作索引的相关 API ：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//查看索引相关信息
+GET kibana_sample_data_logs
+
+//查看索引的文档总数
+GET kibana_sample_data_logs/_count
+
+//查看前10条文档，了解文档格式
+POST kibana_sample_data_logs/_search
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+//_cat indices API
+//查看indices，使用通配符
+GET /_cat/indices/kibana&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;?v&amp;amp;s&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;index
+
+//查看状态为绿的索引
+GET /_cat/indices?v&amp;amp;health&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;green
+
+//按照文档个数排序
+GET /_cat/indices?v&amp;amp;s&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;docs.count:desc
+
+//查看具体的字段
+GET /_cat/indices/kibana&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;?pri&amp;amp;v&amp;amp;h&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;health,index,pri,rep,docs.count,mt
+
+//How much memory is used per index?
+GET /_cat/indices?v&amp;amp;h&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;i,tm&amp;amp;s&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;tm:desc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;集群&quot;&gt;集群&lt;/h2&gt;
+
+&lt;p&gt;ES 中不同集群通过不同名字区分，默认是 “elasticsearch”。通过配置文件或者命令行指定 &lt;code class=&quot;highlighter-rouge&quot;&gt;-E cluster.name=xxx&lt;/code&gt; 来指定。一个集群可以有一个或多个节点。&lt;/p&gt;
+
+&lt;p&gt;集群的健康状态：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Green ：主分片和副本都分配正常
+Yellow ：主分片正常，副本分片未能正常分配
+Red ： 有主分片未能正常分配，例如服务器磁盘占用超过 85% 时试图创建索引
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;节点&quot;&gt;节点&lt;/h2&gt;
+
+&lt;p&gt;节点时 ES 的一个实例，本质上是一个 JAVA 进程。一台机器可以运行多个 ES 进程，但工业环境一般一天机器只运行一个 ES 实例。&lt;/p&gt;
+
+&lt;p&gt;每个节点都有一个名字，通过配置文件或者命令行  &lt;code class=&quot;highlighter-rouge&quot;&gt;-E node.name=xxx&lt;/code&gt; 指定。&lt;/p&gt;
+
+&lt;p&gt;每个节点启动后会分配一个 ID，保存在 data 目录下。&lt;/p&gt;
+
+&lt;h3 id=&quot;master-eligible-node-和-master-node&quot;&gt;Master-eligible node 和 Master node&lt;/h3&gt;
+
+&lt;p&gt;每个节点启动后都会成为 Master-eligible node，可以参与选举成为 Master node，可以设置 &lt;code class=&quot;highlighter-rouge&quot;&gt;node.master=false&lt;/code&gt; 来禁止。&lt;/p&gt;
+
+&lt;p&gt;只有 Master node 能修改集群信息。每个节点都保存了集群信息，包含：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;所有节点信息
+所有索引和相关 Mapping 和 Setting
+分片的路由信息
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;data-node-和-coordinating-node&quot;&gt;Data node 和 Coordinating node&lt;/h3&gt;
+
+&lt;p&gt;Data node 保存分片的数据。&lt;/p&gt;
+
+&lt;p&gt;Coordinating node 接受客户端请求，将请求分发得到结果后汇总。每个节点默认都有 Coordinating node 的职责。&lt;/p&gt;
+
+&lt;h3 id=&quot;其他类型的-node&quot;&gt;其他类型的 node&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; Hot &amp;amp; Warm Node
+ Machine Learning Node
+ Tribe Node
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;节点配置&quot;&gt;节点配置&lt;/h3&gt;
+
+&lt;p&gt;在生产环境中，每个节点都应该配置成 &lt;strong&gt;单一&lt;/strong&gt; 的节点类型。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;节点类型&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;配置参数&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;默认值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;master eligible&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;node.master&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;data&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;node.data&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ingest&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;node.ingest&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;true&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;coordinating only&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;无&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;每个节点默认都是 coordinating，设置其他类型为 false&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;machine learning&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;node.nl&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;true ( 需 enable x-pack )&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;分片&quot;&gt;分片&lt;/h2&gt;
+
+&lt;p&gt;主分片 （ Primary Shard ）解决水平扩展，可以将数据分布到集群内所有节点。一个分片是一个 Lucene 实例。主分片数在在索引创建时指定，不允许修改（除非 reindex）。&lt;/p&gt;
+
+&lt;p&gt;副本 （ Replica Shard ） 解决数据高可用，可以动态调整。&lt;/p&gt;
+
+&lt;p&gt;以下是一个三节点集群的分片情况：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/06/image-1561603564415.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;集群节点相关操作&quot;&gt;集群、节点相关操作&lt;/h2&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;get _cat/nodes?v
+GET /_nodes/es7_01,es7_02
+GET /_cat/nodes?v
+GET /_cat/nodes?v&amp;amp;h&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;,ip,port,v,m
+
+
+GET _cluster/health
+GET _cluster/health?level&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;shards
+GET /_cluster/health/kibana_sample_data_logs
+GET /_cluster/health/kibana_sample_data_logs?level&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;shards
+
+&lt;span class=&quot;c&quot;&gt;#### cluster state&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#### The cluster state API allows access to metadata representing the state of the whole cluster. This includes information such as&lt;/span&gt;
+GET /_cluster/state
+
+//cluster get settings
+GET /_cluster/settings
+GET /_cluster/settings?include_defaults&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true
+
+&lt;/span&gt;GET _cat/shards
+GET _cat/shards?h&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;index,shard,prirep,state,unassigned.reason
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料和相关阅读&quot;&gt;参考资料和相关阅读&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Elasticsearch核心技术与实战 （极客时间 阮一鸣） &lt;a href=&quot;https://time.geekbang.org/course/intro/197&quot;&gt;https://time.geekbang.org/course/intro/197&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;为什么不再支持单个Index下，多个Tyeps &lt;a href=&quot;https://www.elastic.co/cn/blog/moving-from-types-to-typeless-apis-in-elasticsearch-7-0&quot;&gt;https://www.elastic.co/cn/blog/moving-from-types-to-typeless-apis-in-elasticsearch-7-0&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CAT Index API &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-indices.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-indices.html&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CAT Nodes API &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-nodes.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-nodes.html&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Cluster API &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cluster.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cluster.html&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CAT Shards API &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-shards.html&quot;&gt;https://www.elastic.co/guide/en/elasticsearch/reference/7.1/cat-shards.html&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Thu, 27 Jun 2019 09:52:01 +0800</pubDate>
+        <link>http://localhost:4000/2019/06/ES-ind-node/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/ES-ind-node/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Elasticsearch 实战（02）安装 —— ES / Kibana / Logstash</title>
