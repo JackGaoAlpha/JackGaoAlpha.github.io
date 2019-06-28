@@ -5,8 +5,8 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 28 Jun 2019 14:01:47 +0800</pubDate>
-    <lastBuildDate>Fri, 28 Jun 2019 14:01:47 +0800</lastBuildDate>
+    <pubDate>Fri, 28 Jun 2019 14:04:39 +0800</pubDate>
+    <lastBuildDate>Fri, 28 Jun 2019 14:04:39 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -924,7 +924,7 @@ bin/logstash &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /YOUR_PATH_of_logs
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559101276532.png&quot; alt=&quot;Docker Client&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gu1y6d91j30gu09ft93.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -944,7 +944,7 @@ bin/logstash &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /YOUR_PATH_of_logs
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559101765535.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gu2kay5sj307308p747.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -997,7 +997,7 @@ CMD [&quot;python&quot;, &quot;./my_script.py&quot;]
 
 &lt;p&gt;其中 &lt;code class=&quot;highlighter-rouge&quot;&gt;ubuntu&lt;/code&gt; 是镜像 repository ， &lt;code class=&quot;highlighter-rouge&quot;&gt;18.04&lt;/code&gt; 是标签（tag）。没有标签则拉取最新版本。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559108982583.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gu2u1j9hj30g80bajro.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;创建容器时，可以在只读层的顶部添加可写层。当图像运行时，如果某个层需要由容器修改，则该文件将被复制到顶部可写层中。 了解有关 &lt;code class=&quot;highlighter-rouge&quot;&gt;copy-on-write&lt;/code&gt; 的更多信息，点击 &lt;a href=&quot;https://docs.docker.com/v17.09/engine/userguide/storagedriver/imagesandcontainers/&quot;&gt;链接&lt;/a&gt;。&lt;/p&gt;
 
@@ -1294,7 +1294,7 @@ CMD [&quot;./app&quot;]
   &lt;li&gt;将文件系统挂载到容器。使用绑定装载，Docker外部的进程也可以修改数据。绑定挂载很难备份，迁移或与其他Container共享。&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559117952332.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gu37znbcj30ca06jq2z.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;使用卷（Volume）保存数据是更好的方法。&lt;/li&gt;

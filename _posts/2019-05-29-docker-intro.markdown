@@ -17,7 +17,7 @@ date: 2019-05-29 15:50:01.000000000 +09:00
 
 * Client  ：处理 Docker CLI 来和 Daemon 进行交互
 
-![Docker Client](http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559101276532.png)
+![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gu1y6d91j30gu09ft93.jpg)
 
 * Daemon （守护进程）  ：侦听 Docker API 请求的 Docker 服务器，用来管理图像、容器、网络和卷。
 
@@ -29,7 +29,7 @@ date: 2019-05-29 15:50:01.000000000 +09:00
 
 * Networking  ：连接容器。连接的 Docker 容器可以位于同一主机或多个主机上。 有关Docker网络的更多信息，请参阅 [此文章](https://www.oreilly.com/learning/what-is-docker-networking)。
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559101765535.png)
+![](http://ww3.sinaimg.cn/large/006tNc79gy1g4gu2kay5sj307308p747.jpg)
 
 * Compose  ：方便运行需要多个Docker容器的应用程序的工具。 Docker Compose 允许您将命令移动到 `docker-compose.yml` 文件中以供重用。
 
@@ -75,7 +75,7 @@ FROM ubuntu:18.04
 
 其中 `ubuntu` 是镜像 repository ， `18.04` 是标签（tag）。没有标签则拉取最新版本。
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559108982583.png)
+![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gu2u1j9hj30g80bajro.jpg)
 
 创建容器时，可以在只读层的顶部添加可写层。当图像运行时，如果某个层需要由容器修改，则该文件将被复制到顶部可写层中。 了解有关 `copy-on-write` 的更多信息，点击 [链接](https://docs.docker.com/v17.09/engine/userguide/storagedriver/imagesandcontainers/)。
 
@@ -322,7 +322,7 @@ Use `docker image my_command`
 
 1. 将文件系统挂载到容器。使用绑定装载，Docker外部的进程也可以修改数据。绑定挂载很难备份，迁移或与其他Container共享。
 
-![file](http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559117952332.png)
+![](http://ww2.sinaimg.cn/large/006tNc79gy1g4gu37znbcj30ca06jq2z.jpg)
 
 2. 使用卷（Volume）保存数据是更好的方法。
 
