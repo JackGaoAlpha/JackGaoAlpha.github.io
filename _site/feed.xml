@@ -5,8 +5,8 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 28 Jun 2019 13:53:46 +0800</pubDate>
-    <lastBuildDate>Fri, 28 Jun 2019 13:53:46 +0800</lastBuildDate>
+    <pubDate>Fri, 28 Jun 2019 14:01:47 +0800</pubDate>
+    <lastBuildDate>Fri, 28 Jun 2019 14:01:47 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -895,6 +895,503 @@ bin/logstash &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /YOUR_PATH_of_logs
         <pubDate>Wed, 26 Jun 2019 18:46:01 +0800</pubDate>
         <link>http://localhost:4000/2019/06/ES-intro/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/06/ES-intro/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>够用就好的 Docker 教程</title>
+        <description>&lt;h2 id=&quot;核心概念&quot;&gt;核心概念&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Docker images （镜像） ：不可变的主模板，用于抽出完全相同的容器。镜像包含应用程序需要运行的Dockerfile、库和代码。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Dockerfile ：一个文件，其中包含Docker应如何构建映像的说明。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Docker Container （容器）：Docker 镜像加上命令 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker run image_name&lt;/code&gt; 将从镜像创建并启动容器。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Container Registry ：存储 Docker 镜像的远程位置。将镜像推送到 Registry 并从 Registry 中提取镜像。 可以托管自己的 Registry 或使用提供商的 Registry，例如 AWS 和 Google Cloud 都有 Registry。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Engine  ：client-server app (&lt;a href=&quot;https://docs.docker.com/install/&quot;&gt;CE&lt;/a&gt; or &lt;a href=&quot;https://www.docker.com/products/docker-enterprise&quot;&gt;Enterprise&lt;/a&gt;)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Client  ：处理 Docker CLI 来和 Daemon 进行交互&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559101276532.png&quot; alt=&quot;Docker Client&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Daemon （守护进程）  ：侦听 Docker API 请求的 Docker 服务器，用来管理图像、容器、网络和卷。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Volumes  （卷）：存储应用程序使用和创建的持久数据的最佳方式。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Docker Hub  ： 默认的 Docker Registry&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Repository  ：具有相同名称和不同标记的 Docker 镜像的集合。 标签是镜像的标识符。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Networking  ：连接容器。连接的 Docker 容器可以位于同一主机或多个主机上。 有关Docker网络的更多信息，请参阅 &lt;a href=&quot;https://www.oreilly.com/learning/what-is-docker-networking&quot;&gt;此文章&lt;/a&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559101765535.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Compose  ：方便运行需要多个Docker容器的应用程序的工具。 Docker Compose 允许您将命令移动到 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt; 文件中以供重用。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Swarm  ：一个协调容器部署的产品。 参考 &lt;a href=&quot;https://docs.docker.com/get-started/#recap-and-cheat-sheet&quot;&gt;官方Docker教程&lt;/a&gt; 。 推文作者建议不要花时间在Docker Swarm上，除非你有令人信服的理由这样做。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Services  ：分布式应用程序的不同部分。Services 只运行一个映像，但它编码了映像的运行方式 ：端口、容器运行副本个数等等。Services 允许您跨多个 Docker Daemon 扩展容器，并使 Docker Swarms 成为可能。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Kubernetes ：Kubernetes 自动化部署、扩展和管理容器化的应用程序。使用 Kubernetes 扩展具有多个 Docker 容器的项目。 （ Kubernetes 不是 Docker 的官方部分; 它更像是 Docker 的 BFF 。）&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;dockerfile-指令&quot;&gt;Dockerfile 指令&lt;/h2&gt;
+
+&lt;p&gt;Dockerfile 指引 Docker 构建将用于制作容器的镜像。&lt;/p&gt;
+
+&lt;p&gt;当调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker build&lt;/code&gt; 以创建镜像时，会假定 Dockerfile 位于当前工作目录中。 可以使用文件标志（&lt;code class=&quot;highlighter-rouge&quot;&gt;-f&lt;/code&gt;）指定其他位置。&lt;/p&gt;
+
+&lt;p&gt;容器从一系列的 layer 中构建，&lt;strong&gt;除了最后一层都是只读&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;Dockerfile 指示添加哪些层和添加的顺序。每层实际上只是一个包含自上一层以来的更改的文件。基础层（ The base image ） 包含提供初始层。&lt;/p&gt;
+
+&lt;p&gt;将映像从远程存储库提取到本地计算机时，仅下载本地计算机上尚未存在的层。&lt;/p&gt;
+
+&lt;p&gt;Dockerfile指令是一行的开头的大写单词，后跟其参数。&lt;/p&gt;
+
+&lt;p&gt;示例 Dockerfile ：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM python:3.7.2-alpine3.8
+LABEL maintainer=&quot;jeffmshale@gmail.com&quot;
+ENV ADMIN=&quot;jeff&quot;
+RUN apk update &amp;amp;&amp;amp; apk upgrade &amp;amp;&amp;amp; apk add bash
+COPY . ./app
+ADD https://raw.githubusercontent.com/discdiver/pachy-vid/master/sample_vids/vid1.mp4 \
+/my_app_directory
+RUN [&quot;mkdir&quot;, &quot;/a_directory&quot;]
+CMD [&quot;python&quot;, &quot;./my_script.py&quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;FROM&lt;/code&gt; : 指定 base (parent) image.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM ubuntu:18.04
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;其中 &lt;code class=&quot;highlighter-rouge&quot;&gt;ubuntu&lt;/code&gt; 是镜像 repository ， &lt;code class=&quot;highlighter-rouge&quot;&gt;18.04&lt;/code&gt; 是标签（tag）。没有标签则拉取最新版本。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559108982583.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;创建容器时，可以在只读层的顶部添加可写层。当图像运行时，如果某个层需要由容器修改，则该文件将被复制到顶部可写层中。 了解有关 &lt;code class=&quot;highlighter-rouge&quot;&gt;copy-on-write&lt;/code&gt; 的更多信息，点击 &lt;a href=&quot;https://docs.docker.com/v17.09/engine/userguide/storagedriver/imagesandcontainers/&quot;&gt;链接&lt;/a&gt;。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;LABEL&lt;/code&gt; : 提供元数据 （ metadata ）。更多信息点击 &lt;a href=&quot;https://docs.docker.com/config/labels-custom-metadata/&quot;&gt;链接&lt;/a&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ENV&lt;/code&gt; : 设置持久化环境变量。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;RUN&lt;/code&gt; : 运行命令，创建镜像层。用于安装包到容器中。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;COPY&lt;/code&gt; : 拷贝文件和目录到容器中。目标目录不存在的话会自行创建。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ADD&lt;/code&gt; : 将文件和目录复制到容器。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;和 &lt;code class=&quot;highlighter-rouge&quot;&gt;COPY&lt;/code&gt; 不同的地方：
+(1) 可用于将文件从远程URL移动到容器 
+(2) 可以 upack 本地 的 .tar 文件。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ADD&lt;/code&gt; 指令包含&lt;code class=&quot;highlighter-rouge&quot;&gt; \ &lt;/code&gt; 实现分解多行的长指令，使用它来提高可读性。&lt;/p&gt;
+
+&lt;p&gt;Docker文档不建议以这种方式使用远程URL，因为您无法删除文件。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt; : 给运行时容器提供命令和参数。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;只有一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt; 可以包含可执行文件。 如果 &lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt; 不存在可执行文件，则必须存在 &lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt; 指令。 在这种情况下，&lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt; 指令都应采用JSON格式。&lt;/p&gt;
+
+&lt;p&gt;docker 的命令行参数运行&lt;strong&gt;覆盖&lt;/strong&gt; Dockerfile 中提供给 &lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt; 的参数。&lt;/p&gt;
+
+&lt;p&gt;以下是另一个示例 Dockerfile：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM python:3.7.2-alpine3.8
+LABEL maintainer=&quot;jeffmshale@gmail.com&quot;
+## Install dependencies
+RUN apk add --update git
+## Set current working directory
+WORKDIR /usr/src/my_app_directory
+## Copy code from your local context to the image working directory
+COPY . .
+## Set default value for a variable
+ARG my_var=my_default_value
+## Set code to run at container run time
+ENTRYPOINT [&quot;python&quot;, &quot;./app/my_script.py&quot;, &quot;my_var&quot;]
+## Expose our port to the world
+EXPOSE 8000
+## Create a volume for data storage
+VOLUME /my_volume
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;有几种方法可以使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;RUN&lt;/code&gt; 安装软件包：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;apk&lt;/code&gt;在 Alpine Docker 映像中安装软件包。 具有基本 Ubuntu 映像的 Dockerfile 中的包可以像这样更新和安装：&lt;code class=&quot;highlighter-rouge&quot;&gt;RUN apt-get update &amp;amp;&amp;amp; apt-get install my_package&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;通过&lt;code class=&quot;highlighter-rouge&quot;&gt;pip&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;wheel&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;conda&lt;/code&gt;安装 Python 包。其他语言可以使用各种安装程序。（请确保在尝试使用包管理器之前安装包管理器）请使用 ` \ ` 拆分多行。&lt;/li&gt;
+  &lt;li&gt;在文件中列出包需求，通常将文件命名为 &lt;strong&gt;requirements.txt&lt;/strong&gt;。下文将分享一个推荐的模式使用 requirements.txt 来利用构建时缓存。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;WORKDIR&lt;/code&gt; : 设置后续指令的工作目录。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;最好使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;WORKDIR&lt;/code&gt; 设置绝对路径，而不是使用Dockerfile中的cd命令浏览文件系统。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;如果目录不存在， &lt;code class=&quot;highlighter-rouge&quot;&gt;WORKDIR&lt;/code&gt; 会自动创建目录。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可以使用多个 &lt;code class=&quot;highlighter-rouge&quot;&gt;WORKDIR&lt;/code&gt; 指令。 如果提供了相对路径，则每个 &lt;code class=&quot;highlighter-rouge&quot;&gt;WORKDIR&lt;/code&gt; 指令都会更改当前工作目录。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ARG&lt;/code&gt; : 定义一个在构建时传递给 Docker 的变量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;与 &lt;code class=&quot;highlighter-rouge&quot;&gt;ENV&lt;/code&gt; 变量不同，&lt;code class=&quot;highlighter-rouge&quot;&gt;ARG&lt;/code&gt; 变量不可用于运行容器。 但是，在构建映像时，可以使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;ARG&lt;/code&gt; 值从命令行设置 &lt;code class=&quot;highlighter-rouge&quot;&gt;ENV&lt;/code&gt; 变量的默认值。 然后，&lt;code class=&quot;highlighter-rouge&quot;&gt;ENV&lt;/code&gt; 变量在容器运行时间内持续存在。 在 &lt;a href=&quot;https://vsupalov.com/docker-build-time-env-values/&quot;&gt;此处&lt;/a&gt; 详细了解此技术。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt; : 在容器启动时提供默认命令和参数。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;类似于&lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt;，但如果使用命令行参数运行容器，则不会覆盖&lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt;参数。相反，&lt;strong&gt;传递给 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker run my_image_name&lt;/code&gt; 的命令行参数会附加到 &lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt; 指令的参数中&lt;/strong&gt;。例如，&lt;code class=&quot;highlighter-rouge&quot;&gt;docker run my_image bash&lt;/code&gt; 将参数&lt;code class=&quot;highlighter-rouge&quot;&gt;bash&lt;/code&gt; 添加到&lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt; 指令的现有参数的末尾。&lt;/p&gt;
+
+&lt;p&gt;Dockerfile至少应有一条&lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt;指令。&lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt; 和&lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt;之间进行选择的建议：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;每次需要运行相同的命令时，请关注&lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;当容器将用作可执行程序时，请关注&lt;code class=&quot;highlighter-rouge&quot;&gt;ENTRYPOINT&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;当您需要提供可以从命令行覆盖的额外默认参数时，请支持&lt;code class=&quot;highlighter-rouge&quot;&gt;CMD&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EXPOSE&lt;/code&gt; : 显示要发布的端口，以提供对正在运行的容器的访问。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EXPOSE&lt;/code&gt; 实际上并不发布端口。 相反，它充当构建镜像的人和运行容器的人之间的文档。&lt;/p&gt;
+
+&lt;p&gt;使用带有&lt;code class=&quot;highlighter-rouge&quot;&gt;-p&lt;/code&gt; 标志的 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker run&lt;/code&gt; 可以在运行时发布和映射一个或多个端口。 大写的 &lt;code class=&quot;highlighter-rouge&quot;&gt;-P&lt;/code&gt; 标志将发布所有暴露的端口。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;VOLUME&lt;/code&gt; : 创建目录挂载点以访问和存储持久化数据。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;另外，关于 Dockerfile 的小抄，请点击 &lt;a href=&quot;https://kapeli.com/cheat_sheets/Dockerfile.docset/Contents/Resources/Documents/index&quot;&gt;此链接&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;压缩-docker-镜像&quot;&gt;压缩 Docker 镜像&lt;/h2&gt;
+
+&lt;h3 id=&quot;缓存&quot;&gt;缓存&lt;/h3&gt;
+
+&lt;p&gt;在检查每条指令时，Docker在其缓存中查找现有的中间镜像，它可以重复使用而不是创建新的（重复的）中间镜像。&lt;/p&gt;
+
+&lt;p&gt;大多数新指令只是与中间镜像中的指令进行比较。如果匹配，则使用缓存副本。&lt;/p&gt;
+
+&lt;p&gt;一些实用缓存的建议：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;通过使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker build&lt;/code&gt; 传递 ` –no-cache = True` 可以关闭缓存。&lt;/li&gt;
+  &lt;li&gt;将可能更改的指令放在Dockerfile中尽可能低的位置。&lt;/li&gt;
+  &lt;li&gt;链式的 &lt;code class=&quot;highlighter-rouge&quot;&gt;RUN apt-get update&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-get install&lt;/code&gt; 命令可避免缓存缺失问题。&lt;/li&gt;
+  &lt;li&gt;如果使用包装安装程序（如&lt;code class=&quot;highlighter-rouge&quot;&gt;pip&lt;/code&gt;和 requirements.txt 文件），请按照下面的模型进行操作，以确保没有收到带有 requirements.txt 中列出的旧包的旧版本中间镜像。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;COPY requirements.txt /tmp/
+RUN pip install -r /tmp/requirements.txt
+COPY . /tmp/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;size-reduction&quot;&gt;Size Reduction&lt;/h3&gt;
+
+&lt;p&gt;Alpine基础映像是一个完整的Linux发行版，没有太多其他内容。 下载通常不到5mb，但它要求您花更多的时间编写构建工作应用程序所需的依赖项的代码。&lt;/p&gt;
+
+&lt;p&gt;如果你的容器中需要Python，那么Python Alpine构建是一个很好的折衷方案。&lt;/p&gt;
+
+&lt;h3 id=&quot;多阶段构建&quot;&gt;多阶段构建&lt;/h3&gt;
+
+&lt;p&gt;多级构建使用多个 &lt;code class=&quot;highlighter-rouge&quot;&gt;FROM&lt;/code&gt; 指令，每个 &lt;code class=&quot;highlighter-rouge&quot;&gt;FROM&lt;/code&gt; 指令：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;begins a new stage of the build.&lt;/li&gt;
+  &lt;li&gt;leaves behind any state created in prior stages.&lt;/li&gt;
+  &lt;li&gt;can use a different base.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;多阶段构建示例：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;FROM golang:1.7.3 AS build
+WORKDIR /go/src/github.com/alexellis/href-counter/
+RUN go get -d -v golang.org/x/net/html  
+COPY app.go .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+
+FROM alpine:latest  
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=build /go/src/github.com/alexellis/href-counter/app .
+CMD [&quot;./app&quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;通过在 &lt;code class=&quot;highlighter-rouge&quot;&gt;FROM&lt;/code&gt; 指令中附加名称来命名第一个阶段。 然后在 Dockerfile 中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;COPY --from =&lt;/code&gt; 指令中引用指定的阶段。&lt;/p&gt;
+
+&lt;p&gt;有时多级构建会增加更多复杂性，使图像难以维护，因此您可能不会在大多数构建中使用它们。 请参阅进一步讨论：&lt;a href=&quot;https://blog.realkinetic.com/building-minimal-docker-containers-for-python-applications-37d0272c52f3&quot;&gt;权衡&lt;/a&gt; 和 &lt;a href=&quot;https://medium.com/@tonistiigi/advanced-multi-stage-build-patterns-6f741b852fae&quot;&gt;高阶模式&lt;/a&gt; 。&lt;/p&gt;
+
+&lt;h3 id=&quot;dockerignore&quot;&gt;.dockerignore&lt;/h3&gt;
+
+&lt;p&gt;.dockerignore类似于.gitignore，其中包含Docker与文件名匹配的模式列表，并在制作镜像时排除。&lt;/p&gt;
+
+&lt;p&gt;使用 Go 的 &lt;a href=&quot;https://golang.org/pkg/path/filepath/#Match&quot;&gt;filepath.Match 规则&lt;/a&gt;  和一些 &lt;a href=&quot;https://docs.docker.com/v17.09/engine/reference/builder/#dockerignore-file&quot;&gt;Docker 自身的规则&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;size-inspection&quot;&gt;Size Inspection&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;查看正在运行的容器大小： &lt;code class=&quot;highlighter-rouge&quot;&gt;docker container ls -s&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;显示镜像的大小： &lt;code class=&quot;highlighter-rouge&quot;&gt;docker image ls&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;查看中间镜像的大小：&lt;code class=&quot;highlighter-rouge&quot;&gt;docker image history my_image：my_tag&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;docker image inspect my_image&lt;/code&gt;：tag将显示有关镜像的许多内容，包括每个 layer 的大小。layer 和中间镜像的复杂性，查看Nigel Brown的 &lt;a href=&quot;https://windsock.io/explaining-docker-image-ids/&quot;&gt;这篇文章&lt;/a&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装和使用 &lt;a href=&quot;https://github.com/wagoodman/dive&quot;&gt;dive&lt;/a&gt; 可以轻松查看 layer 的内容。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;几个实用的建议&quot;&gt;几个实用的建议&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;尽可能使用官方的 base image。&lt;/li&gt;
+  &lt;li&gt;尽可能使用 Alpine 镜像的变体来保持镜像的量级。&lt;/li&gt;
+  &lt;li&gt;如果使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt&lt;/code&gt;，在同一指令中将 &lt;code class=&quot;highlighter-rouge&quot;&gt;RUN apt-get update&lt;/code&gt;与 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-get install&lt;/code&gt; 结合使用（减少了构建的层数），如：
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RUN apt-get update &amp;amp;&amp;amp; apt-get install -y \
+ package-one \
+ package-two 
+ &amp;amp;&amp;amp; rm -rf /var/lib/apt/lists/*
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在 &lt;code class=&quot;highlighter-rouge&quot;&gt;RUN&lt;/code&gt; 指令的末尾包含 &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&amp;amp; rm -rf / var / lib / apt / lists / *&lt;/code&gt; 以清理 &lt;code class=&quot;highlighter-rouge&quot;&gt;apt&lt;/code&gt; 缓存，使其不存储在层中。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;通过在 Dockerfile 中放置可能更改的指令，明智地使用缓存。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 .dockerignore 文件。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用 &lt;a href=&quot;https://github.com/wagoodman/dive&quot;&gt;dive&lt;/a&gt; 检查 Docker 镜像层方便压缩规模。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;不要安装不需要的包。（- ，- b）&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;常用命令&quot;&gt;常用命令&lt;/h2&gt;
+
+&lt;h3 id=&quot;containers&quot;&gt;Containers&lt;/h3&gt;
+&lt;p&gt;Use &lt;code class=&quot;highlighter-rouge&quot;&gt;docker container my_command&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;create&lt;/code&gt; — Create a container from an image.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;start &lt;/code&gt;— Start an existing container.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;run &lt;/code&gt;— Create a new container and start it.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ls&lt;/code&gt; — List running containers.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;inspect &lt;/code&gt;— See lots of info about a container.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;logs &lt;/code&gt;— Print logs.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;stop&lt;/code&gt; — Gracefully stop running container.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kill&lt;/code&gt; —Stop main process in container abruptly.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rm&lt;/code&gt;— Delete a stopped container.&lt;/p&gt;
+
+&lt;h3 id=&quot;images&quot;&gt;Images&lt;/h3&gt;
+&lt;p&gt;Use &lt;code class=&quot;highlighter-rouge&quot;&gt;docker image my_command&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;build &lt;/code&gt;— Build an image.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;push &lt;/code&gt;— Push an image to a remote registry.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ls &lt;/code&gt;— List images.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;history&lt;/code&gt; — See intermediate image info.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;inspect &lt;/code&gt;— See lots of info about an image, including the layers.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rm &lt;/code&gt;— Delete an image.&lt;/p&gt;
+
+&lt;h3 id=&quot;misc&quot;&gt;Misc&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker version&lt;/code&gt; — List info about your Docker Client and Server versions.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker login &lt;/code&gt;— Log in to a Docker registry.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker system prune &lt;/code&gt;— Delete all unused containers, unused networks, and dangling images.&lt;/p&gt;
+
+&lt;h2 id=&quot;卷volumedocker-中的数据&quot;&gt;卷（Volume）：Docker 中的数据&lt;/h2&gt;
+
+&lt;h3 id=&quot;临时数据&quot;&gt;临时数据&lt;/h3&gt;
+
+&lt;p&gt;通过两种方式临时保存文件：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;默认情况下，容器内应用程序创建的文件存储在容器的可写层中。当容器不再存在时，数据也将消失。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;保存临时数据同时具有更好的性能：&lt;code class=&quot;highlighter-rouge&quot;&gt;tmpfs mount&lt;/code&gt; 使用主机内存进行临时挂载，具有更快的读写操作的优点。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;持久化数据&quot;&gt;持久化数据&lt;/h3&gt;
+
+&lt;p&gt;两种持久化数据的方式：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;将文件系统挂载到容器。使用绑定装载，Docker外部的进程也可以修改数据。绑定挂载很难备份，迁移或与其他Container共享。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.caotouchan.tech/wp-content/uploads/2019/05/image-1559117952332.png&quot; alt=&quot;file&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;使用卷（Volume）保存数据是更好的方法。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;卷&quot;&gt;卷&lt;/h3&gt;
+
+&lt;p&gt;卷是一个文件系统，它位于任何容器之外的主机上。 卷由Docker创建和管理。 卷的特性：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;持久化&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;自由浮动的文件系统，与任何一个容器分开&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;与其他容器共用&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;高效的输入和输出&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;能够托管在远程云提供商上&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可加密&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可命名&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;能够通过容器预先填充其内容&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;方便测试&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;创建卷&quot;&gt;创建卷&lt;/h3&gt;
+
+&lt;p&gt;通过 Dockerfile 或 API 请求创建卷。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;VOLUME / my_volume&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;使用Dockerfile创建卷，则仍需要在运行时声明卷的安装点。&lt;/p&gt;
+
+&lt;p&gt;还可以使用JSON数组格式在 Dockerfile 中创建卷。&lt;/p&gt;
+
+&lt;p&gt;卷也可以在运行时从命令行实例化。&lt;/p&gt;
+
+&lt;h3 id=&quot;volume-cli-命令&quot;&gt;Volume CLI 命令&lt;/h3&gt;
+
+&lt;p&gt;常用的命令：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker volume create —-name my_volume&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker volume ls&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker volume inspect my_volume&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker volume rm my_volume&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;docker volume prune&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;docker run中的–mount标志的常用选项 -  mount my_options my_image：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;type=volume&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;source=volume_name&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;destination=/path/in/container&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;readonly&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;[1]. &lt;a href=&quot;https://medium.com/search?q=Learn%20Enough%20Docker%20to%20be%20Useful&quot;&gt;Learn Enough Docker to be Useful&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 29 May 2019 14:50:01 +0800</pubDate>
+        <link>http://localhost:4000/2019/05/docker-intro/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/05/docker-intro/</guid>
         
         
       </item>
