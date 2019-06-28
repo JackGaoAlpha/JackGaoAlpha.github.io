@@ -30,6 +30,17 @@
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- 数学公式 -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
   
 </head>
 
@@ -163,9 +174,9 @@
    
    <div class="read-more-item">
        <span class="read-more-item-dim">最近的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-intro/" title="link to Elasticsearch 实战（01）综述">Elasticsearch 实战（01）综述</a></h2>
-       <p class="excerpt">综述Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分析，其高性能和易扩展、易使用性受到众多公司的青睐。这个系列文章基于 Elasticsearch 7.0 进行探索和实践，参考 极客时间的 《 Elasticsearch核心技术与实战 》 系列专栏。分布式架构集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot &amp; Warm 架构。集成方式      支持多种编程语言类库，如 Java/.NE...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2019-06-26 18:46:01 +0800" class="post-list__meta--date date">2019-06-26</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-intro/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2019/05/struc-01/" title="link to 结构化学习（1）：介绍、统一框架">结构化学习（1）：介绍、统一框架</a></h2>
+       <p class="excerpt">引入在一般的机器学习中，我们都是在把输入 X 投射到一个向量 y。但是有的情况下，我们需要一个更加强大的函数，来满足输入输出都是结构化的数据。考虑一下场景：  语音识别 Speech recognition          X: Speech signal (sequence) → Y: text (sequence)        翻译 Translation          X: Mandarin sentence (sequence) → Y: English sentence(...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-05-25 18:50:01 +0800" class="post-list__meta--date date">2019-05-25</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/05/struc-01/>继续阅读</a></div>
    </div>
    
    
@@ -187,11 +198,11 @@
 
     <script type="text/javascript">
       var gitalk = new Gitalk({
-        clientID: '',
-        clientSecret: '',
-        repo: '',
-        owner: '',
-        admin: [''],
+        clientID: '6005df5e831456f4482b',
+        clientSecret: 'ffc57d242198e14cdb68b7457a765d0b719415fb',
+        repo: 'caotouchan.github.io',
+        owner: 'CaoTouChan',
+        admin: ['CaoTouChan'],
         id: window.location.pathname,
       });
       gitalk.render('gitalk-container');
