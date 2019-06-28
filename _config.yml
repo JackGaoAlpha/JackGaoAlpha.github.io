@@ -31,9 +31,9 @@ paginate_path: "page/:num/"
 
 # Comment
 comment:
-    disqus: caotouchan
+    # disqus: caotouchan
     # duoshuo: 
-    # gitalk: true
+    gitalk: true
     
 # Social
 social:
