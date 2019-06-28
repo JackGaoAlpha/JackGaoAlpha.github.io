@@ -1,0 +1,202 @@
+---
+layout: post
+title: 结构化学习（2）：结构化线性模型
+date: 2019-05-25 20:50:01.000000000 +09:00
+---
+上一篇文章 [《结构化学习（1）：介绍、统一框架》](http://www.caotouchan.tech/2019/05/25/%E7%BB%93%E6%9E%84%E5%8C%96%E5%AD%A6%E4%B9%A0%EF%BC%881%EF%BC%89%EF%BC%9A%E4%BB%8B%E7%BB%8D%E3%80%81%E7%BB%9F%E4%B8%80%E6%A1%86%E6%9E%B6/) 的最后说到，对于 Unified Framework 我们需要解决三个问题：
+
+1. Problem 1: 评估 —— 定义 F(x,y) 
+
+2. Problem 2: 推断 —— 计算 “arg max” 
+
+3. Problem 3: 训练 —— 对于给定训练数据，找到 F(x,y)
+
+考虑问题 1 —— 如果 F(x, y) 是一个确定的形式，那么问题 3 将不再是一个问题。
+
+以下，我们使用一个结构化的线性模型来考虑这个问题。
+
+## Problem 1: 评估 —— 定义 F(x,y) 
+
+对于每一对 $(x, y)$ ，我们使用一组特征来描述：
+
+$$(x, y) \rightarrow  \begin{array}{c}{\phi_{1}(x, y)} \\ {\phi_{2}(x, y)} \\ {\phi_{3}(x, y)} \\ {\vdots}\end{array}
+$$
+
+则：
+
+$$\begin{aligned} \mathrm{F}(x, y) &=w_{1} \cdot \phi_{1}(x, y) \\ &+w_{2} \cdot \phi_{2}(x, y) \\ &+w_{3} \cdot \phi_{3}(x, y) \ldots \end{aligned}
+$$
+
+其中， $w_{1}, w_{2},...$ 从数据中学习得到。
+
+也就是：
+
+$$\mathrm{F}(x, y)=\left[ \begin{array}{c}{w_{1}} \\ {w_{2}} \\ {w_{3}} \\ {\vdots}\end{array}\right] \cdot \left[ \begin{array}{c}{\phi_{1}(x, y)} \\ {\phi_{2}(x, y)} \\ {\phi_{3}(x, y)} \\ {\vdots}\end{array}\right]
+$$
+
+即：
+
+$$\mathrm{F}(x, y)=w \cdot \phi(x, y)
+$$
+
+举两个栗子来说明下。
+
+* 例子一 ： 目标检测
+
+做一个无心小和尚的目标检测器，如下图：
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4grsmkfeuj31380piab7.jpg)
+
+那么我们可以定义：
+
+$$\phi(x, y) = \left[ \begin{array}{c}{红色方框比例} \\ {绿色方框比例} \\ {绿色方框外比例} \\ {\vdots}\end{array}\right]
+$$
+
+但是上述方法的特征抽取并不实用，效果也很弱。比较 SOTA 的方式是使用 CNN 来抽取特征。
+
+* 例子二 ： 概要提取
+
+![](http://ww1.sinaimg.cn/large/006tNc79ly1g4grt47jkuj30na0bu3zk.jpg)
+
+* 例子三 ： 检索
+
+![](http://ww3.sinaimg.cn/large/006tNc79ly1g4grtfsamej30nk0badgt.jpg)
+
+## Problem 2: 推断 —— 计算 “arg max” 
+
+$$\begin{array}{c}{y=\arg \max _{y \in Y} \mathrm{F}(x, y)} \\ {\mathrm{F}(x, y)=w \cdot \phi(x, y) \Rightarrow y=\arg \max _{y \in Y} \mathrm{w} \cdot \phi(x, y)}\end{array}
+$$
+
+关于问题二，我们在后边详述。先行假设以上问题已经被解决，进入问题三。
+
+## Problem 3: 训练 —— 对于给定训练数据，找到 F(x,y)
+
+在 ${\mathrm{F}(x, y)=w \cdot \phi(x, y)}$ 中 ，对于训练数据 
+
+$$\left\{\left(x^{1}, \hat{y}^{1}\right),\left(x^{2}, \hat{y}^{2}\right) \ldots,\left(x^{r}, \hat{y}^{r}\right), \ldots\right\}$$ 
+
+我们的目标是学习到 $w$ 使得：
+
+$$\forall r \text { (所有训练样本) }
+$$
+
+$$\forall y \in Y-\left\{\hat{y}^{r}\right\} \text { (第 r 个样本的所有错误 label) }
+$$
+
+$$\text { 有 ： } w \cdot \phi\left(x^{r}, \hat{y}^{r}\right)>w \cdot \phi\left(x^{r}, y\right)
+$$
+
+举个栗子：我们要做一个目标检测，有以下样本：
+
+* 输入数据一
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4grtpvmhgj30eh084wev.jpg)
+
+* 输入数据二
+
+![](http://ww1.sinaimg.cn/large/006tNc79ly1g4grtyncmfj30d507f0ta.jpg)
+
+以上输入数据红框圈出对应为正确标记，蓝框为错误标记。那么我们可以得到一个红色标记 $\phi\left(x^{r}, \hat{y}^{r}\right)$ 和多个蓝色标记 $\phi\left(x^{r}, y\right)$ 组成的空间：
+
+> 注意：上述两个图片中的方框和问题一中的方框不一样。问题一中的方框表示单个样本的特征，而上图中一个方框代表一个样本的 $y$ —— 也就是红色方框表示组成 $\phi\left(x^{r}, \hat{y}^{r}\right)$ 的 $\hat{y}^{r}$，而蓝色方框表示组成 $\phi\left(x^{r}, y\right)$ 的 $y$ （ 其中 $y \ne \hat{y}^{r}$ ）
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4gru6rej3j30su0frdgo.jpg)
+
+我们的目标是找到 $w$ 使得：
+
+1. 它和红色星星的 inner product 大于 它和蓝色星星的 inner product
+2. 它和红色圆点的 inner product 大于 它和蓝色圆点的 inner product
+3. ……
+
+可以看出，上述的例子中蓝色标记可能会有成千上万，我们应该如何解决这个问题呢？
+
+## 问题三的解决方案
+
+### 算法描述
+实际上，对于问题三，只要红色 bounding box 对应的 $\phi\left(x^{r}, \hat{y}^{r}\right)$ 存在，就可以通过下述算法来解决。
+
+对于输入：
+$$\text { Input: training data set }\left\{\left(x^{1}, \hat{y}^{1}\right)\left(x^{2}, \hat{y}^{2}\right) \ldots,\left(x^{r}, \hat{y}^{r}\right) \ldots\right\}
+$$
+
+我们的输出是：
+$$\text { Output: weight vector w }
+$$
+
+算法如下：
+
+
+> 初始化 $\space w = 0$ 
+>
+> do : 
+>
+> $\space \space 对于每个训练样本对 \space \left(x^{r}, \hat{y}^{r}\right) $
+>
+> $\space \space \space \space 找到标签\space \tilde{y}^{r} \space 以最大化 \space w \cdot \phi\left(x^{r}, y\right) ：$
+>
+> $\space \space \space \space\space \space \space \space \widetilde{y}^{r}=\arg \max _{y \in Y} w \cdot \phi\left(x^{r}, y\right)(\text { 问题 2 } )$
+>
+>$ \space \space \space \space \text { 如果 } \tilde{y}^{r} \neq \hat{y}^{r}, \text { 更新 } \mathbf{w} ： $
+>
+>$\space \space \space \space\space \space \space \space w \rightarrow w+\phi\left(x^{r}, \hat{y}^{r}\right)-\phi\left(x^{r}, \widetilde{y}^{r}\right) $
+>
+>$ 直到 w 不再更新 \rightarrow 结束循环$
+
+
+
+### 举例
+
+还是以上边例子来说明这个算法。
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4gruhbsy7j30su0frdgo.jpg)
+
+* **步骤 1**
+
+1. 初始化 $w = 0$
+
+2. 选取样本 $\left(x^{1}, \hat{y}^{1}\right)$
+
+3. 遍历 y 使得：
+$$\tilde{y}^{1}=\arg \max _{y \in Y} w \cdot \phi\left(x^{1}, y\right)
+$$
+
+因为 `w = 0` ，所以结果恒等于 0，故随机选取一个点
+
+4. 更新 w
+
+![](http://ww1.sinaimg.cn/large/006tNc79ly1g4gruszngwj30e005odg0.jpg)
+
+* **步骤 2**
+
+1. 选取样本 
+$$\left(x^{2}, \hat{y}^{2}\right)
+$$
+
+2. 如 步骤一 穷举 y ，使得
+
+$$\widetilde{y}^{2}=\arg \max _{y \in Y} w \cdot \phi\left(x^{2}, y\right)
+$$
+如下图，在上一步中得到的 w 上，找到目标点：
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4grv29v2hj307s08u744.jpg)
+
+3. 更新
+
+$$\begin{aligned} \text { If } \tilde{y}^{2} & \neq \hat{y}^{2}, \text { update } \mathbf{w} \\ & w \rightarrow w+\phi\left(x^{2}, \hat{y}^{2}\right)-\phi\left(x^{2}, \widetilde{y}^{2}\right) \end{aligned}
+$$
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4grvb7vtnj306806rdfo.jpg)
+* **步骤 3**
+
+之后重新遍历样本，发现不再更新，故结束循环。
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4grvmah9ij30h30a6dfx.jpg)
+
+## 参考资料
+
+1. [台灣大學 李宏毅 《Structured Learning 2: Linear Model》 ](https://www.youtube.com/watch?v=HfPw40JPays&list=PLJV_el3uVTsNHQKxv49vpq7NSn-zim18V&index=2)
+
+
+
+
+
