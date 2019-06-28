@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>结构化学习（4）：序列标记（ Sequence Labeling ）</title>
+  <meta name="description" content="概述">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="结构化学习（4）：序列标记（ Sequence Labeling ）">
+  <meta name="twitter:description" content="概述">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="结构化学习（4）：序列标记（ Sequence Labeling ）">
+  <meta property="og:description" content="概述">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/05/struc-04/">
+  <link rel="alternate" type="application/rss+xml" title="陈草头" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- 数学公式 -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 陈草头 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="陈草头 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 陈草头" class="blog-button">陈草头</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">越名教而任自然</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        <!-- 
+        <p class="panel-cover__description"><a href="https://caotouchan.github.io" target="_blank">我的主页</a></p>
+         -->
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">博客</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/lookka520" title="@lookka520 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/caotouchan" title="@caotouchan 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:caotouchan@outlook.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-05-27 14:50:01 +0800" itemprop="datePublished" class="post-meta__date date">2019-05-27</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">结构化学习（4）：序列标记（ Sequence Labeling ）</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="概述">概述</h2>
+
+<p>序列标记问题，是一个序列到另一个序列的映射，表达为下式：</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gtpu974wj30dj07sdft.jpg" alt="" /></p>
+
+<p>序列标记有很多应用，比如 POS tagging、Morphosyntactic Attributes、Named Entity Recognition、Tokenization、Code switching 和 Dialogue acts 等。</p>
+
+<p>以 POS tagging 为例，如下：</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gtq3wc0pj30hr07r3yw.jpg" alt="" /></p>
+
+<h2 id="hidden-markov-model-hmm">Hidden Markov Model (HMM)</h2>
+
+<h3 id="生成句子的步骤">生成句子的步骤</h3>
+
+<p>我们如何生成一个句子呢？考虑以下步骤：</p>
+
+<ol>
+  <li>根据语法生成 POS 序列</li>
+  <li>根据 POS 序列生成句子 （句子的单词从词典抽取）</li>
+</ol>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79gy1g4gtqbwu95j309i07gaa1.jpg" alt="" /></p>
+
+<p>举例来说，假设有以下 POS 转化关系（马尔柯夫链）：</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/006tNc79gy1g4gtqilpboj30k70dydgs.jpg" alt="" /></p>
+
+<p>步骤二转化概率如下：</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gtqp6kfzj30je0dawf3.jpg" alt="" /></p>
+
+<p>综上，可描述为：</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gtqvpdmcj30g00aojrn.jpg" alt="" /></p>
+
+<p>不失一般性的，我们有：</p>
+
+<script type="math/tex; mode=display">P(x, y)=P(y) P(x | y)</script>
+
+<p>** Step 1 : Transition probability **</p>
+
+<script type="math/tex; mode=display">P(y)=P\left(y_{1} | s t a r t\right) \times \prod_{l=1}^{L-1} P\left(y_{l+1} | y_{l}\right) \times P\left(e n d | y_{L}\right)</script>
+
+<p>** Step 2：Emission probability **</p>
+
+<script type="math/tex; mode=display">P(x | y)=\prod_{l=1}^{L} P\left(x_{l} | y_{l}\right)</script>
+
+<p>考虑上边的例子，可以使用计数来计算 
+<script type="math/tex">P(x, y)</script>
+：</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/006tNc79gy1g4gtrckhy9j30ip08174n.jpg" alt="" /></p>
+
+<h3 id="用-hmm-处理-pos-tagging">用 HMM 处理 POS tagging</h3>
+
+<p>POS tagging 问题，如下图，就是给定 
+<script type="math/tex">x</script>
+ 去求解可能性最大的 
+<script type="math/tex">y</script>
+ :</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gtrnoxp5j308105d748.jpg" alt="" /></p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} y &=\arg \max _{y \in Y} P(y | x) \\ &=\arg \max _{y \in Y} \frac{P(x, y)}{P(x)} \\ &=\arg \max _{y \in \mathbb{Y}} P(x, y) \end{aligned} %]]></script>
+
+<blockquote>
+  <p>注意：P(x) 固定，对结果无影响；由上一小节可知 P(x,y) 可以计算得到</p>
+</blockquote>
+
+<p>所以，我们的目标是：</p>
+
+<p><script type="math/tex">\tilde{y}=\arg \max _{y \in \mathbb{Y}} P(x, y)</script>
+假设有 
+<script type="math/tex">|S|</script>
+ 个 tag，序列 
+<script type="math/tex">y</script>
+ 的长度为 
+<script type="math/tex">L</script>
+，则枚举所有 
+<script type="math/tex">y</script>
+ 共有 
+<script type="math/tex">|s|^{L}</script>
+ 个。但是，可以使用 <strong>Viterbi algorithm</strong> 求解这个问题，时间复杂度仅为 
+<script type="math/tex">O\left(L|S|^{2}\right)</script>
+ 。</p>
+
+<h3 id="结构化学习中的-hmm">结构化学习中的 HMM</h3>
+
+<p>将 HMM 对应到结构化学习的统一框架：</p>
+
+<ul>
+  <li>Problem 1: Evaluation</li>
+</ul>
+
+<script type="math/tex; mode=display">F(x, y)=P(x, y)=P(y) P(x | y)</script>
+
+<ul>
+  <li>Problem 2: Inference</li>
+</ul>
+
+<script type="math/tex; mode=display">\tilde{y}=\arg \max _{y \in \mathbb{Y}} P(x, y)</script>
+
+<ul>
+  <li>Problem 3: Training</li>
+</ul>
+
+<script type="math/tex; mode=display">P(y) 和 P(x|y) 可以直接从训练数据集中得到</script>
+
+<h3 id="hmm-的问题">HMM 的问题</h3>
+
+<p>在 Inference 阶段：
+<script type="math/tex">\tilde{y}=\arg \max _{y \in \mathbb{Y}} P(x, y)</script></p>
+
+<p>为了获得最佳答案，需要：
+<script type="math/tex">(x, \hat{y}) : P(x, \hat{y})>P(x, y)</script></p>
+
+<p>但是这一点，HMM 无法保证。考虑以下例子：</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gtrwybg0j30j505p74d.jpg" alt="" /></p>
+
+<p>通过计算，会得到最终路径是：N-&gt; V -&gt; A</p>
+
+<p>这种情形实际上就是说一些在训练数据中从未见过的 
+<script type="math/tex">(x,y)</script>
+ 可能会获得更大的 
+<script type="math/tex">P(x,y)</script>
+。（当然，这一点对于小数据集可能是有利的）</p>
+
+<p>对于这个问题（Transition 和 Emission 的 model 是 independent 的），条件随机场 ( CRF ) 可以使用相同模型进行解决。</p>
+
+<h2 id="conditional-random-field-crf">Conditional Random Field (CRF)</h2>
+
+<h3 id="模型描述">模型描述</h3>
+
+<p>CRF 模型的描述是 （下一小节详述）：</p>
+
+<script type="math/tex; mode=display">\mathrm{P}(x, y) \propto \exp (w \cdot \phi(x, y))</script>
+
+<p>其中，
+<script type="math/tex">\phi(x, y)</script>
+ 是一个特征向量，
+<script type="math/tex">w</script>
+ 是需要从训练集中学习的 weight vector， 
+<script type="math/tex">\exp (w \cdot \phi(x, y))</script>
+  是正数（可能会大于 1，这和概率 [0, 1] 的约束有冲突）</p>
+
+<p>我们关心的得是 
+<script type="math/tex">P(y | x)</script>
+ ，有：</p>
+
+<script type="math/tex; mode=display">P(y | x)=\frac{P(x, y)}{\sum_{y^{\prime}} P\left(x, y^{\prime}\right)}</script>
+
+<p>因为 
+<script type="math/tex">P(x, y)</script>
+ 可以写作：</p>
+
+<script type="math/tex; mode=display">\mathrm{P}(x, y)=\frac{\exp (w \cdot \phi(x, y))}{R}</script>
+
+<p>则：</p>
+
+<script type="math/tex; mode=display">P(y | x) = \frac{\exp (w \cdot \phi(x, y))}{\sum_{y^{\prime} \in \mathbb{Y}} \exp \left(w \cdot \phi\left(x, y^{\prime}\right)\right)}=\frac{\exp (w \cdot \phi(x, y))}{Z(x)}</script>
+
+<h3 id="和-hmm-的关系">和 HMM 的关系</h3>
+
+<p>在 HMM 中：</p>
+
+<script type="math/tex; mode=display">P(x, y)=P\left(y_{1} | s t a r t\right) \prod_{l=1}^{L-1} P\left(y_{l+1} | y_{l}\right) P\left(e n d | y_{L}\right) \prod_{l=1}^{L} P\left(x_{l} | y_{l}\right)</script>
+
+<p>即：</p>
+
+<script type="math/tex; mode=display">\begin{array}{l}{\log P(x, y)} \\ \\
+{=\log P\left(y_{1} | s t a r t\right)+\sum_{l=1}^{L-1} \log P\left(y_{l+1} | y_{l}\right)+\log P\left(e n d | y_{L}\right)} \\ \\ 
+{+\sum_{l=1}^{L} \log P\left(x_{l} | y_{l}\right)}\end{array}</script>
+
+<p>转换一下最后一项：</p>
+
+<script type="math/tex; mode=display">\sum_{l=1}^{L} \log P\left(x_{l} | y_{l}\right)=\sum_{s, t} \log P(t | s) \times N_{s, t}(x, y)</script>
+
+<p>其中，s 为 tag，t 为 word， 
+<script type="math/tex">N_{s, t}(x, y)</script>
+ 为 s 和 t  在 (x, y) 中一起出现的计数。</p>
+
+<p>举个例子：我们有以下 
+<script type="math/tex">(x, y)</script>
+：</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gts7bz0aj30li0683yk.jpg" alt="" /></p>
+
+<p>则：</p>
+
+<script type="math/tex; mode=display">\begin{array}{c}{N_{D, t h e}(x, y)=2} \\ {N_{N, d o g}(x, y)=1} \\ {N_{V, a t e}(x, y)=1} \\ {N_{N, h o m e w o r k}(x, y)=1} \\ {N_{s, t}(x, y)=0} \\ \text{(for any other s and t)}\end{array}</script>
+
+<p>则：</p>
+
+<script type="math/tex; mode=display">\begin{array}{l}
+{\sum_{l=1}^{L} \log P\left(x_{l} | y_{l}\right)} \\ \\
+{\quad=\log P(\operatorname{the} | D)+\log P(d o g | N)+\log P(\text {ate} | V)} \\ \\
+{\quad \quad+\log P(\text {the} | D)+\log P(\text {homework} | N)} \\ \\
+{\quad=\log P(\text {the} | D) \times 2+\log P(\operatorname{dog} | N) \times 1+\log P(a t e | V) \times 1} \\ \\
+{\quad \quad+\log P(\text {homework} | N) \times 1} \\ \\
+{\quad=\sum_{s, t} \log P(t | s) \times N_{s, t}(x, y)} \\ \\
+\end{array}</script>
+
+<script type="math/tex; mode=display">\log P\left(y_{1} | s t a r t\right)=\sum_{s} \log P(s | \text {start}) \times N_{\text {start}, s}(x, y)</script>
+
+<script type="math/tex; mode=display">\sum_{l=1}^{L-1} \log P\left(y_{l+1} | y_{l}\right)=\sum_{s, s^{\prime}} \log P\left(s^{\prime} | s\right) \times N_{s, s^{\prime}}(x, y)</script>
+
+<script type="math/tex; mode=display">\log P\left(e n d | y_{L}\right)=\sum_{s} \log P(e n d | s) \times N_{s, e n d}(x, y)</script>
+
+<p>则：</p>
+
+<script type="math/tex; mode=display">\begin{array}{l}{\log P(x, y)} \\ \\ 
+{=\sum_{s, t} \log P(t | s) \times N_{s, t}(x, y)} \\\\ 
+{+\sum_{s} \log P(s | \text {start}) \times N_{\text {start}, s}(x, y)} \\\\ 
+{+\sum_{s, s^{\prime}} \log P\left(s^{\prime} | s\right) \times N_{s, S^{\prime}}(x, y)} \\ \\ 
+{+\sum_{s} \log P(e n d | s) \times N_{s, e n d}(x, y)} \\\\ 
+{= \left[ \begin{array}{c}{\vdots} \\ {\log P(t | s)} \\ {\vdots} \\ {\log P(s | s t a r t)} \\ {\vdots} \\ {\log P\left(s^{\prime} | s\right)} \\ {\vdots}  \\ {\log P(\text {end} | s)} \\ {\vdots}\end{array}\right]   \cdot \left[ \begin{array}{c}{\vdots} \\ {N_{s, t}(x, y)} \\ {\vdots} \\ {N_{start, s}(x, y)} \\ {\vdots} \\ {N_{s, s^{\prime}}(x, y)} \\ {\vdots} \\ {N_{s, end}(x, y)}  \\ {\vdots}\end{array}\right]} \\\\ 
+{=w \cdot \phi(x, y)} 
+\end{array}</script>
+
+<p>故有：</p>
+
+<script type="math/tex; mode=display">\mathrm{P}(x, y)=\exp (w \cdot \phi(x, y))</script>
+
+<h3 id="feature-vector">Feature Vector</h3>
+
+<h3 id="training-criterion">Training Criterion</h3>
+
+<h3 id="crf-vs-hmm">CRF v.s. HMM</h3>
+
+<h2 id="structured-perceptronsvm">Structured Perceptron/SVM</h2>
+
+<h2 id="参考资料">参考资料</h2>
+
+<p>[1].  <a href="https://www.youtube.com/watch?v=o9FPSqobMys&amp;list=PLJV_el3uVTsNHQKxv49vpq7NSn-zim18V&amp;index=4">台灣大學 李宏毅 《Structured Learning 4: Sequence Labeling》</a></p>
+
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-intro/" title="link to Elasticsearch 实战（01）综述">Elasticsearch 实战（01）综述</a></h2>
+       <p class="excerpt">综述Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分析，其高性能和易扩展、易使用性受到众多公司的青睐。这个系列文章基于 Elasticsearch 7.0 进行探索和实践，参考 极客时间的 《 Elasticsearch核心技术与实战 》 系列专栏。分布式架构集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot &amp; Warm 架构。集成方式      支持多种编程语言类库，如 Java/.NE...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-26 18:46:01 +0800" class="post-list__meta--date date">2019-06-26</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-intro/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/05/struc-03/" title="link to 结构化学习（3）：结构化 SVM">结构化学习（3）：结构化 SVM</a></h2>
+       <p class="excerpt">上一篇文章 《结构化学习（2）：结构化线性模型》 提出一个线性模型来解决结构化学习。对于问题一（定义 $F(x,y)$），在这个模型中，我们预设 $F(x, y)$ 是 linear 的，其中加入了很多人工的特征。但是 如果 $F(x,y)$不是线性的呢 ？ 如果我们不想要做这么多人工特征工程呢 ？对于问题二 (解决 arg max 问题)，我们穷举所有可能得 $y$。我们是否能找到一些方法简化这个问题？ 事实上，在不同问题上，我们可能会有不同的方法来应对这个问题。比如 ——      O...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-05-26 12:50:01 +0800" class="post-list__meta--date date">2019-05-26</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/05/struc-03/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+
+  
+
+  <!-- Gitalk 评论 start  -->
+  
+    <!-- Link Gitalk 的支持文件  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: '6005df5e831456f4482b',
+        clientSecret: 'ffc57d242198e14cdb68b7457a765d0b719415fb',
+        repo: 'caotouchan.github.io',
+        owner: 'CaoTouChan',
+        admin: ['CaoTouChan'],
+        id: window.location.pathname,
+      });
+      gitalk.render('gitalk-container');
+    </script>
+  
+  <!-- Gitalk end -->
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">本站由 <a href="https://caotouchan.github.io">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
