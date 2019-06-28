@@ -5,8 +5,8 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 28 Jun 2019 12:48:02 +0800</pubDate>
-    <lastBuildDate>Fri, 28 Jun 2019 12:48:02 +0800</lastBuildDate>
+    <pubDate>Fri, 28 Jun 2019 13:33:56 +0800</pubDate>
+    <lastBuildDate>Fri, 28 Jun 2019 13:33:56 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -900,8 +900,517 @@ bin/logstash &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /YOUR_PATH_of_logs
       </item>
     
       <item>
+        <title>结构化学习（3）：结构化 SVM</title>
+        <description>&lt;p&gt;上一篇文章 &lt;a href=&quot;https://caotouchan.github.io/2019/05/struc-02/&quot;&gt;《结构化学习（2）：结构化线性模型》&lt;/a&gt; 提出一个线性模型来解决结构化学习。&lt;/p&gt;
+
+&lt;p&gt;对于&lt;strong&gt;问题一&lt;/strong&gt;（定义 $F(x,y)$），在这个模型中，我们预设 $F(x, y)$ 是 linear 的，其中加入了很多人工的特征。但是 &lt;strong&gt;如果 $F(x,y)$不是线性的呢 ？ 如果我们不想要做这么多人工特征工程呢 ？&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;对于&lt;strong&gt;问题二&lt;/strong&gt; (解决 arg max 问题)，我们&lt;strong&gt;穷举&lt;/strong&gt;所有可能得 $y$。我们是否能找到一些方法简化这个问题？ 事实上，在不同问题上，我们可能会有不同的方法来应对这个问题。比如 ——&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Object Detection : Branch and Bound algorithm 、Selective Search&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Sequence Labeling : Viterbi Algorithm&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使用什么算法来应对这个问题，取决于 $\phi(x,y)$。如果不知道如何解这个 QP，也可以使用 &lt;strong&gt;Genetic Algorithm&lt;/strong&gt; 来尝试解决。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;OPEN QUESTION: 如果 Inference 阶段无法得到一个确切的结果呢？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;对于 &lt;strong&gt;问题 3&lt;/strong&gt; ，我们的目标是给定数据找到 $F(x,y)$）。下文将讲解这个问题。&lt;/p&gt;
+
+&lt;h2 id=&quot;线性可分-structured-perceptron&quot;&gt;线性可分 （Structured Perceptron）&lt;/h2&gt;
+
+&lt;h3 id=&quot;算法描述&quot;&gt;算法描述&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.caotouchan.tech/2019/05/25/%E7%BB%93%E6%9E%84%E5%8C%96%E5%AD%A6%E4%B9%A0%EF%BC%882%EF%BC%89%EF%BC%9A%E7%BB%93%E6%9E%84%E5%8C%96%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/&quot;&gt;上一篇文章&lt;/a&gt; 中，我们对提出的线性模型的解决方案描述如下：&lt;/p&gt;
+
+&lt;p&gt;对于输入：
+&lt;script type=&quot;math/tex&quot;&gt;\text { Input: training data set }\left\{\left(x^{1}, \hat{y}^{1}\right)\left(x^{2}, \hat{y}^{2}\right) \ldots,\left(x^{r}, \hat{y}^{r}\right) \ldots\right\}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;我们的输出是：
+&lt;script type=&quot;math/tex&quot;&gt;\text { Output: weight vector w }&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;算法如下：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;$ 初始化 \space w = 0$&lt;/p&gt;
+
+  &lt;p&gt;$do : $&lt;/p&gt;
+
+  &lt;p&gt;$\space \space 对于每个训练样本对\space \left(x^{r}, \hat{y}^{r}\right) $&lt;/p&gt;
+
+  &lt;p&gt;$\space \space \space \space 找到标签\space \tilde{y}^{r} \space 以最大化 \space w \cdot \phi\left(x^{r}, y\right) ：$&lt;/p&gt;
+
+  &lt;p&gt;$\space \space \space \space\space \space \space \space \widetilde{y}^{r}=\arg \max _{y \in Y} w \cdot \phi\left(x^{r}, y\right)(\text { 问题 2 } )$&lt;/p&gt;
+
+  &lt;p&gt;$ \space \space \space \space \text { 如果 } \tilde{y}^{r} \neq \hat{y}^{r}, \text { 更新 } \mathbf{w} ： $&lt;/p&gt;
+
+  &lt;p&gt;$\space \space \space \space\space \space \space \space w \rightarrow w+\phi\left(x^{r}, \hat{y}^{r}\right)-\phi\left(x^{r}, \widetilde{y}^{r}\right) $&lt;/p&gt;
+
+  &lt;p&gt;$ 直到 w 不再更新 \rightarrow 结束循环$&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;收敛性及其证明&quot;&gt;收敛性及其证明&lt;/h3&gt;
+
+&lt;p&gt;这个算法是否会收敛？实际上，它是否收敛和 $y$ 的空间没有关系：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;在线性可分的案例中，只需要更新最多 $(R / \delta)^{2}$ 次，就能找到 $\widehat{W}$ 。
+其中，$\delta$ 是间隔（ margin ），$R$ 是 $\phi(x, y)$ 和 $\phi\left(x, y^{\prime}\right)$ 之间的最大距离&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;证明如下。&lt;/p&gt;
+
+&lt;p&gt;算法的更新公式是：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;w^{k}=w^{k-1}+\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)&lt;/script&gt;
+
+&lt;p&gt;设$\delta$ 是间隔（ margin ），$R$ 是 $\phi(x, y)$ 和 $\phi\left(x, y^{\prime}\right)$ 之间的最大距离，$\rho_{\mathrm{k}} $ 是 $\hat{\boldsymbol{w}} $ 和 $\mathbf{w}^{\mathbf{k}}$ 之间的夹角，则：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\cos \rho_{k}=\frac{\hat{w}}{\|\hat{w}\|} \cdot \frac{w^{k}}{\left\|w^{k}\right\|}&lt;/script&gt;
+
+&lt;p&gt;其中：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{w} \cdot w^{k}=\hat{w} \cdot\left(w^{k-1}+\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)\right)&lt;/script&gt;
+
+&lt;p&gt;即：
+&lt;script type=&quot;math/tex&quot;&gt;\hat{w} \cdot w^{k}= \hat{w} \cdot w^{k-1}+\hat{w} \cdot \phi\left(x^{n}, \hat{y}^{n}\right)-\hat{w} \cdot \phi\left(x^{n}, \tilde{y}^{n}\right)&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;所以：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{w} \cdot w^{k} \geq \hat{w} \cdot w^{k-1}+\delta&lt;/script&gt;
+
+&lt;p&gt;也就是：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\hat{w} \cdot w^{1} \geq \hat{w} \cdot w^{0}+\delta} \\ {\hat{w} \cdot w^{1} \geq \delta}\end{array}
+
+\begin{array}{l}{\hat{w} \cdot w^{2} \geq \hat{w} \cdot w^{1}+\delta} \\ {\hat{w} \cdot w^{2} \geq 2 \delta}\end{array}
+
+\begin{array}{l}{...} \\ {...}\end{array}&lt;/script&gt;
+
+&lt;p&gt;所以可以得到：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{w} \cdot w^{k} \geq k \delta&lt;/script&gt;
+
+&lt;p&gt;也就是 $\hat{w}$ 和 $w^{k}$ 的内积在增加。&lt;/p&gt;
+
+&lt;p&gt;不是一般性的，有：$|\widehat{W}|=1$ （ $\hat{w} \cdot \phi\left(x^{n}, \hat{y}^{n}\right) \geq \hat{w} \cdot \phi\left(x^{n}, y\right)+\delta$ 进行正则）&lt;/p&gt;
+
+&lt;p&gt;如果我们能&lt;strong&gt;证明 ${\left|w^{k}\right|}$ 增加不那么快&lt;/strong&gt;，那么相当于知道 $\hat{w}$ 和 $w^{k}$  两者的距离逐渐接近 —— 越来越收敛。&lt;/p&gt;
+
+&lt;p&gt;由 ：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;w^{k}=w^{k-1}+\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)&lt;/script&gt;
+
+&lt;p&gt;有：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\left\|w^{k}\right\|^{2}=\| w^{k-1}+\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left.\left(x^{n}, \widetilde{y}^{n}\right)\right|^{2}} \\ {=\left\|w^{k-1}\right\|^{2}+\| \phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left.\left(x^{n}, \widetilde{y}^{n}\right)\right|^{2}+2 w^{k-1} \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)\right)}\end{array}&lt;/script&gt;
+
+&lt;p&gt;因为更新过程是做 $arg \space max$ 操作，然后纠正方向，故&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;w^{k-1} \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)\right) \lt 0&lt;/script&gt;
+
+&lt;p&gt;而&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\| \phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left.\left(x^{n}, \widetilde{y}^{n}\right)\right|^{2} \gt 0&lt;/script&gt;
+
+&lt;p&gt;由上可知：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\left\|w^{k}\right\|^{2} \leq\left\|\boldsymbol{w}^{k-1}\right\|^{2}+\mathbf{R}^{2}&lt;/script&gt;
+
+&lt;p&gt;所以可以得到 $\left|w^{k}\right|^{2} $ 的 upper bound：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\left\|w^{1}\right\|^{2} \leq\left\|w^{0}\right\|^{2}+\mathrm{R}^{2}=\mathrm{R}^{2}} \\
+{\left\|w^{2}\right\|^{2} \leq\left\|w^{1}\right\|^{2}+\mathrm{R}^{2} \leq 2 \mathrm{R}^{2}} \\
+... \\
+{\left\|w^{k}\right\|^{2} \leq k \mathrm{R}^{2}}\end{array}&lt;/script&gt;
+
+&lt;p&gt;到此，我们有：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned} \cos \rho_{k}=&amp; \frac{\hat{w}}{\|\hat{w}\|} \cdot \frac{w^{k}}{\left\|w^{k}\right\|} \\ &amp; \geq \frac{k \delta}{\sqrt{k R^{2}}}=\sqrt{k} \frac{\delta}{R} \end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gsyl1p5ej30qy0m0q4k.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所以：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\sqrt{k} \frac{\delta}{R} \leq 1} \\ {k \leq\left(\frac{R}{\delta}\right)^{2}}\end{array}&lt;/script&gt;
+
+&lt;p&gt;到此，收敛性得以证明。&lt;/p&gt;
+
+&lt;h2 id=&quot;非线性可分&quot;&gt;非线性可分&lt;/h2&gt;
+
+&lt;p&gt;当数据非线性可分的时候，有些 weight vector 也会比其他的 weight vectors 好，如下图，$W^{\prime}$ 好于 $W^{\prime \prime}$：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gszdjr6tj30tw0go0tk.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;定义代价函数&quot;&gt;定义代价函数&lt;/h3&gt;
+
+&lt;p&gt;定义代价函数 $C$ 来衡量 $w$ 有多差，然后选择 $w$ 来最小化 $C$ 。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt0k4iyij31000giwfk.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;PS : 选择最大间距那个（$\max _{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]$） 而不是前三个之和、前十个和的均值或者其他，是因为我们（假设）问题二的 $arg \space max$ 已经被解决。如果使用其他来进行计算，实际上是复杂化了这个问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;随机梯度下降求解&quot;&gt;随机梯度下降求解&lt;/h3&gt;
+
+&lt;p&gt;那么如何求解梯度 $\nabla C^{n}$ 呢 ？&lt;/p&gt;
+
+&lt;p&gt;考虑公式 $C^{n}=\max _{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)$ 中 $\max _{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]$ ，$y$ 会随着 $w$ 的不同而变化。&lt;/p&gt;
+
+&lt;p&gt;假设下图是 $w$ 的空间，$\operatorname{argmax}_{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]$ 在不同的$w$ 下对应不同的 $y$ ($y^{\prime}、y^{\prime\prime}、y^{\prime\prime\prime} … $)：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gt0y8e61j30uw0j6wev.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;也就是在各自的 region 中，$\operatorname{argmax}_{y}\left[w \cdot \phi\left(x^{n}, y\right)\right] = y^{\prime} 、y^{\prime\prime}、y^{\prime\prime\prime} … $。&lt;/p&gt;
+
+&lt;p&gt;我们知道，$y^{\prime} = w \cdot \phi\left(x^{n}, y^{\prime}\right) -w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)$，故 $\nabla C^{n} =\phi\left(x^{n}, y^{\prime}\right) -\phi\left(x^{n}, \hat{y}^{n}\right)$。$y^{\prime\prime}、y^{\prime\prime\prime} …$ 类似。也就是，在避开边界的地方，实际都是可微的。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt19k5ivj30y60jmdhh.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;所以，更新算法为：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt1jc0hzj30y60jw407.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;衡量错误-修改代价函数&quot;&gt;衡量错误 （修改代价函数）&lt;/h2&gt;
+
+&lt;p&gt;上文中我们把所有的错误视为一样的代价。但实际上不同的错误，可能有的错的少，有的错的多。所以，实际上把错误进行量化会更好。&lt;/p&gt;
+
+&lt;h3 id=&quot;加入-margin&quot;&gt;加入 margin&lt;/h3&gt;
+
+&lt;p&gt;这种衡量的标准在不同的 case 会有所差异。考虑下边的 case：&lt;/p&gt;
+
+&lt;p&gt;定义 $\Delta(\hat{y}, y) : \hat{y} \text { 和 } y \text { 之间的不同 } (&amp;gt;0) $&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt1ub0obj30z40g8wg1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;修改下代价函数为：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C^{n}=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \widehat{y}^{n}\right)&lt;/script&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt24pf29j30qw0hiwfb.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在之前的算法中，我们在每一次迭代里选择训练数据 $ {x^{n}, \hat{y}^{n}} $：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\tilde{y}^{n}=\max _{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]} \\ \\
+{\nabla C^{n}(w)=\phi\left(x^{n}, \tilde{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)} \\ \\
+{w \rightarrow w-\eta\left[\phi\left(x^{n}, \tilde{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)\right]}\end{array}&lt;/script&gt;
+
+&lt;p&gt;一句上述思想修改下：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\overline{y}^{n}=\arg \max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]} \\ \\
+{\nabla C^{n}(w)=\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)} \\ \\
+{w \rightarrow w-\eta\left[\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)\right]}\end{array}&lt;/script&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;上述方法实际上引入了一个新的问题 ： $\Delta\left(\hat{y}^{n}, y\right)$ 。所以设计 $\Delta$ 函数的时候需要考虑是否会使得问题更加复杂。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;另一个视角&quot;&gt;另一个视角&lt;/h3&gt;
+
+&lt;p&gt;最小化代价函数实际上（有可能）等于最小化训练集错误的 upper bound：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C^{\prime}=\sum_{n=1}^{N} \Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right) \leq C=\sum_{n=1}^{N} C^{n}&lt;/script&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;证明&lt;/strong&gt; ：$\Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right) \leq C^{n}$&lt;/p&gt;
+
+  &lt;p&gt;首先，$C^{n}=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)$
+由 $\tilde{y}^{n}=\arg \max _{y} w \cdot \phi\left(x^{n}, y\right)$ 知：$\left[w \cdot \phi\left(x^{n}, \tilde{y}^{n}\right)-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)\right] \geq 0$
+所以：
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{aligned} 
+\Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right) 
+&amp;\leq \Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right)+\left[w \cdot \phi\left(x^{n}, \tilde{y}^{n}\right)-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)\right] \\ 
+&amp;=\left[\Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right)+w \cdot \varphi\left(x^{n}, \tilde{y}^{n}\right)\right]-w \cdot \varphi\left(x^{n}, \hat{y}^{n}\right)\\ 
+&amp; \leq \max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \varphi\left(x^{n}, y\right)\right]-w \cdot \varphi\left(x^{n}, \hat{y}^{n}\right)\\ 
+&amp;=C^{n} \end{aligned} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;其他代价函数&quot;&gt;其他代价函数&lt;/h3&gt;
+
+&lt;p&gt;要使得 $\Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right) \leq C^{n}$，也可以选择其他代价函数，比如：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\frac{\text {Margin rescaling:}}{C^{n}=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)}} \\ \\ {\frac{\text {Slack variable rescaling:}}{C^{n}=\max _{\Delta} \Delta\left(\hat{y}^{n}, y\right)\left[1+w \cdot \phi\left(x^{n}, y\right)-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)\right]}}\end{array}&lt;/script&gt;
+
+&lt;h2 id=&quot;正则化&quot;&gt;正则化&lt;/h2&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C=\sum_{n=1}^{N} C^{n} \quad \longrightarrow \quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} C^{n}&lt;/script&gt;
+
+&lt;p&gt;其中，$C^{n}=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \widehat{y}^{n}\right)$。&lt;/p&gt;
+
+&lt;p&gt;每一轮迭代，选择训练数据 ${x^{n}, \hat{y}^{n}}$：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\overline{y}^{n}=\operatorname{argmax}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]} \\ \\
+{\nabla C^{n}=\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)+w} \\ \\
+{w \rightarrow w-\eta\left[\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)\right]-\eta w} \\ \\
+{\quad=(1-\eta) w-\eta\left[\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)\right]}\end{array}&lt;/script&gt;
+
+&lt;h2 id=&quot;结构化-svm--structured-svm-&quot;&gt;结构化 SVM （ Structured SVM ）&lt;/h2&gt;
+
+&lt;h3 id=&quot;目标&quot;&gt;目标&lt;/h3&gt;
+
+&lt;p&gt;由之前的工作，得到：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned} \text { Find } &amp; \text { minimizing } C \\ C &amp;=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} C^{n} \\ C^{n} &amp;=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right) \end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;即：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C^{n}+w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]&lt;/script&gt;
+
+&lt;p&gt;因为目标是最小化 $C$，故其等价于：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { For } \forall y :} \\ \\
+{\quad C^{n}+w \cdot \phi\left(x^{n}, \hat{y}^{n}\right) \geq \Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)} \\ \\
+{\quad w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)-w \cdot \phi\left(x^{n}, y\right) \geq \Delta\left(\hat{y}^{n}, y\right)-C^{n}}\end{array}&lt;/script&gt;
+
+&lt;p&gt;也就是，最小化的目标描述等价于：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
+{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
+ {\text { For } \forall n :} \\ \\
+{\quad \text { For } \forall y :} \\ \\
+ {\quad \quad w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)-w \cdot \phi\left(x^{n}, y\right) \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}}\end{array}&lt;/script&gt;
+
+&lt;p&gt;其中的 $\varepsilon^{n}$ 称为松弛变量（ slack variable ）。&lt;/p&gt;
+
+&lt;p&gt;因为 $\mathrm{y}=\hat{y}^{n}$ 时，有 $w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right) \geq \Delta\left(\hat{y}^{n}, \hat{y}^{n}\right)-\varepsilon^{n}$，故： $\varepsilon^{n} \geq 0$。所以，原来的目标转化为：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
+{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
+ {\text { For } \forall n :} \\ \\
+{\quad \text { For } \forall y \neq \hat{y}^{n} :} \\ \\
+ {\quad \quad w \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, y\right)\right) \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}, \varepsilon^{n} \geq 0}\end{array}&lt;/script&gt;
+
+&lt;h3 id=&quot;例子&quot;&gt;例子&lt;/h3&gt;
+
+&lt;p&gt;举个直观的例子来解释下这个目标。考虑下图目标检测的例子：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt2hulekj30hk0ahjrr.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;我们需要每个正确的方框和错误的方框之间的距离 满足：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gt2vsjfcj30oz06o3z0.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;但是可能并没有一个 $w$ 会满足这样的条件，所以加入松弛因子来放宽这个限制：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gt33pjfbj30pp06egm5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;当然，我们希望 $\varepsilon$ 的值越小越好。&lt;/p&gt;
+
+&lt;h3 id=&quot;求解&quot;&gt;求解&lt;/h3&gt;
+
+&lt;p&gt;由上文可以得到目标是：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
+{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
+ {\text { For } \forall n :} \\ \\
+{\quad \text { For } \forall y \neq \hat{y}^{n} :} \\ \\
+ {\quad \quad w \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, y\right)\right) \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}, \varepsilon^{n} \geq 0}\end{array}&lt;/script&gt;
+
+&lt;p&gt;这是一个 Quadratic Programming (QP) Problem，可以使用各种 QP Problem Solver 来求解，比如 SVM package 的 Solver。但是上述公式中，约束很多，需要寻找一种办法来求解这个问题。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt3deqb2j30qi0ja40h.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;结构化-svm-中的切面算法-cutting-plane-algorithm-&quot;&gt;结构化 SVM 中的切面算法（ Cutting Plane Algorithm ）&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gt3nesiij30bb09zq33.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;图：Depiction of the learning QP and approximated feasibility region &lt;a href=&quot;http://abnerguzman.com/publications/gkb_aistats13.pdf&quot;&gt;来源&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;如上图，解空间约束在一个 “ 平面 ” 内，这个平面带着很多约束。我们将其抽象为下图 $\left(w, \varepsilon^{1}, \ldots, \varepsilon^{N}\right)$ 组成的参数空间。（简化为二维）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gt3yxzmbj30ci0cggme.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在不带约束的情况下，最优解容易求得在右下角的蓝点处。但是因为约束（图中各种直线），使得难以求得最优解。&lt;/p&gt;
+
+&lt;p&gt;假设约束下可选参数范围限制在图中间的钻石形状区域。可以看出，大部分约束是无关紧要的（比如图中的绿色线）。所以，如果我们能将 $y$ 限制带一个小集合 $A^{n}$ （称作 Working Set）中，那么将会大大简化求解过程。&lt;/p&gt;
+
+&lt;p&gt;找到 $A^{n}$ 的过程如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gt47gu6sj30oe0eet9z.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;由上可知，找 $A^{n}$ 的主要思路就是每次找到一些元素加入到 $A^{n}$ 中。首先，初始化 $\mathbb{A}^{1} \ldots \mathbb{A}^{N}$，当 $y$ 限制在一个小集合 $\mathbb{A}^{n} $ 时，就可以当做一个 QP Problem 来求解了。然后，我们求得 $w$ ，将新成员加入 $\mathbb{A}^{n} $，然后循环求解。&lt;/p&gt;
+
+&lt;p&gt;以下图解这个过程。&lt;/p&gt;
+
+&lt;p&gt;首先，初始化 $A^{n} = null$ （没有约束），然后求解这个 QP Problem，得到  $w$ 在蓝色星星处。&lt;/p&gt;
+
+&lt;p&gt;然后，寻找没有满足的约束（图中红色线），从中挑选出 the most violated one （下文讲解如何找出）—— 假设是 $\mathrm{y}^{\prime}$ ，将它加入  $\mathbb{A}^{n} $ ：
+&lt;script type=&quot;math/tex&quot;&gt;\begin{equation}
+\mathrm{A}^{n}=\mathrm{A}^{n} \cup\left\{y^{\prime}\right\}
+\end{equation}&lt;/script&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt4gko3rj30b50a9wez.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;重复这个过程，直到求的最优解 w3 处蓝色星星所在位置。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt4oz0k6j30aj07vt95.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;从当前 $A^{n}$ 给定 $\mathrm{w}^{\prime} $ 和 $ \varepsilon^{\prime}$， 如何找到 the most violated one 呢？&lt;/p&gt;
+
+&lt;p&gt;由约束条件 $w \cdot(\phi(x, \hat{y})-\phi(x, y)) \geq \Delta(\hat{y}, y)-\varepsilon$ 可知，不满足于约束意味着 $w^{\prime} \cdot(\phi(x, \hat{y})-\phi(x, y))&amp;lt;\Delta(\hat{y}, y)-\varepsilon^{\prime}$，所以衡量 Violation 的程度为：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta(\hat{y}, y)-\varepsilon^{\prime}-w^{\prime} \cdot(\phi(x, \hat{y})-\phi(x, y))&lt;/script&gt;
+
+&lt;p&gt;因为 $\varepsilon^{\prime}$ 、$w^{\prime}$ 是 fixed 的，$\phi(x, \hat{y})$ 也不影响计算，上式等同于：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta(\hat{y}, y)+w^{\prime} \cdot \phi(x, y)&lt;/script&gt;
+
+&lt;p&gt;所以，The most violated one 是：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\arg \max _{y}[\Delta(\hat{y}, y)+w \cdot \phi(x, y)]&lt;/script&gt;
+
+&lt;p&gt;综上，利用切面算法求解的过程如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gt4xqe0mj30na0ghjsh.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;其中的 QP 为：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt56pvd9j30m807wt93.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;以下图解这个过程：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gt5hin68j30ob0i5gmg.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt5rtj1xj30pi0jftal.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt628neqj30od0j675s.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt6aiga5j30pl0jc765.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;多分类-svm&quot;&gt;多分类 SVM&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Problem 1: Evaluation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如果有 K 个分类，那么就有 K 个 weight vectors &lt;script type=&quot;math/tex&quot;&gt;\left\{w^{1}, w^{2}, \cdots, w^{K}\right\}&lt;/script&gt;。那么有：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{y \in\{1,2, \cdots, k, \cdots, K\}} \\ \\
+{F(x, y)=w^{y} \cdot \vec{x}} \\ \\
+{\vec{x} : \text { vector representation of x}}\end{array}&lt;/script&gt;
+
+&lt;p&gt;表示成：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;F(x, y)=w \cdot \phi(x, y)&lt;/script&gt;
+
+&lt;p&gt;其中：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;w=\left( \begin{array}{c}{w^{1}} \\ {w^{2}} \\ {\vdots} \\ {w^{k}} \\ {\vdots} \\ {w^{K}}\end{array}\right) 
+\phi(x, y)=\left( \begin{array}{c}{0} \\ {0} \\ {\vdots} \\ {\vec{x}} \\ {\vdots} \\ {0}\end{array}\right)&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Problem 2: Inference&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{F(x, y)=w^{y} \cdot \vec{x}} \\ \\ 
+{\hat{y}=\arg \max _{y \in\{1,2, \cdots, k, \cdots, K\}} F(x, y)} \\\\ 
+{\quad=\arg \max _{y \in\{1,2, \cdots, k, k\}} w^{y} \cdot \vec{x}}\end{array}&lt;/script&gt;
+
+&lt;p&gt;一般来说，分类都是比较少的，所以可以直接枚举。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Problem 3: Training&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;由前边可知：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
+{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
+ {\text { For } \forall n :} \\ \\
+{\quad \text { For } \forall y \neq \hat{y}^{n} :} \\ \\
+ {\quad \quad w \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, y\right)\right) \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}, \varepsilon^{n} \geq 0}\end{array}&lt;/script&gt;
+
+&lt;p&gt;因为：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)=w^{\hat{y}^{n}} \cdot \vec{x}} \\ {w \cdot \phi\left(x^{n}, y\right)=w^{y} \cdot \vec{x}}\end{array}&lt;/script&gt;
+
+&lt;p&gt;故调整为：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
+{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
+ {\text { For } \forall n :} \\ \\
+{\quad \text { For } \forall y \neq \hat{y}^{n} :} \\ \\
+ {\quad \quad \left(w^{\hat{y}^{n}}-w^{y}\right) \cdot \vec{x} \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}, \varepsilon^{n} \geq 0}\end{array}&lt;/script&gt;
+
+&lt;p&gt;因为 $\Delta\left(\hat{y}^{n}, y\right)$ 代表的只是 &lt;code class=&quot;highlighter-rouge&quot;&gt;N * ( K-1 )&lt;/code&gt; 个约束，所以可以自行定义一些约束，比如：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{c}{y \in\{d o g, c a t, b u s, c a r\}} \\ {\Delta\left(\hat{y}^{n}=\operatorname{dog}, y=c a t\right)=1} \\ {\Delta\left(\hat{y}^{n}=\operatorname{dog}, y=b u s\right)=100} \\ {\quad \text { (defined as your wish) }}\end{array}&lt;/script&gt;
+
+&lt;h2 id=&quot;二分类-svm&quot;&gt;二分类 SVM&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt6kzolhj30p70e4dgj.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;beyond-structured-svm&quot;&gt;Beyond Structured SVM&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使用 DNN 生成特征&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt6ujrrxj30nm06v0st.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Ref: Hao Tang, Chao-hong Meng, Lin-shan Lee, “An initial attempt for phoneme
+recognition using Structured Support Vector Machine (SVM),” ICASSP, 2010
+Shi-Xiong Zhang, Gales, M.J.F., “Structured SVMs for Automatic Speech
+Recognition,” in Audio, Speech, and Language Processing, IEEE Transactions on,
+vol.21, no.3, pp.544-555, March 2013&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;联合训练 SVM 和 DNN&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt727ztuj30o2091aab.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Ref: Shi-Xiong Zhang, Chaojun Liu, Kaisheng Yao, and Yifan Gong, “DEEP NEURAL SUPPORT VECTOR MACHINES FOR SPEECH RECOGNITION”, Interspeech 2015&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使用结构化 SVM 代替 DNN&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt7a2gflj30nx06omxb.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Ref: Yi-Hsiu Liao, Hung-yi Lee, Lin-shan Lee, “Towards Structured Deep Neural Network for Automatic Speech Recognition”, ASRU, 2015&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;有：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C=\frac{1}{2}\|\theta\|^{2}+\frac{1}{2}\left\|\theta^{\prime}\right\|^{2}+\lambda \sum_{n=1}^{N} C^{n}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C^{n}=\max _{v}\left[\Delta\left(\hat{y}^{n}, y\right)+F\left(x^{n}, y\right)\right]-F\left(x^{n}, \hat{y}^{n}\right)&lt;/script&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=YjvGVVrCrhQ&amp;amp;list=PLJV_el3uVTsNHQKxv49vpq7NSn-zim18V&amp;amp;index=3&quot;&gt;台灣大學 李宏毅 《Structured Learning 3: Structured SVM》&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Sun, 26 May 2019 12:50:01 +0800</pubDate>
+        <link>http://localhost:4000/2019/05/struc-03/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/05/struc-03/</guid>
+        
+        
+      </item>
+    
+      <item>
         <title>结构化学习（2）：结构化线性模型</title>
-        <description>&lt;p&gt;上一篇文章 &lt;a href=&quot;http://www.caotouchan.tech/2019/05/25/%E7%BB%93%E6%9E%84%E5%8C%96%E5%AD%A6%E4%B9%A0%EF%BC%881%EF%BC%89%EF%BC%9A%E4%BB%8B%E7%BB%8D%E3%80%81%E7%BB%9F%E4%B8%80%E6%A1%86%E6%9E%B6/&quot;&gt;《结构化学习（1）：介绍、统一框架》&lt;/a&gt; 的最后说到，对于 Unified Framework 我们需要解决三个问题：&lt;/p&gt;
+        <description>&lt;p&gt;上一篇文章 &lt;a href=&quot;https://caotouchan.github.io/2019/05/struc-01/&quot;&gt;《结构化学习（1）：介绍、统一框架》&lt;/a&gt; 的最后说到，对于 Unified Framework 我们需要解决三个问题：&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;
