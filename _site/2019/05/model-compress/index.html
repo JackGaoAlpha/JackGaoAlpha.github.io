@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>模型压缩</title>
+  <meta name="description" content="Network Pruning （网络剪枝）">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="模型压缩">
+  <meta name="twitter:description" content="Network Pruning （网络剪枝）">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="模型压缩">
+  <meta property="og:description" content="Network Pruning （网络剪枝）">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/05/model-compress/">
+  <link rel="alternate" type="application/rss+xml" title="陈草头" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- 数学公式 -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/7.1.0/mermaid.min.js"></script>
+<script>
+    var config = {
+        startOnLoad:true,
+        flowchart:{
+            useMaxWidth:false,
+            htmlLabels:true
+        }
+    };
+    mermaid.initialize(config);
+    $(function(){
+        var elements = document.getElementsByClassName("language-mermaid");
+        for (var i = elements.length; i--;) {
+            element = elements[i];
+            var graphDefinition = element.innerText;
+            if (graphDefinition) {
+                var svg = mermaid.render('ha_mermaid_' + i, graphDefinition, function(svg){});
+                if (svg) {
+                    var svgElement = document.createElement('div');
+                    preNode = element.parentNode;
+                    svgElement.innerHTML = svg;
+                    svgElement.setAttribute('class', 'mermaid');
+                    svgElement.setAttribute('data-processed', 'true');
+                    preNode.parentNode.replaceChild(svgElement, preNode);
+                }
+            }
+        }
+    });
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 陈草头 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="陈草头 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 陈草头" class="blog-button">陈草头</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">越名教而任自然</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        <!-- 
+        <p class="panel-cover__description"><a href="https://caotouchan.github.io" target="_blank">我的主页</a></p>
+         -->
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">博客</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/lookka520" title="@lookka520 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/caotouchan" title="@caotouchan 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:caotouchan@outlook.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-05-30 14:50:01 +0800" itemprop="datePublished" class="post-meta__date date">2019-05-30</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">模型压缩</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="network-pruning-网络剪枝">Network Pruning （网络剪枝）</h2>
+
+<p>从权重和神经元的角度考虑，网络经常是 over-parameterized 的。所以，我们通过剪枝来缩小网络规模。(<a href="http://papers.nips.cc/paper/250-optimal-brain-damage.pdf" title="LeCun, Yann, John S. Denker, and Sara A. Solla. &quot;Optimal brain damage.&quot; Advances in neural information processing systems. 1990.">Yann Le Cun et al., 1990</a>)</p>
+
+<h3 id="流程">流程</h3>
+
+<pre><code class="language-mermaid">graph TD;
+A(预训练网络_网络较大) --&gt; B[评估重要性];
+B --&gt; C[去除部分_网络较小];
+C --&gt; D[微调];
+D --&gt; E{符合条件吗};
+E --&gt;|是|F[更小的网络];
+E --&gt;|否|B
+</code></pre>
+
+<ul>
+  <li>重要性的评估可以有：
+    <ol>
+      <li>权重：L1、L2 ……</li>
+      <li>神经元：在给定数据集中非零的次数 ……</li>
+    </ol>
+  </li>
+  <li>剪枝后，准确率会下降，通过在 <strong>训练集</strong> 上微调来 recover。但是不要一次剪枝过多，要不然会难以 recover。</li>
+</ul>
+
+<h3 id="剪枝的原因">剪枝的原因</h3>
+
+<p>既然我们要剪枝，为什么不一开始训练一个小的网络？对这个问题，有一些不同的观点。</p>
+
+<ol>
+  <li>
+    <p>众所周知，更小的网络会更难优化。(<a href="https://www.youtube.com/watch?v=_VuWvQUMQVk" title="Deep Learning Theory 2-4: Geometry of Loss Surfaces (Conjecture)">李宏毅 Deep Learning Theory 2-4: Geometry of Loss Surfaces (Conjecture)</a>)</p>
+  </li>
+  <li>
+    <p>Lottery Ticket Hypothesis</p>
+  </li>
+</ol>
+
+<p>以往我们剪枝后，就重新随机初始化参数，如下图路线 红 -&gt; 紫 -&gt; 绿，但是效果并不好。但是，如果我们剪枝后将原始随机初始化的参数 copy 过来再训练，发现效果还不错。</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4gwoplwqgj314f0u00wx.jpg" alt="" /></p>
+
+<p>Lottery Ticket Hypothesis (<a href="https://arxiv.org/abs/1803.03635" title="Frankle, Jonathan, and Michael Carbin. &quot;The lottery ticket hypothesis: Finding sparse, trainable neural networks.&quot; arXiv preprint arXiv:1803.03635 (2018).">Jonathan Frankle et al., 2018</a>) 认为，若将整个大的网络看做多个小的网络，其中有些小网络可以训练，有的无法训练。于是我们 copy 原始参数会一定程度上拷贝成功的经验。</p>
+
+<p>但是，<a href="https://arxiv.org/abs/1810.05270" title="Liu, Zhuang, et al. &quot;Rethinking the value of network pruning.&quot; arXiv preprint arXiv:1810.05270 (2018).">Zhuang Liu et al., 2018</a> 对此提出了不同的观点，其使用真正的随机初始化代替 Lottery Ticket Hypothesis 中提到的方法，发现效果并不差：</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gwpaa62qj30x4088dh8.jpg" alt="" /></p>
+
+<h3 id="practical-issue">Practical Issue</h3>
+
+<ul>
+  <li>权值剪枝（ weight pruning ）</li>
+</ul>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79gy1g4gwpil5mtj30ty0cg0tm.jpg" alt="" /></p>
+
+<p>权值剪枝后会使得网络变得不规则，难以实现，也难以加速（因为 GPU 加速也是进行矩阵运算）。</p>
+
+<p>所以，其实权值剪枝工程上会用置零来代替真正的权值剪枝。但是这种情况实际上并没有减小网络规模。</p>
+
+<p><a href="https://arxiv.org/pdf/1608.03665.pdf" title="Wen, Wei, et al. &quot;Learning structured sparsity in deep neural networks.&quot; Advances in neural information processing systems. 2016.">Wei Wen  et al., 2016</a> 对其进行评估，效果显示剪枝 90%+ 的情况下，性能只是下降2%</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gwpr3qh3j30y00b4mye.jpg" alt="" /></p>
+
+<ul>
+  <li>神经元剪枝（ Neuron pruning ）</li>
+</ul>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gwpyho2gj30ui0c275b.jpg" alt="" /></p>
+
+<p>很明显，剪枝后是规则的网络模型，容易实现，也易于加速。</p>
+
+<h2 id="knowledge-distillation-知识蒸馏">Knowledge Distillation （知识蒸馏）</h2>
+
+<h3 id="基本框架">基本框架</h3>
+
+<p><a href="https://arxiv.org/pdf/1503.02531.pdf" title="Hinton, Geoffrey, Oriol Vinyals, and Jeff Dean. &quot;Distilling the knowledge in a neural network.&quot; arXiv preprint arXiv:1503.02531 (2015).">Geoffrey Hinton et al., 2015</a> 提出 Knowledge Distillation 的框架进行模型压缩。其主要思想是通过一个 Teacher - Student 的结构，将模型集合中的知识提炼到单个模型中。如下图，这个模型让人惊喜的地方在于，即便 smaller network 里边没有接触到 “7” 这个训练样本，也有一定的机会预测出来，因为 teacher 网络中是一个包含概率的网络，这一点可能会被 student 网络学习到。</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/006tNc79gy1g4gwqkihzfj30ft08yjrl.jpg" alt="" /></p>
+
+<p>在 Kaggle 比赛中，我们经常会集成多个模型来进行预测。但是工业上不可能同时跑这么多个模型，Knowledge Distillation 使得 smaller network 一定程度上实现了集成学习。</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gwqsmrvwj30g8097aaa.jpg" alt="" /></p>
+
+<h3 id="temperature">Temperature</h3>
+
+<p>论文中提到 一个称之为 Temperature 的概念。在有些训练的最后，我们会使用 Sofamax。为了产生更加 soft 的目标概率分布，用了一个 Temperature 对最后一层的输出进行转换，如下：</p>
+
+<script type="math/tex; mode=display">y_{i}=\frac{\exp \left(x_{i}\right)}{\sum_{j} \exp \left(x_{j}\right)} \underset{T=100}{\longrightarrow} \quad y_{i}=\frac{\exp \left(x_{i} / T\right)}{\sum_{j} \exp \left(x_{j} / T\right)}</script>
+
+<p>比如：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{array}{lll}{x_{1}=100} & {y_{1}=1} & {x_{1} / T=1} & {y_{1}=0.56} \\ {x_{2}=10} & {y_{2} \approx 0} & {x_{2} / T=0.1} & {y_{2}=0.23} \\ {x_{3}=1} & {y_{3} \approx 0} & {x_{3} / T=0.01} & {y_{3}=0.21}\end{array} %]]></script>
+
+<p>另外，<a href="https://arxiv.org/pdf/1312.6184.pdf" title="Ba, Jimmy, and Rich Caruana. &quot;Do deep nets really need to be deep?.&quot; Advances in neural information processing systems. 2014.">Lei Jimmy Ba  et al., 2015</a> 凭经验证明浅层前馈网络可以学习以前通过深网学习的复杂函数，并实现以前只有深模型才能实现的精度。此外，在某些情况下，浅层神经网络可以使用与原始深层模型相同数量的参数来学习这些深层函数。 在TIMIT音素识别和CIFAR-10图像识别任务中，可以训练浅层神经网来执行类似于复杂、更深层次的卷积架构。</p>
+
+<h2 id="parameter-quantization-参数量化">Parameter Quantization （参数量化）</h2>
+
+<ol>
+  <li>
+    <p>使用更少的位数来表示一个值</p>
+  </li>
+  <li>
+    <p>Weight Clustering</p>
+  </li>
+</ol>
+
+<p>通过 Kmeans 之类的算法，将权值聚合。那么我们将可以使用 Table 中的四个数来表达表中的值，比如说橙色表示的几个数都是 (-3.4 -5 .0) / 2 = - 4.2。</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gwr087ewj30gg04pq33.jpg" alt="" /></p>
+
+<ol>
+  <li>
+    <p>更进一步的，通过哈夫曼编码之类的算法，可以用较少的比特表示频繁的簇，用更多的比特表示稀有的簇</p>
+  </li>
+  <li>
+    <p>Binary Weights</p>
+  </li>
+</ol>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gwr81omzj30g3082q33.jpg" alt="" /></p>
+
+<p>如上图，根据最近的 “点” （ network with binary weights ） 进行更新直到满意。</p>
+
+<p>下图是 Binary Connect 的效果：</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gwrfizyqj30fq084my1.jpg" alt="" /></p>
+
+<blockquote>
+  <p>参考 [2] [3] [4]</p>
+</blockquote>
+
+<h2 id="architecture-design-结构设计">Architecture Design （结构设计）</h2>
+
+<p>从结构设计上入手来压缩模型，可能是业界比较实用的方法，其基本框架如下：</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gwruacsbj30g409hdfx.jpg" alt="" /></p>
+
+<p>在两层之间插入一层来达到压缩模型的效果。以标准 CNN 来举个例子：</p>
+
+<p><img src="http://ww1.sinaimg.cn/large/006tNc79gy1g4gws3ayqmj30f40bg3zb.jpg" alt="" /></p>
+
+<p>如上图，我们需要 72 个参数。改进后：</p>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79gy1g4gwsbcfxwj30f20b5dg7.jpg" alt="" /></p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gwslhl2ij30fg0bp74r.jpg" alt="" /></p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gwsxvsljj30gb0c4wez.jpg" alt="" /></p>
+
+<p>相关模型参考 [5] [6] [7] [8]</p>
+
+<h2 id="dynamic-computation-动态计算">Dynamic Computation （动态计算）</h2>
+
+<p>动态计算的思想是在资源充足的情况下运行比较复杂的、耗资源的模型。资源不充足的情况下减少运算量，先求出堪用的结果。可能的解决方案有：</p>
+
+<ol>
+  <li>
+    <p>训练多个模型：这中方式太耗费存储资源（特别是手机之类的设备）</p>
+  </li>
+  <li>
+    <p>中间层加入分类器，在资源不足的情况下使用前边的分类器，如下图：</p>
+  </li>
+</ol>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gwt7d5l4j307w056mx3.jpg" alt="" /></p>
+
+<p>但是，一般情况下，网络具备泛化能力和底层抽出的简单特征有关，如果在底层加入分类器，相当于迫使其放弃简单特征，这种方式会造成一定的问题。参考 <a href="https://arxiv.org/pdf/1703.09844.pdf" title="Huang, Gao, et al. &quot;Multi-scale dense networks for resource efficient image classification.&quot; arXiv preprint arXiv:1703.09844 (2017).">Gao Huang et al., 2015</a></p>
+
+<p><img src="http://ww1.sinaimg.cn/large/006tNc79gy1g4gwtg541lj30lp09iwfo.jpg" alt="" /></p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79gy1g4gwtnjxs4j30lp09st9s.jpg" alt="" /></p>
+
+<h2 id="参考链接">参考链接</h2>
+
+<p>[1]. <a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses/ML_2019/Lecture/Small%20(v6).pdf">台灣大學 李宏毅 《Network Compression》</a></p>
+
+<p>[2]. <a href="https://arxiv.org/abs/1511.00363">Binary Connect</a></p>
+
+<p>[3]. <a href="https://arxiv.org/abs/1602.02830">Binary Network</a></p>
+
+<p>[4]. <a href="https://arxiv.org/abs/1603.05279">XNOR-net</a></p>
+
+<p>[5]. <a href="https://arxiv.org/abs/1602.07360">SqueezeNet</a></p>
+
+<p>[6]. <a href="https://arxiv.org/abs/1704.04861">MobileNet</a></p>
+
+<p>[7]. <a href="https://arxiv.org/abs/1707.01083">ShuffleNet</a></p>
+
+<p>[8]. <a href="https://arxiv.org/abs/1610.02357">Xception</a></p>
+
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-intro/" title="link to Elasticsearch 实战（01）综述">Elasticsearch 实战（01）综述</a></h2>
+       <p class="excerpt">综述Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分析，其高性能和易扩展、易使用性受到众多公司的青睐。这个系列文章基于 Elasticsearch 7.0 进行探索和实践，参考 极客时间的 《 Elasticsearch核心技术与实战 》 系列专栏。分布式架构集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot &amp; Warm 架构。集成方式      支持多种编程语言类库，如 Java/.NE...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-26 18:46:01 +0800" class="post-list__meta--date date">2019-06-26</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-intro/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/05/docker-intro/" title="link to 够用就好的 Docker 教程">够用就好的 Docker 教程</a></h2>
+       <p class="excerpt">核心概念      Docker images （镜像） ：不可变的主模板，用于抽出完全相同的容器。镜像包含应用程序需要运行的Dockerfile、库和代码。        Dockerfile ：一个文件，其中包含Docker应如何构建映像的说明。        Docker Container （容器）：Docker 镜像加上命令 docker run image_name 将从镜像创建并启动容器。        Container Registry ：存储 Docker 镜像的远程位...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-05-29 14:50:01 +0800" class="post-list__meta--date date">2019-05-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/05/docker-intro/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+
+  
+
+  <!-- Gitalk 评论 start  -->
+  
+    <!-- Link Gitalk 的支持文件  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: '6005df5e831456f4482b',
+        clientSecret: 'ffc57d242198e14cdb68b7457a765d0b719415fb',
+        repo: 'caotouchan.github.io',
+        owner: 'CaoTouChan',
+        admin: ['CaoTouChan'],
+        id: window.location.pathname,
+      });
+      gitalk.render('gitalk-container');
+    </script>
+  
+  <!-- Gitalk end -->
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">本站由 <a href="https://caotouchan.github.io">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>

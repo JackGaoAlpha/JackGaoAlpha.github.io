@@ -41,6 +41,8 @@
     }
   });
 </script>
+
+
   
 </head>
 
@@ -175,6 +177,13 @@
     </li>
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2019/05/model-compress/" title="访问 模型压缩">模型压缩</a></h2>
+      <p class="excerpt">Network Pruning （网络剪枝）从权重和神经元的角度考虑，网络经常是 over-parameterized 的。所以，我们通过剪枝来缩小网络规模。(Yann Le Cun et al., 1990)流程graph TD;A(预训练网络_网络较大) --&gt; B[评估重要性];B --&gt; C[去除部分_网络较小];C --&gt; D[微调];D --&gt; E{符合条件吗};E --&gt;|是|F[更小的网络];E --&gt;|否|B  重要性的评估可以有：  ...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2019-05-30 14:50:01 +0800" class="post-list__meta--date date">2019-05-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/05/model-compress/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2019/05/docker-intro/" title="访问 够用就好的 Docker 教程">够用就好的 Docker 教程</a></h2>
       <p class="excerpt">核心概念      Docker images （镜像） ：不可变的主模板，用于抽出完全相同的容器。镜像包含应用程序需要运行的Dockerfile、库和代码。        Dockerfile ：一个文件，其中包含Docker应如何构建映像的说明。        Docker Container （容器）：Docker 镜像加上命令 docker run image_name 将从镜像创建并启动容器。        Container Registry ：存储 Docker 镜像的远程位...&hellip;</p>
       <div class="post-list__meta"><time datetime="2019-05-29 14:50:01 +0800" class="post-list__meta--date date">2019-05-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/05/docker-intro/>继续阅读</a></div>
@@ -209,20 +218,15 @@
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2000/06/search/" title="访问 搜索">搜索</a></h2>
-      <p class="excerpt">                Search                &hellip;</p>
-      <div class="post-list__meta"><time datetime="2000-06-01 00:00:00 +0800" class="post-list__meta--date date">2000-06-01</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2000/06/search/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
 
 <nav class="pagination" role="navigation">
     
-    <span class="pagination__page-number">1 / 1</span>
+    <span class="pagination__page-number">1 / 2</span>
+    
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/2/#blog">更早 &rarr;</a>
     
 </nav>
 
