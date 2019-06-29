@@ -5,8 +5,8 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 29 Jun 2019 10:45:16 +0800</pubDate>
-    <lastBuildDate>Sat, 29 Jun 2019 10:45:16 +0800</lastBuildDate>
+    <pubDate>Sat, 29 Jun 2019 10:57:21 +0800</pubDate>
+    <lastBuildDate>Sat, 29 Jun 2019 10:57:21 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -895,6 +895,132 @@ bin/logstash &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /YOUR_PATH_of_logs
         <pubDate>Wed, 26 Jun 2019 18:46:01 +0800</pubDate>
         <link>http://localhost:4000/2019/06/ES-intro/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/06/ES-intro/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>数据结构和算法（08）：二叉树</title>
+        <description>&lt;h2 id=&quot;存储&quot;&gt;存储&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;链式存储&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4hu7y9igoj30vq0kejro.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;顺序存储&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79ly1g4hu8a2cn8j30vq0g9q33.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;访问方式&quot;&gt;访问方式&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4hu7370wzj30vq0g6gmk.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;二叉查找树&quot;&gt;二叉查找树&lt;/h2&gt;
+
+&lt;h3 id=&quot;定义&quot;&gt;定义&lt;/h3&gt;
+
+&lt;p&gt;二叉查找树 ： 在树中的任意一个节点，其左子树中的每个节点的值，都要小于这个节点的值，而右子树节点的值都大于这个节点的值。&lt;/p&gt;
+
+&lt;h3 id=&quot;查找&quot;&gt;查找&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4hu5m3evij30vq0h4t8t.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;插入&quot;&gt;插入&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4hu61pfpmj30vq0gqmxa.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;删除&quot;&gt;删除&lt;/h3&gt;
+
+&lt;p&gt;删除操作有三种情况：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;要删除的节点没有子节点，直接删除&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;要删除的几点只有一个子节点，则将其父节点指向其子节点&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;有两个子节点，则找到右子树中的最小节点，替换到要删除的节点。如下&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4hu94fwkbj30vq0h8t97.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;输出有序序列&quot;&gt;输出有序序列&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;中序&lt;/strong&gt; 遍历二叉查找树，可以输出有序的数据序列，时间复杂度是 &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;支持重复数据&quot;&gt;支持重复数据&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4hua6rp3oj30vq0ffq2x.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;时间复杂度&quot;&gt;时间复杂度&lt;/h3&gt;
+
+&lt;p&gt;平衡二叉查找树的高度接近 logn，所以插入、删除、查找操作的时间复杂度也比较稳定，是 O(logn)。&lt;/p&gt;
+
+&lt;h2 id=&quot;红黑树&quot;&gt;红黑树&lt;/h2&gt;
+
+&lt;h3 id=&quot;平衡二叉查找树&quot;&gt;平衡二叉查找树&lt;/h3&gt;
+
+&lt;p&gt;平衡二叉树：二叉树中任意一个节点的左右子树的高度相差不能大于 1。&lt;/p&gt;
+
+&lt;p&gt;平衡二叉查找树：不仅满足上面平衡二叉树的定义，还满足二叉查找树的特点。比如 AVL 树、Splay Tree（伸展树）、Treap（树堆）、红黑树等。&lt;/p&gt;
+
+&lt;h3 id=&quot;红黑树定义&quot;&gt;红黑树定义&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;根节点是黑色的；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;每个叶子节点都是黑色的空节点（NIL），也就是说，叶子节点不存储数据；&amp;lt;/p&amp;gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;任何相邻的节点都不能同时为红色，也就是说，红色节点是被黑色节点隔开的；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;每个节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点；&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4huavyjirj30vq0d5aa6.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;常见问题&quot;&gt;常见问题&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;散列表的插入、删除、查找操作的时间复杂度可以做到常量级的 O(1)，而二叉查找树在比较平衡的情况下，插入、删除、查找操作时间复杂度才是 O(logn)，为什么还要用二叉查找树呢？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;散列表是无序存储，二叉查找树中序遍历可以在 O(n) 时间复杂度下输出有序序列&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;散列表扩容耗时多&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;散列表存在哈希冲突问题，实际查找速度未必比 O(logn) 快&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;散列表需要考虑散列函数设计、哈希冲突、扩容等问题，平衡二叉查找树考虑平衡性问题，前者比较复杂&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;为什么在工程中大家都喜欢用红黑树这种平衡二叉查找树，而不是其他的平衡二叉查找树？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Treap 、 Splay Tree 操作效率高，但是无法避免极端情况下时间复杂度退化。AVL 树高度平衡，所以维护代价高。红黑树只是近似平衡，所有维护成本比 AVL 树低，其插入、删除、查找等性能比较稳定。&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 05 Jun 2019 00:02:08 +0800</pubDate>
+        <link>http://localhost:4000/2019/06/alg-tree/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/alg-tree/</guid>
         
         
       </item>
@@ -1836,208 +1962,6 @@ Output: 1-&amp;gt;2-&amp;gt;2-&amp;gt;4-&amp;gt;3-&amp;gt;5
         <pubDate>Wed, 05 Jun 2019 00:01:01 +0800</pubDate>
         <link>http://localhost:4000/2019/06/alg-linked-list/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/06/alg-linked-list/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>模型压缩</title>
-        <description>&lt;h2 id=&quot;network-pruning-网络剪枝&quot;&gt;Network Pruning （网络剪枝）&lt;/h2&gt;
-
-&lt;p&gt;从权重和神经元的角度考虑，网络经常是 over-parameterized 的。所以，我们通过剪枝来缩小网络规模。(&lt;a href=&quot;http://papers.nips.cc/paper/250-optimal-brain-damage.pdf&quot; title=&quot;LeCun, Yann, John S. Denker, and Sara A. Solla. &amp;quot;Optimal brain damage.&amp;quot; Advances in neural information processing systems. 1990.&quot;&gt;Yann Le Cun et al., 1990&lt;/a&gt;)&lt;/p&gt;
-
-&lt;h3 id=&quot;流程&quot;&gt;流程&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-mermaid&quot;&gt;graph TD;
-A(预训练网络_网络较大) --&amp;gt; B[评估重要性];
-B --&amp;gt; C[去除部分_网络较小];
-C --&amp;gt; D[微调];
-D --&amp;gt; E{符合条件吗};
-E --&amp;gt;|是|F[更小的网络];
-E --&amp;gt;|否|B
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;重要性的评估可以有：
-    &lt;ol&gt;
-      &lt;li&gt;权重：L1、L2 ……&lt;/li&gt;
-      &lt;li&gt;神经元：在给定数据集中非零的次数 ……&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;剪枝后，准确率会下降，通过在 &lt;strong&gt;训练集&lt;/strong&gt; 上微调来 recover。但是不要一次剪枝过多，要不然会难以 recover。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;剪枝的原因&quot;&gt;剪枝的原因&lt;/h3&gt;
-
-&lt;p&gt;既然我们要剪枝，为什么不一开始训练一个小的网络？对这个问题，有一些不同的观点。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;众所周知，更小的网络会更难优化。(&lt;a href=&quot;https://www.youtube.com/watch?v=_VuWvQUMQVk&quot; title=&quot;Deep Learning Theory 2-4: Geometry of Loss Surfaces (Conjecture)&quot;&gt;李宏毅 Deep Learning Theory 2-4: Geometry of Loss Surfaces (Conjecture)&lt;/a&gt;)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Lottery Ticket Hypothesis&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;以往我们剪枝后，就重新随机初始化参数，如下图路线 红 -&amp;gt; 紫 -&amp;gt; 绿，但是效果并不好。但是，如果我们剪枝后将原始随机初始化的参数 copy 过来再训练，发现效果还不错。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4gwoplwqgj314f0u00wx.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Lottery Ticket Hypothesis (&lt;a href=&quot;https://arxiv.org/abs/1803.03635&quot; title=&quot;Frankle, Jonathan, and Michael Carbin. &amp;quot;The lottery ticket hypothesis: Finding sparse, trainable neural networks.&amp;quot; arXiv preprint arXiv:1803.03635 (2018).&quot;&gt;Jonathan Frankle et al., 2018&lt;/a&gt;) 认为，若将整个大的网络看做多个小的网络，其中有些小网络可以训练，有的无法训练。于是我们 copy 原始参数会一定程度上拷贝成功的经验。&lt;/p&gt;
-
-&lt;p&gt;但是，&lt;a href=&quot;https://arxiv.org/abs/1810.05270&quot; title=&quot;Liu, Zhuang, et al. &amp;quot;Rethinking the value of network pruning.&amp;quot; arXiv preprint arXiv:1810.05270 (2018).&quot;&gt;Zhuang Liu et al., 2018&lt;/a&gt; 对此提出了不同的观点，其使用真正的随机初始化代替 Lottery Ticket Hypothesis 中提到的方法，发现效果并不差：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gwpaa62qj30x4088dh8.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;practical-issue&quot;&gt;Practical Issue&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;权值剪枝（ weight pruning ）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gwpil5mtj30ty0cg0tm.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;权值剪枝后会使得网络变得不规则，难以实现，也难以加速（因为 GPU 加速也是进行矩阵运算）。&lt;/p&gt;
-
-&lt;p&gt;所以，其实权值剪枝工程上会用置零来代替真正的权值剪枝。但是这种情况实际上并没有减小网络规模。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1608.03665.pdf&quot; title=&quot;Wen, Wei, et al. &amp;quot;Learning structured sparsity in deep neural networks.&amp;quot; Advances in neural information processing systems. 2016.&quot;&gt;Wei Wen  et al., 2016&lt;/a&gt; 对其进行评估，效果显示剪枝 90%+ 的情况下，性能只是下降2%&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gwpr3qh3j30y00b4mye.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;神经元剪枝（ Neuron pruning ）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gwpyho2gj30ui0c275b.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;很明显，剪枝后是规则的网络模型，容易实现，也易于加速。&lt;/p&gt;
-
-&lt;h2 id=&quot;knowledge-distillation-知识蒸馏&quot;&gt;Knowledge Distillation （知识蒸馏）&lt;/h2&gt;
-
-&lt;h3 id=&quot;基本框架&quot;&gt;基本框架&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1503.02531.pdf&quot; title=&quot;Hinton, Geoffrey, Oriol Vinyals, and Jeff Dean. &amp;quot;Distilling the knowledge in a neural network.&amp;quot; arXiv preprint arXiv:1503.02531 (2015).&quot;&gt;Geoffrey Hinton et al., 2015&lt;/a&gt; 提出 Knowledge Distillation 的框架进行模型压缩。其主要思想是通过一个 Teacher - Student 的结构，将模型集合中的知识提炼到单个模型中。如下图，这个模型让人惊喜的地方在于，即便 smaller network 里边没有接触到 “7” 这个训练样本，也有一定的机会预测出来，因为 teacher 网络中是一个包含概率的网络，这一点可能会被 student 网络学习到。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gwqkihzfj30ft08yjrl.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在 Kaggle 比赛中，我们经常会集成多个模型来进行预测。但是工业上不可能同时跑这么多个模型，Knowledge Distillation 使得 smaller network 一定程度上实现了集成学习。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gwqsmrvwj30g8097aaa.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;temperature&quot;&gt;Temperature&lt;/h3&gt;
-
-&lt;p&gt;论文中提到 一个称之为 Temperature 的概念。在有些训练的最后，我们会使用 Sofamax。为了产生更加 soft 的目标概率分布，用了一个 Temperature 对最后一层的输出进行转换，如下：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;y_{i}=\frac{\exp \left(x_{i}\right)}{\sum_{j} \exp \left(x_{j}\right)} \underset{T=100}{\longrightarrow} \quad y_{i}=\frac{\exp \left(x_{i} / T\right)}{\sum_{j} \exp \left(x_{j} / T\right)}&lt;/script&gt;
-
-&lt;p&gt;比如：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{array}{lll}{x_{1}=100} &amp; {y_{1}=1} &amp; {x_{1} / T=1} &amp; {y_{1}=0.56} \\ {x_{2}=10} &amp; {y_{2} \approx 0} &amp; {x_{2} / T=0.1} &amp; {y_{2}=0.23} \\ {x_{3}=1} &amp; {y_{3} \approx 0} &amp; {x_{3} / T=0.01} &amp; {y_{3}=0.21}\end{array} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;另外，&lt;a href=&quot;https://arxiv.org/pdf/1312.6184.pdf&quot; title=&quot;Ba, Jimmy, and Rich Caruana. &amp;quot;Do deep nets really need to be deep?.&amp;quot; Advances in neural information processing systems. 2014.&quot;&gt;Lei Jimmy Ba  et al., 2015&lt;/a&gt; 凭经验证明浅层前馈网络可以学习以前通过深网学习的复杂函数，并实现以前只有深模型才能实现的精度。此外，在某些情况下，浅层神经网络可以使用与原始深层模型相同数量的参数来学习这些深层函数。 在TIMIT音素识别和CIFAR-10图像识别任务中，可以训练浅层神经网来执行类似于复杂、更深层次的卷积架构。&lt;/p&gt;
-
-&lt;h2 id=&quot;parameter-quantization-参数量化&quot;&gt;Parameter Quantization （参数量化）&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;使用更少的位数来表示一个值&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Weight Clustering&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;通过 Kmeans 之类的算法，将权值聚合。那么我们将可以使用 Table 中的四个数来表达表中的值，比如说橙色表示的几个数都是 (-3.4 -5 .0) / 2 = - 4.2。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gwr087ewj30gg04pq33.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;更进一步的，通过哈夫曼编码之类的算法，可以用较少的比特表示频繁的簇，用更多的比特表示稀有的簇&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Binary Weights&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gwr81omzj30g3082q33.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如上图，根据最近的 “点” （ network with binary weights ） 进行更新直到满意。&lt;/p&gt;
-
-&lt;p&gt;下图是 Binary Connect 的效果：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gwrfizyqj30fq084my1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;参考 [2] [3] [4]&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;architecture-design-结构设计&quot;&gt;Architecture Design （结构设计）&lt;/h2&gt;
-
-&lt;p&gt;从结构设计上入手来压缩模型，可能是业界比较实用的方法，其基本框架如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gwruacsbj30g409hdfx.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在两层之间插入一层来达到压缩模型的效果。以标准 CNN 来举个例子：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gws3ayqmj30f40bg3zb.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如上图，我们需要 72 个参数。改进后：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gwsbcfxwj30f20b5dg7.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gwslhl2ij30fg0bp74r.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gwsxvsljj30gb0c4wez.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;相关模型参考 [5] [6] [7] [8]&lt;/p&gt;
-
-&lt;h2 id=&quot;dynamic-computation-动态计算&quot;&gt;Dynamic Computation （动态计算）&lt;/h2&gt;
-
-&lt;p&gt;动态计算的思想是在资源充足的情况下运行比较复杂的、耗资源的模型。资源不充足的情况下减少运算量，先求出堪用的结果。可能的解决方案有：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;训练多个模型：这中方式太耗费存储资源（特别是手机之类的设备）&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;中间层加入分类器，在资源不足的情况下使用前边的分类器，如下图：&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gwt7d5l4j307w056mx3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;但是，一般情况下，网络具备泛化能力和底层抽出的简单特征有关，如果在底层加入分类器，相当于迫使其放弃简单特征，这种方式会造成一定的问题。参考 &lt;a href=&quot;https://arxiv.org/pdf/1703.09844.pdf&quot; title=&quot;Huang, Gao, et al. &amp;quot;Multi-scale dense networks for resource efficient image classification.&amp;quot; arXiv preprint arXiv:1703.09844 (2017).&quot;&gt;Gao Huang et al., 2015&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gwtg541lj30lp09iwfo.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gwtnjxs4j30lp09st9s.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;参考链接&quot;&gt;参考链接&lt;/h2&gt;
-
-&lt;p&gt;[1]. &lt;a href=&quot;http://speech.ee.ntu.edu.tw/~tlkagk/courses/ML_2019/Lecture/Small%20(v6).pdf&quot;&gt;台灣大學 李宏毅 《Network Compression》&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[2]. &lt;a href=&quot;https://arxiv.org/abs/1511.00363&quot;&gt;Binary Connect&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[3]. &lt;a href=&quot;https://arxiv.org/abs/1602.02830&quot;&gt;Binary Network&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[4]. &lt;a href=&quot;https://arxiv.org/abs/1603.05279&quot;&gt;XNOR-net&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[5]. &lt;a href=&quot;https://arxiv.org/abs/1602.07360&quot;&gt;SqueezeNet&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[6]. &lt;a href=&quot;https://arxiv.org/abs/1704.04861&quot;&gt;MobileNet&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[7]. &lt;a href=&quot;https://arxiv.org/abs/1707.01083&quot;&gt;ShuffleNet&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[8]. &lt;a href=&quot;https://arxiv.org/abs/1610.02357&quot;&gt;Xception&lt;/a&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 30 May 2019 14:50:01 +0800</pubDate>
-        <link>http://localhost:4000/2019/05/model-compress/</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/05/model-compress/</guid>
         
         
       </item>

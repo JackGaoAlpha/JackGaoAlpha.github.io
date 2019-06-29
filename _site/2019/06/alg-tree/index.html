@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>数据结构和算法（08）：二叉树</title>
+  <meta name="description" content="存储">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="数据结构和算法（08）：二叉树">
+  <meta name="twitter:description" content="存储">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="数据结构和算法（08）：二叉树">
+  <meta property="og:description" content="存储">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/06/alg-tree/">
+  <link rel="alternate" type="application/rss+xml" title="陈草头" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- 数学公式 -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+
+
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 陈草头 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="陈草头 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 陈草头" class="blog-button">陈草头</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">越名教而任自然</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        <!-- 
+        <p class="panel-cover__description"><a href="https://caotouchan.github.io" target="_blank">我的主页</a></p>
+         -->
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">博客</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/lookka520" title="@lookka520 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/caotouchan" title="@caotouchan 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:caotouchan@outlook.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-06-05 00:02:08 +0800" itemprop="datePublished" class="post-meta__date date">2019-06-05</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">数据结构和算法（08）：二叉树</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="存储">存储</h2>
+
+<ul>
+  <li>链式存储</li>
+</ul>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79ly1g4hu7y9igoj30vq0kejro.jpg" alt="" /></p>
+
+<ul>
+  <li>顺序存储</li>
+</ul>
+
+<p><img src="http://ww1.sinaimg.cn/large/006tNc79ly1g4hu8a2cn8j30vq0g9q33.jpg" alt="" /></p>
+
+<h2 id="访问方式">访问方式</h2>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4hu7370wzj30vq0g6gmk.jpg" alt="" /></p>
+
+<h2 id="二叉查找树">二叉查找树</h2>
+
+<h3 id="定义">定义</h3>
+
+<p>二叉查找树 ： 在树中的任意一个节点，其左子树中的每个节点的值，都要小于这个节点的值，而右子树节点的值都大于这个节点的值。</p>
+
+<h3 id="查找">查找</h3>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4hu5m3evij30vq0h4t8t.jpg" alt="" /></p>
+
+<h3 id="插入">插入</h3>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4hu61pfpmj30vq0gqmxa.jpg" alt="" /></p>
+
+<h3 id="删除">删除</h3>
+
+<p>删除操作有三种情况：</p>
+
+<ol>
+  <li>
+    <p>要删除的节点没有子节点，直接删除</p>
+  </li>
+  <li>
+    <p>要删除的几点只有一个子节点，则将其父节点指向其子节点</p>
+  </li>
+  <li>
+    <p>有两个子节点，则找到右子树中的最小节点，替换到要删除的节点。如下</p>
+  </li>
+</ol>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4hu94fwkbj30vq0h8t97.jpg" alt="" /></p>
+
+<h3 id="输出有序序列">输出有序序列</h3>
+
+<p><strong>中序</strong> 遍历二叉查找树，可以输出有序的数据序列，时间复杂度是 <script type="math/tex">O(n)</script>。</p>
+
+<h3 id="支持重复数据">支持重复数据</h3>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4hua6rp3oj30vq0ffq2x.jpg" alt="" /></p>
+
+<h3 id="时间复杂度">时间复杂度</h3>
+
+<p>平衡二叉查找树的高度接近 logn，所以插入、删除、查找操作的时间复杂度也比较稳定，是 O(logn)。</p>
+
+<h2 id="红黑树">红黑树</h2>
+
+<h3 id="平衡二叉查找树">平衡二叉查找树</h3>
+
+<p>平衡二叉树：二叉树中任意一个节点的左右子树的高度相差不能大于 1。</p>
+
+<p>平衡二叉查找树：不仅满足上面平衡二叉树的定义，还满足二叉查找树的特点。比如 AVL 树、Splay Tree（伸展树）、Treap（树堆）、红黑树等。</p>
+
+<h3 id="红黑树定义">红黑树定义</h3>
+
+<ol>
+  <li>
+    <p>根节点是黑色的；</p>
+  </li>
+  <li>
+    <p>每个叶子节点都是黑色的空节点（NIL），也就是说，叶子节点不存储数据；&lt;/p&gt;</p>
+  </li>
+  <li>
+    <p>任何相邻的节点都不能同时为红色，也就是说，红色节点是被黑色节点隔开的；</p>
+  </li>
+  <li>
+    <p>每个节点，从该节点到达其可达叶子节点的所有路径，都包含相同数目的黑色节点；</p>
+  </li>
+</ol>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79ly1g4huavyjirj30vq0d5aa6.jpg" alt="" /></p>
+
+<h2 id="常见问题">常见问题</h2>
+
+<ol>
+  <li>散列表的插入、删除、查找操作的时间复杂度可以做到常量级的 O(1)，而二叉查找树在比较平衡的情况下，插入、删除、查找操作时间复杂度才是 O(logn)，为什么还要用二叉查找树呢？</li>
+</ol>
+
+<ul>
+  <li>
+    <p>散列表是无序存储，二叉查找树中序遍历可以在 O(n) 时间复杂度下输出有序序列</p>
+  </li>
+  <li>
+    <p>散列表扩容耗时多</p>
+  </li>
+  <li>
+    <p>散列表存在哈希冲突问题，实际查找速度未必比 O(logn) 快</p>
+  </li>
+  <li>
+    <p>散列表需要考虑散列函数设计、哈希冲突、扩容等问题，平衡二叉查找树考虑平衡性问题，前者比较复杂</p>
+  </li>
+</ul>
+
+<ol>
+  <li>为什么在工程中大家都喜欢用红黑树这种平衡二叉查找树，而不是其他的平衡二叉查找树？</li>
+</ol>
+
+<p>Treap 、 Splay Tree 操作效率高，但是无法避免极端情况下时间复杂度退化。AVL 树高度平衡，所以维护代价高。红黑树只是近似平衡，所有维护成本比 AVL 树低，其插入、删除、查找等性能比较稳定。</p>
+
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-intro/" title="link to Elasticsearch 实战（01）综述">Elasticsearch 实战（01）综述</a></h2>
+       <p class="excerpt">综述Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分析，其高性能和易扩展、易使用性受到众多公司的青睐。这个系列文章基于 Elasticsearch 7.0 进行探索和实践，参考 极客时间的 《 Elasticsearch核心技术与实战 》 系列专栏。分布式架构集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot &amp; Warm 架构。集成方式      支持多种编程语言类库，如 Java/.NE...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-26 18:46:01 +0800" class="post-list__meta--date date">2019-06-26</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-intro/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/hashtb/" title="link to 数据结构和算法（07）：散列表">数据结构和算法（07）：散列表</a></h2>
+       <p class="excerpt">结构散列冲突  开放寻址法开放寻址法的实现主要有：线性探测、二次探测、双重散列。  链表法工业级的散列表      散列函数不能太复杂：直接寻址法、平方取中法、折叠法、随机数法等        高效动态扩容：需要扩容情况下，当有新数据要插入时，将新数据插入新散列表中，并且从老的散列表中拿出一个数据放入到新散列表。经过多次插入操作之后，老的散列表中的数据就一点一点全部搬移到新散列表中了。这样没有了集中的一次性数据搬移，插入操作就都变得很快了。        散列冲突的解决方法：基于链表的散列...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-05 00:02:07 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/hashtb/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+
+  
+
+  <!-- Gitalk 评论 start  -->
+  
+    <!-- Link Gitalk 的支持文件  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: '6005df5e831456f4482b',
+        clientSecret: 'ffc57d242198e14cdb68b7457a765d0b719415fb',
+        repo: 'caotouchan.github.io',
+        owner: 'CaoTouChan',
+        admin: ['CaoTouChan'],
+        id: window.location.pathname,
+      });
+      gitalk.render('gitalk-container');
+    </script>
+  
+  <!-- Gitalk end -->
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">本站由 <a href="https://caotouchan.github.io">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
