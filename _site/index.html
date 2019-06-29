@@ -177,6 +177,13 @@
     </li>
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2019/06/hashtb/" title="访问 数据结构和算法（07）：散列表">数据结构和算法（07）：散列表</a></h2>
+      <p class="excerpt">结构散列冲突  开放寻址法开放寻址法的实现主要有：线性探测、二次探测、双重散列。  链表法工业级的散列表      散列函数不能太复杂：直接寻址法、平方取中法、折叠法、随机数法等        高效动态扩容：需要扩容情况下，当有新数据要插入时，将新数据插入新散列表中，并且从老的散列表中拿出一个数据放入到新散列表。经过多次插入操作之后，老的散列表中的数据就一点一点全部搬移到新散列表中了。这样没有了集中的一次性数据搬移，插入操作就都变得很快了。        散列冲突的解决方法：基于链表的散列...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2019-06-05 00:02:07 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/hashtb/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2019/06/alg-skiplist/" title="访问 数据结构和算法（06）：跳表">数据结构和算法（06）：跳表</a></h2>
       <p class="excerpt">  结构：链表 + 多级索引  时间复杂度：O(log n)考虑下 查询 数据的时间复杂度。第 k 级索引的节点数是第 k-1 级的 1/2 ，那第 k 级索引的节点个数就是  。假设索引有 h 级，最高级索引有 2 个节点，那么有 ，即  。故包含原始链表层整个高度是 。如果每层遍历 m 个节点，则跳表中查询一个数据的时间复杂度就是 。按照上图的结构来讲，每层只需要遍历 3 个节点。（假设我们要查找的数据是 x，在第 k 级索引中，我们遍历到 y 结点之后，发现 x 大于 y，小于后面的...&hellip;</p>
       <div class="post-list__meta"><time datetime="2019-06-05 00:02:06 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/alg-skiplist/>继续阅读</a></div>
@@ -208,13 +215,6 @@
       <h2 class="post-list__post-title post-title"><a href="/2019/05/model-compress/" title="访问 模型压缩">模型压缩</a></h2>
       <p class="excerpt">Network Pruning （网络剪枝）从权重和神经元的角度考虑，网络经常是 over-parameterized 的。所以，我们通过剪枝来缩小网络规模。(Yann Le Cun et al., 1990)流程graph TD;A(预训练网络_网络较大) --&gt; B[评估重要性];B --&gt; C[去除部分_网络较小];C --&gt; D[微调];D --&gt; E{符合条件吗};E --&gt;|是|F[更小的网络];E --&gt;|否|B  重要性的评估可以有：  ...&hellip;</p>
       <div class="post-list__meta"><time datetime="2019-05-30 14:50:01 +0800" class="post-list__meta--date date">2019-05-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/05/model-compress/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2019/05/docker-intro/" title="访问 够用就好的 Docker 教程">够用就好的 Docker 教程</a></h2>
-      <p class="excerpt">核心概念      Docker images （镜像） ：不可变的主模板，用于抽出完全相同的容器。镜像包含应用程序需要运行的Dockerfile、库和代码。        Dockerfile ：一个文件，其中包含Docker应如何构建映像的说明。        Docker Container （容器）：Docker 镜像加上命令 docker run image_name 将从镜像创建并启动容器。        Container Registry ：存储 Docker 镜像的远程位...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2019-05-29 14:50:01 +0800" class="post-list__meta--date date">2019-05-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/05/docker-intro/>继续阅读</a></div>
       <hr class="post-list__divider" />
     </li>
     
