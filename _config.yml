@@ -1,11 +1,11 @@
 # Basic
 title: 陈草头
 subtitle: 越名教而任自然
-welcome_message: <a href="https://caotouchan.github.io" target="_blank">我的主页</a>
+welcome_message: <a href="https://caotouchan.tech" target="_blank">我的主页</a>
 description: 90 后 | 广东人 | 现居住于帝都 | 算法攻城狮
-creator: <a href="https://caotouchan.github.io">@caotouchan</a>
+creator: <a href="https://caotouchan.tech">@caotouchan</a>
 
-url: "http://caotouchan.github.io/"
+url: "http://caotouchan.tech/"
 
 permalink: /:year/:month/:title/
 
@@ -22,7 +22,7 @@ blog_button:
 
 # Navigation buttons in the front page.
 nav:
-    # - {title: 搜索, description: 搜索博客文章, url: 'https://caotouchan.github.io/2000/06/search'}
+    # - {title: 搜索, description: 搜索博客文章, url: 'https://caotouchan.tech/2000/06/search'}
 
 # Pagination
 plugins: [jekyll-paginate]
