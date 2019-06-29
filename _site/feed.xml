@@ -5,8 +5,8 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 29 Jun 2019 10:57:21 +0800</pubDate>
-    <lastBuildDate>Sat, 29 Jun 2019 10:57:21 +0800</lastBuildDate>
+    <pubDate>Sat, 29 Jun 2019 11:07:10 +0800</pubDate>
+    <lastBuildDate>Sat, 29 Jun 2019 11:07:10 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -900,6 +900,292 @@ bin/logstash &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /YOUR_PATH_of_logs
       </item>
     
       <item>
+        <title>数据结构和算法（11）：堆排序</title>
+        <description>&lt;h2 id=&quot;定义&quot;&gt;定义&lt;/h2&gt;
+
+&lt;p&gt;堆是完全二叉树，其中每一个节点的值都必须大于等于（或小于等于）其子树中每个节点的值。&lt;/p&gt;
+
+&lt;h2 id=&quot;存储&quot;&gt;存储&lt;/h2&gt;
+
+&lt;p&gt;使用数组来存储堆，下标为 
+&lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;
+ 的节点的左子节点，就是下标为 
+&lt;script type=&quot;math/tex&quot;&gt;i * 2&lt;/script&gt;
+ 的节点，右子节点就是下标为 
+&lt;script type=&quot;math/tex&quot;&gt;i * 2 + 1&lt;/script&gt;
+ 的节点，父节点下标是 
+&lt;script type=&quot;math/tex&quot;&gt;\frac{i}{2}&lt;/script&gt;
+。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4huhn2kbsj30vq0f0aa3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;插入元素&quot;&gt;插入元素&lt;/h2&gt;
+
+&lt;p&gt;把新插入的元素放到堆的最后，之后进行调整，让其重新满足堆的特性 —— 这个过程叫做 &lt;strong&gt;堆化&lt;/strong&gt;（heapify）。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4huisnha4j30vq0lkwfc.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;核心代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  public void insert(int data) {
+    if (count &amp;gt;= n) return; // 堆满了
+    ++count;
+    a[count] = data;
+    int i = count;
+    while (i/2 &amp;gt; 0 &amp;amp;&amp;amp; a[i] &amp;gt; a[i/2]) { // 自下往上堆化
+      swap(a, i, i/2); // swap() 函数作用：交换下标为 i 和 i/2 的两个元素
+      i = i/2;
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;删除元素&quot;&gt;删除元素&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4hujhnz4ij30vq0nsmy6.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void removeMax() {
+  if (count == 0) return -1; // 堆中没有数据
+  a[1] = a[count];
+  --count;
+  heapify(a, count, 1);
+}
+
+private void heapify(int[] a, int n, int i) { // 自上往下堆化
+  while (true) {
+    int maxPos = i;
+    if (i*2 &amp;lt;= n &amp;amp;&amp;amp; a[i] &amp;lt; a[i*2]) maxPos = i*2;
+    if (i*2+1 &amp;lt;= n &amp;amp;&amp;amp; a[maxPos] &amp;lt; a[i*2+1]) maxPos = i*2+1;
+    if (maxPos == i) break;
+    swap(a, i, maxPos);
+    i = maxPos;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;建堆&quot;&gt;建堆&lt;/h2&gt;
+
+&lt;h3 id=&quot;思路&quot;&gt;思路&lt;/h3&gt;
+
+&lt;p&gt;有两种建堆的思路。&lt;/p&gt;
+
+&lt;p&gt;一种是借助插入元素的思路，假设一开始只有一个数据，然后将下边为 2 到 n 的数据依次插入。&lt;/p&gt;
+
+&lt;p&gt;另外一种是从后往前处理实现堆化。核心代码：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private static void buildHeap(int[] a, int n) {
+  for (int i = n/2; i &amp;gt;= 1; --i) {  // 下标 n/2+1 到 n 是叶子节点，不需要堆化
+    heapify(a, n, i);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;时间复杂度分析&quot;&gt;时间复杂度分析&lt;/h3&gt;
+
+&lt;p&gt;堆化时间复杂度是 
+&lt;script type=&quot;math/tex&quot;&gt;O(log n)&lt;/script&gt;
+ ，共有 
+&lt;script type=&quot;math/tex&quot;&gt;\frac{n}{2} + 1&lt;/script&gt;
+ 个节点，如果说时间复杂度是 
+&lt;script type=&quot;math/tex&quot;&gt;O(n log n)&lt;/script&gt;
+ 其实并没有错，但是不够准确，实际时间复杂度是 
+&lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;
+ 。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4hujzq6kaj30vq0l73yv.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;从上图可知，对每个非叶子节点的高度求和：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{1}=1 * h+2^{1} *(h-1)+2^{2} *(h-2)+\cdots+2^{k} *(h-k)+\cdots+2^{n-1} * 1&lt;/script&gt;
+
+&lt;p&gt;可得：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{2}=\quad 2^{1} * h+2^{2} *(h-1)+\cdots+2^{k} *(h-k+1)+\cdots+2^{n-1} * 2+2^{h} * 1&lt;/script&gt;
+
+&lt;p&gt;合并：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S=S_{2}-S_{1}=-h+2+2^{2}+2^{3}+\cdots+2^{k}+\cdots+2^{n-1}+2^{n}&lt;/script&gt;
+
+&lt;p&gt;即：&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S=-h+\left(2^{n}-2\right)+2^{n}=2^{n+1}-h-2&lt;/script&gt;
+
+&lt;p&gt;因为 
+&lt;script type=&quot;math/tex&quot;&gt;h = log_2 n&lt;/script&gt;
+ ，代入 S 得到 
+&lt;script type=&quot;math/tex&quot;&gt;S = O(n)&lt;/script&gt;
+。&lt;/p&gt;
+
+&lt;h2 id=&quot;排序&quot;&gt;排序&lt;/h2&gt;
+
+&lt;p&gt;堆化后将堆顶元素放在最后，重复直到结束：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// n 表示数据的个数，数组 a 中的数据从下标 1 到 n 的位置。
+public static void sort(int[] a, int n) {
+  buildHeap(a, n);
+  int k = n;
+  while (k &amp;gt; 1) {
+    swap(a, 1, k);
+    --k;
+    heapify(a, k, 1);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;复杂度&quot;&gt;复杂度&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;操作&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;时间复杂度&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;插入元素&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;O(log n)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;删除元素&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;O(log n)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;建堆&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;O(n)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;排序&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;O(n log n)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;常见问题&quot;&gt;常见问题&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;为什么快速排序比堆排序的性能好？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;一，数据访问方式：快速排序顺序访问，堆排序跳跃访问，对 CPU 缓存不友好。&lt;/p&gt;
+
+&lt;p&gt;二，数据交换次数：对于基于比较的排序算法来说，整个排序过程就是由两个基本的操作组成的，比较和交换（或移动）。快速排序数据交换的次数不会比逆序度多。但是堆排序的第一步是建堆，建堆的过程会打乱数据原有的相对先后顺序，导致原数据的有序度降低。比如，对于一组已经有序的数据来说，经过建堆之后，数据反而变得无序。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;假设有 100 个小文件，每个文件的大小是 100MB，每个文件中存储的都是有序的字符串。怎么将这些 100 个小文件合并成一个有序的大文件？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;使用堆实现优先队列。从各个文件选取一行，堆化后将堆顶删除加入大文件，再从堆顶对应的文件中选择下一行加入堆。直到结束。删除堆顶数据和往堆中插入数据的时间复杂度都是 O(logn)，n 表示堆中的数据个数，这里就是 100。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;实现定时器。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;用优先级队列来解决。按照任务设定的执行时间，将任务存储在优先级队列中，队列首部（也就是小顶堆的堆顶）存储的是最先执行的任务。这样，定时器就不需要每隔 1 秒就扫描一遍任务列表了。它拿队首任务的执行时间点，与当前时间点相减，得到一个时间间隔 T。当 T 秒时间过去之后，定时器取优先级队列中队首的任务执行。然后再计算新的队首任务的执行时间点与当前时间点的差值，把这个值作为定时器执行下一个任务需要等待的时间。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;怎么用堆求 Top K ？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;建小顶堆保持 Top K 数据。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;求动态数据的中位数。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;使用一个大顶堆（保存前半部分）和一个小顶堆（保存后半部分）来保存数据。实际上这个方法可以用来求取任何比例位置的数字。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4hul5holtj30vq0kpjrz.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;算法题&quot;&gt;算法题&lt;/h2&gt;
+
+&lt;h3 id=&quot;leetcode-23-merge-k-sorted-lists&quot;&gt;LeetCode 23. Merge k Sorted Lists&lt;/h3&gt;
+
+&lt;p&gt;合并 k 个有序列表。&lt;/p&gt;
+
+&lt;p&gt;使用上述的有限队列，将各个列表第一个元素插入堆。堆顶删除，获取其下一个元素（如果有）插入堆。时间复杂度 O(N log k)&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Queue&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PriorityQueue&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mergeKLists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PriorityQueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;point&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;point&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;leetcode-215-kth-largest-element-in-an-array&quot;&gt;LeetCode 215. Kth Largest Element in an Array&lt;/h3&gt;
+
+&lt;p&gt;求数组中第 K 大元素。&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;c1&quot;&gt;# 解法一：元素少的情况下直接 sort 就好
+# Time: O(nlogn) | Space: O(1)
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findKthLargest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 解法二：使用max heap，堆化后 pop 就可以得到结果
+# Time: O(n + klog(n)) | Space: O(n)
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;heapq&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findKthLargest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# heapq.heapify 后是 min heap，所以需要使用负数模拟max heap
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;heapq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;heapify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;res&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'inf'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;res&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;heapq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;heappop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 解法三：使用 min heap
+# Time: O(k) + O((n-k) * logk) | Space: O(K)
+&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;heapq&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findKthLargest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;min_heap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'-inf'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 初始化一个 min heap
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;heapq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;heapify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;min_heap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;min_heap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]:&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 如果数字大于堆顶元素，则把堆顶元素删除，然后将数字插入
+&lt;/span&gt;                &lt;span class=&quot;n&quot;&gt;heapq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;heappop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;min_heap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;heapq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;heappush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;min_heap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;min_heap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;leetcode-347-top-k-frequent-elements&quot;&gt;LeetCode 347. Top K Frequent Elements&lt;/h3&gt;
+
+&lt;p&gt;Given a non-empty array of integers, return the k most frequent elements.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;计数，然后使用堆取Top K。&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;topKFrequent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;collections&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;heapq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nlargest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 05 Jun 2019 00:02:11 +0800</pubDate>
+        <link>http://localhost:4000/2019/06/heap/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/heap/</guid>
+        
+        
+      </item>
+    
+      <item>
         <title>数据结构和算法（08）：二叉树</title>
         <description>&lt;h2 id=&quot;存储&quot;&gt;存储&lt;/h2&gt;
 
@@ -1711,257 +1997,6 @@ a_k &lt; a_j %]]&gt;&lt;/script&gt; 不成立，即不存在小于当前元素�
         <pubDate>Wed, 05 Jun 2019 00:02:01 +0800</pubDate>
         <link>http://localhost:4000/2019/06/alg-stack/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/06/alg-stack/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>数据结构和算法（01）：链表</title>
-        <description>&lt;h2 id=&quot;链表结构&quot;&gt;链表结构&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4hslsz71zj30h4061mxb.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4hsm586h2j30h5062wen.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4hsmejoe8j30h6065weo.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4hsml8sv9j30gw07kq3a.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;时间复杂度以及双向链表的优势&quot;&gt;时间复杂度以及双向链表的优势&lt;/h2&gt;
-
-&lt;p&gt;理论上，单链表的插入、删除操作时间复杂度都是 O(1) ，而随机访问元素的时间复杂度是 O(n)。&lt;/p&gt;
-
-&lt;p&gt;在实际的软件开发中，从链表中删除一个数据无外乎这两种情况：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;删除结点中“值等于某个给定值”的结点；&lt;/li&gt;
-  &lt;li&gt;删除给定指针指向的结点。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;对于第一种情况，无论是单链表还是双向链表，单纯删除操作时间复杂度是 O(1)，但是遍历查找复杂度是 O(n)。&lt;/p&gt;
-
-&lt;p&gt;对于第二种情况，双向链表可以直接获取前驱节点再执行操作，时间复杂度是 O(1)。&lt;/p&gt;
-
-&lt;p&gt;对于一个有序链表，双向链表的按值查询的效率比较高 —— 因为可以记录上次查找的位置 p，每次查询时，根据要查找的值与 p 的大小关系，决定是往前还是往后查找，所以平均只需要查找一半的数据。&lt;/p&gt;
-
-&lt;h2 id=&quot;和数组的对比&quot;&gt;和数组的对比&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;数组&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;连续内存空间，可以借助 CPU 缓存机制，访问效率高。&lt;/li&gt;
-  &lt;li&gt;大小固定，扩容时数组拷贝费时&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;链表&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;不是连续存储，无法有效预读。&lt;/li&gt;
-  &lt;li&gt;天然支持动态扩容&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;相关算法题总结&quot;&gt;相关算法题总结&lt;/h2&gt;
-
-&lt;h3 id=&quot;leetcode-876-middle-of-the-linked-list&quot;&gt;LeetCode 876. Middle of the Linked List&lt;/h3&gt;
-
-&lt;p&gt;寻找单向链表的中间节点。&lt;/p&gt;
-
-&lt;p&gt;可以设置两个指针 fast 和 slow 指向 head。以 fast 步长为 2，slow 步长为 1开始循环遍历链表。当 fast 指针遍历到尾节点或者 NULL 时结束循环。此时，slow 指向的节点就是中间节点。&lt;/p&gt;
-
-&lt;h3 id=&quot;leetcode-206-reverse-linked-list&quot;&gt;LeetCode 206. Reverse Linked List&lt;/h3&gt;
-
-&lt;p&gt;反转单向链表。&lt;/p&gt;
-
-&lt;p&gt;设链表为 head -&amp;gt; … -&amp;gt; cur -&amp;gt; a -&amp;gt; b。则获取 a 之后，cur.next = b，a.next= head，head = a。完成一个反转。循环直至结束。&lt;/p&gt;
-
-&lt;p&gt;核心代码如下。&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;leetcode-237-delete-node-in-a-linked-list&quot;&gt;LeetCode 237. Delete Node in a Linked List&lt;/h3&gt;
-
-&lt;p&gt;给定 node 指针删除单向链表节点。&lt;/p&gt;
-
-&lt;p&gt;直接使用 node.next.val 替换 node.val，然后改变指针指向。&lt;/p&gt;
-
-&lt;h3 id=&quot;leetcode-21-merge-two-sorted-lists&quot;&gt;LeetCode 21. Merge Two Sorted Lists&lt;/h3&gt;
-
-&lt;p&gt;合并两个排序链表。&lt;/p&gt;
-
-&lt;p&gt;设置冗余节点 dummy 作为头结点。双指针遍历链表接到 dummy 之后，返回 dummy.next。&lt;/p&gt;
-
-&lt;h3 id=&quot;leetcode-83-remove-duplicates-from-sorted-list&quot;&gt;LeetCode 83. Remove Duplicates from Sorted List&lt;/h3&gt;
-
-&lt;p&gt;移除排序链表的重复元素。&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cur&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;leetcode-141-linked-list-cycle&quot;&gt;LeetCode 141. Linked List Cycle&lt;/h3&gt;
-
-&lt;p&gt;检查链表是否循环链表。&lt;/p&gt;
-
-&lt;p&gt;设置快慢指针 fast （步长为 2） 和 slow （步长为 1）。如果有一个遍历到空值，则不是循环链表。如果有有一个追上另一个（表现为 fast.val 等于 slow.val），则存在循环。&lt;/p&gt;
-
-&lt;h3 id=&quot;leetcode-234-palindrome-linked-list&quot;&gt;LeetCode 234. Palindrome Linked List&lt;/h3&gt;
-
-&lt;p&gt;检查单向链表是否回文链表。&lt;/p&gt;
-
-&lt;p&gt;首先找到链表的中间节点（见 LeetCode 876）。此时 slow 为中间节点。&lt;/p&gt;
-
-&lt;p&gt;然后反转 slow 之后的节点（见 LeetCode 206）。&lt;/p&gt;
-
-&lt;p&gt;此时，如果是回文链表则可以从头指针和中间节点指针后遍历得到相同的值。&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;isPalindrome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;
-        :type head: ListNode
-        :rtype: bool
-        &quot;&quot;&quot;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;slow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fast&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fast&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;fast&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fast&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;slow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;nextNode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;slow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slow&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;slow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nextNode&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;leetcode-203-remove-linked-list-elements&quot;&gt;LeetCode 203. Remove Linked List Elements&lt;/h3&gt;
-
-&lt;p&gt;移除链表中值为 val 的所有元素。&lt;/p&gt;
-
-&lt;p&gt;设置 dummy 指针指向 head 节点。设置 cur = dummy。遍历链表，如 cur.next 等于 val，则 cur.next = cur.next.next。返回 dummy.next。&lt;/p&gt;
-
-&lt;h3 id=&quot;leetcode-160-intersection-of-two-linked-lists&quot;&gt;LeetCode 160. Intersection of Two Linked Lists&lt;/h3&gt;
-
-&lt;p&gt;获取两个单项链表的交点（如下图，返回 8），不相交则返回 NULL。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4hsmvvf4oj30cd03umx1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;设置指针 pa 和 pb 指向各自链表的访问位置，开始遍历链表。&lt;/p&gt;
-
-&lt;p&gt;当遍历到 null 节点时指针指向另一个链表。如果这个过程中遍历到值相等的节点，则返回。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;设 len(A) = a + c，a 为相交节点及之前节点长度，c 为之后。len(B) = b + c。
-如果存在相交节点，则有 (a + c) + b == (b + c) + a&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;leetcode-328-odd-even-linked-list&quot;&gt;LeetCode 328. Odd Even Linked List&lt;/h3&gt;
-
-&lt;p&gt;将单向链表中，索引计数为双数的节点，接到索引计数为单数的节点后。如：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Input: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL
-Output: 1-&amp;gt;3-&amp;gt;5-&amp;gt;2-&amp;gt;4-&amp;gt;NULL
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;代码如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;oddEvenList&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;odd_head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;even_head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;even&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;even&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;even_head&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 记得把 odd 指针指向 even 链表部分的 “头” 节点
-&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;leetcode-86-partition-list&quot;&gt;LeetCode 86. Partition List&lt;/h3&gt;
-
-&lt;p&gt;给定链表和一个值 x，把链表中小于 x 的节点全部放到大于等于 x 的节点前，这两部分（小于 和 大于等于）需要保留各自的原始顺序。比如：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Input: head = 1-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;5-&amp;gt;2, x = 3
-Output: 1-&amp;gt;2-&amp;gt;2-&amp;gt;4-&amp;gt;3-&amp;gt;5
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;设置两个链表partition 各自的 dummy 指针和当前指针。遍历链表，如果当前的节点小于 x ，则接到 小于的那部分，反之为大于等于那部分，更新当前指针和遍历链表的指针。代码如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;partition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;dummy_lt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;dummy_gt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ListNode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;lt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;lt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;gt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;gt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;gt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;lt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dummy_gt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dummy_lt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;leetcode-148-sort-list&quot;&gt;LeetCode 148. Sort List&lt;/h3&gt;
-
-&lt;p&gt;对链表进行排序，要求 O(n log n) 的时间复杂度和常数空间复杂度。&lt;/p&gt;
-
-&lt;p&gt;首先找到中间节点，然后使用归并排序就可以了。&lt;/p&gt;
-
-&lt;h3 id=&quot;leetcode-19-remove-nth-node-from-end-of-list&quot;&gt;LeetCode 19. Remove Nth Node From End of List&lt;/h3&gt;
-
-&lt;h3 id=&quot;leetcode-82-remove-duplicates-from-sorted-list-ii&quot;&gt;LeetCode 82. Remove Duplicates from Sorted List II&lt;/h3&gt;
-
-&lt;h3 id=&quot;leetcode-142-linked-list-cycle-ii&quot;&gt;LeetCode 142. Linked List Cycle II&lt;/h3&gt;
-
-&lt;h3 id=&quot;leetcode-2-add-two-numbers&quot;&gt;LeetCode 2. Add Two Numbers&lt;/h3&gt;
-
-&lt;h3 id=&quot;leetcode-143-reorder-list&quot;&gt;LeetCode 143. Reorder List&lt;/h3&gt;
-
-&lt;h3 id=&quot;leetcode-61-rotate-list&quot;&gt;LeetCode 61. Rotate List&lt;/h3&gt;
-
-&lt;h3 id=&quot;leetcode-138-copy-list-with-random-pointer&quot;&gt;LeetCode 138. Copy List with Random Pointer&lt;/h3&gt;
-
-&lt;h3 id=&quot;leetcode-25-reverse-nodes-in-k-group&quot;&gt;LeetCode 25. Reverse Nodes in k-Group&lt;/h3&gt;
-
-&lt;h3 id=&quot;leetcode-23-merge-k-sorted-lists&quot;&gt;LeetCode 23. Merge k Sorted Lists&lt;/h3&gt;
-
-</description>
-        <pubDate>Wed, 05 Jun 2019 00:01:01 +0800</pubDate>
-        <link>http://localhost:4000/2019/06/alg-linked-list/</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/06/alg-linked-list/</guid>
         
         
       </item>

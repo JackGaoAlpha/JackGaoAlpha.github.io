@@ -1,0 +1,273 @@
+---
+layout: post
+title: 数据结构和算法（11）：堆排序
+date: 2019-06-05 01:02:11.000000000 +09:00
+---
+## 定义
+
+堆是完全二叉树，其中每一个节点的值都必须大于等于（或小于等于）其子树中每个节点的值。
+
+## 存储
+
+使用数组来存储堆，下标为 
+$$i$$
+ 的节点的左子节点，就是下标为 
+$$i * 2$$
+ 的节点，右子节点就是下标为 
+$$i * 2 + 1$$
+ 的节点，父节点下标是 
+$$\frac{i}{2} $$
+。
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4huhn2kbsj30vq0f0aa3.jpg)
+
+## 插入元素
+
+把新插入的元素放到堆的最后，之后进行调整，让其重新满足堆的特性 —— 这个过程叫做 **堆化**（heapify）。
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4huisnha4j30vq0lkwfc.jpg)
+
+核心代码如下：
+
+```
+  public void insert(int data) {
+    if (count >= n) return; // 堆满了
+    ++count;
+    a[count] = data;
+    int i = count;
+    while (i/2 > 0 && a[i] > a[i/2]) { // 自下往上堆化
+      swap(a, i, i/2); // swap() 函数作用：交换下标为 i 和 i/2 的两个元素
+      i = i/2;
+    }
+  }
+```
+
+## 删除元素
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4hujhnz4ij30vq0nsmy6.jpg)
+
+```
+public void removeMax() {
+  if (count == 0) return -1; // 堆中没有数据
+  a[1] = a[count];
+  --count;
+  heapify(a, count, 1);
+}
+
+private void heapify(int[] a, int n, int i) { // 自上往下堆化
+  while (true) {
+    int maxPos = i;
+    if (i*2 <= n && a[i] < a[i*2]) maxPos = i*2;
+    if (i*2+1 <= n && a[maxPos] < a[i*2+1]) maxPos = i*2+1;
+    if (maxPos == i) break;
+    swap(a, i, maxPos);
+    i = maxPos;
+  }
+}
+```
+
+
+
+## 建堆
+
+### 思路
+
+有两种建堆的思路。
+
+一种是借助插入元素的思路，假设一开始只有一个数据，然后将下边为 2 到 n 的数据依次插入。
+
+另外一种是从后往前处理实现堆化。核心代码：
+
+```
+private static void buildHeap(int[] a, int n) {
+  for (int i = n/2; i >= 1; --i) {  // 下标 n/2+1 到 n 是叶子节点，不需要堆化
+    heapify(a, n, i);
+  }
+}
+```
+
+
+### 时间复杂度分析
+
+堆化时间复杂度是 
+$$O(log n)$$
+ ，共有 
+$$\frac{n}{2} + 1$$
+ 个节点，如果说时间复杂度是 
+$$O(n log n)$$
+ 其实并没有错，但是不够准确，实际时间复杂度是 
+$$O(n)$$
+ 。
+
+![](http://ww3.sinaimg.cn/large/006tNc79ly1g4hujzq6kaj30vq0l73yv.jpg)
+
+从上图可知，对每个非叶子节点的高度求和：
+
+$$S_{1}=1 * h+2^{1} *(h-1)+2^{2} *(h-2)+\cdots+2^{k} *(h-k)+\cdots+2^{n-1} * 1
+$$
+
+可得：
+
+$$S_{2}=\quad 2^{1} * h+2^{2} *(h-1)+\cdots+2^{k} *(h-k+1)+\cdots+2^{n-1} * 2+2^{h} * 1
+$$
+
+合并：
+
+$$S=S_{2}-S_{1}=-h+2+2^{2}+2^{3}+\cdots+2^{k}+\cdots+2^{n-1}+2^{n}
+$$
+
+即：
+
+$$S=-h+\left(2^{n}-2\right)+2^{n}=2^{n+1}-h-2
+$$
+
+因为 
+$$h = log_2 n $$
+ ，代入 S 得到 
+$$S = O(n) $$
+。
+
+## 排序
+
+堆化后将堆顶元素放在最后，重复直到结束：
+
+```
+// n 表示数据的个数，数组 a 中的数据从下标 1 到 n 的位置。
+public static void sort(int[] a, int n) {
+  buildHeap(a, n);
+  int k = n;
+  while (k > 1) {
+    swap(a, 1, k);
+    --k;
+    heapify(a, k, 1);
+  }
+}
+```
+
+
+## 复杂度
+
+| 操作        | 时间复杂度   |
+| :--------:   | :-----:  |
+| 插入元素     | O(log n) |
+| 删除元素        |   O(log n)   |
+| 建堆        |    O(n)    |
+| 排序        |    O(n log n)    |
+
+
+
+
+## 常见问题
+
+1. 为什么快速排序比堆排序的性能好？
+
+一，数据访问方式：快速排序顺序访问，堆排序跳跃访问，对 CPU 缓存不友好。
+
+二，数据交换次数：对于基于比较的排序算法来说，整个排序过程就是由两个基本的操作组成的，比较和交换（或移动）。快速排序数据交换的次数不会比逆序度多。但是堆排序的第一步是建堆，建堆的过程会打乱数据原有的相对先后顺序，导致原数据的有序度降低。比如，对于一组已经有序的数据来说，经过建堆之后，数据反而变得无序。
+
+2. 假设有 100 个小文件，每个文件的大小是 100MB，每个文件中存储的都是有序的字符串。怎么将这些 100 个小文件合并成一个有序的大文件？
+
+使用堆实现优先队列。从各个文件选取一行，堆化后将堆顶删除加入大文件，再从堆顶对应的文件中选择下一行加入堆。直到结束。删除堆顶数据和往堆中插入数据的时间复杂度都是 O(logn)，n 表示堆中的数据个数，这里就是 100。
+
+3. 实现定时器。
+
+用优先级队列来解决。按照任务设定的执行时间，将任务存储在优先级队列中，队列首部（也就是小顶堆的堆顶）存储的是最先执行的任务。这样，定时器就不需要每隔 1 秒就扫描一遍任务列表了。它拿队首任务的执行时间点，与当前时间点相减，得到一个时间间隔 T。当 T 秒时间过去之后，定时器取优先级队列中队首的任务执行。然后再计算新的队首任务的执行时间点与当前时间点的差值，把这个值作为定时器执行下一个任务需要等待的时间。
+
+3. 怎么用堆求 Top K ？
+
+建小顶堆保持 Top K 数据。
+
+4. 求动态数据的中位数。
+
+使用一个大顶堆（保存前半部分）和一个小顶堆（保存后半部分）来保存数据。实际上这个方法可以用来求取任何比例位置的数字。
+
+![](http://ww3.sinaimg.cn/large/006tNc79ly1g4hul5holtj30vq0kpjrz.jpg)
+
+
+## 算法题
+
+### LeetCode 23. Merge k Sorted Lists
+
+合并 k 个有序列表。
+
+使用上述的有限队列，将各个列表第一个元素插入堆。堆顶删除，获取其下一个元素（如果有）插入堆。时间复杂度 O(N log k)
+
+```python
+from Queue import PriorityQueue
+
+class Solution(object):
+    def mergeKLists(self, lists):
+        head = point = ListNode(0)
+        q = PriorityQueue()
+        for l in lists:
+            if l:
+                q.put((l.val, l))
+        while not q.empty():
+            val, node = q.get()
+            point.next = ListNode(val)
+            point = point.next
+            node = node.next
+            if node:
+                q.put((node.val, node))
+        return head.next
+```
+
+### LeetCode 215. Kth Largest Element in an Array
+
+求数组中第 K 大元素。
+
+```python
+
+# 解法一：元素少的情况下直接 sort 就好
+# Time: O(nlogn) | Space: O(1)
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        nums.sort()
+        return nums[-k]
+
+# 解法二：使用max heap，堆化后 pop 就可以得到结果
+# Time: O(n + klog(n)) | Space: O(n)
+import heapq
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        nums = [-num for num in nums]  # heapq.heapify 后是 min heap，所以需要使用负数模拟max heap
+        heapq.heapify(nums)
+        res = float('inf')
+        for _ in range(k):
+            res = heapq.heappop(nums)
+        return -res
+
+# 解法三：使用 min heap
+# Time: O(k) + O((n-k) * logk) | Space: O(K)
+import heapq
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        min_heap = [float('-inf')] * k  # 初始化一个 min heap
+        heapq.heapify(min_heap)
+        for num in nums:
+            if num > min_heap[0]:  # 如果数字大于堆顶元素，则把堆顶元素删除，然后将数字插入
+                heapq.heappop(min_heap)
+                heapq.heappush(min_heap, num)
+        return min_heap[0]
+```
+
+### LeetCode 347. Top K Frequent Elements
+
+Given a non-empty array of integers, return the k most frequent elements.
+
+```
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+```
+
+计数，然后使用堆取Top K。
+
+```python
+class Solution:
+    def topKFrequent(self, nums, k):
+        count = collections.Counter(nums)
+        return heapq.nlargest(k, count.keys(), key=count.get)
+```
+
+
+

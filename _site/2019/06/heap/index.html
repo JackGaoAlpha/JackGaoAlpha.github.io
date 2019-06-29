@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>数据结构和算法（11）：堆排序</title>
+  <meta name="description" content="定义">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="数据结构和算法（11）：堆排序">
+  <meta name="twitter:description" content="定义">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="数据结构和算法（11）：堆排序">
+  <meta property="og:description" content="定义">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/06/heap/">
+  <link rel="alternate" type="application/rss+xml" title="陈草头" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- 数学公式 -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+
+
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 陈草头 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="陈草头 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 陈草头" class="blog-button">陈草头</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">越名教而任自然</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        <!-- 
+        <p class="panel-cover__description"><a href="https://caotouchan.github.io" target="_blank">我的主页</a></p>
+         -->
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">博客</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/lookka520" title="@lookka520 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/caotouchan" title="@caotouchan 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:caotouchan@outlook.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-06-05 00:02:11 +0800" itemprop="datePublished" class="post-meta__date date">2019-06-05</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">数据结构和算法（11）：堆排序</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="定义">定义</h2>
+
+<p>堆是完全二叉树，其中每一个节点的值都必须大于等于（或小于等于）其子树中每个节点的值。</p>
+
+<h2 id="存储">存储</h2>
+
+<p>使用数组来存储堆，下标为 
+<script type="math/tex">i</script>
+ 的节点的左子节点，就是下标为 
+<script type="math/tex">i * 2</script>
+ 的节点，右子节点就是下标为 
+<script type="math/tex">i * 2 + 1</script>
+ 的节点，父节点下标是 
+<script type="math/tex">\frac{i}{2}</script>
+。</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4huhn2kbsj30vq0f0aa3.jpg" alt="" /></p>
+
+<h2 id="插入元素">插入元素</h2>
+
+<p>把新插入的元素放到堆的最后，之后进行调整，让其重新满足堆的特性 —— 这个过程叫做 <strong>堆化</strong>（heapify）。</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4huisnha4j30vq0lkwfc.jpg" alt="" /></p>
+
+<p>核心代码如下：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  public void insert(int data) {
+    if (count &gt;= n) return; // 堆满了
+    ++count;
+    a[count] = data;
+    int i = count;
+    while (i/2 &gt; 0 &amp;&amp; a[i] &gt; a[i/2]) { // 自下往上堆化
+      swap(a, i, i/2); // swap() 函数作用：交换下标为 i 和 i/2 的两个元素
+      i = i/2;
+    }
+  }
+</code></pre></div></div>
+
+<h2 id="删除元素">删除元素</h2>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4hujhnz4ij30vq0nsmy6.jpg" alt="" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public void removeMax() {
+  if (count == 0) return -1; // 堆中没有数据
+  a[1] = a[count];
+  --count;
+  heapify(a, count, 1);
+}
+
+private void heapify(int[] a, int n, int i) { // 自上往下堆化
+  while (true) {
+    int maxPos = i;
+    if (i*2 &lt;= n &amp;&amp; a[i] &lt; a[i*2]) maxPos = i*2;
+    if (i*2+1 &lt;= n &amp;&amp; a[maxPos] &lt; a[i*2+1]) maxPos = i*2+1;
+    if (maxPos == i) break;
+    swap(a, i, maxPos);
+    i = maxPos;
+  }
+}
+</code></pre></div></div>
+
+<h2 id="建堆">建堆</h2>
+
+<h3 id="思路">思路</h3>
+
+<p>有两种建堆的思路。</p>
+
+<p>一种是借助插入元素的思路，假设一开始只有一个数据，然后将下边为 2 到 n 的数据依次插入。</p>
+
+<p>另外一种是从后往前处理实现堆化。核心代码：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private static void buildHeap(int[] a, int n) {
+  for (int i = n/2; i &gt;= 1; --i) {  // 下标 n/2+1 到 n 是叶子节点，不需要堆化
+    heapify(a, n, i);
+  }
+}
+</code></pre></div></div>
+
+<h3 id="时间复杂度分析">时间复杂度分析</h3>
+
+<p>堆化时间复杂度是 
+<script type="math/tex">O(log n)</script>
+ ，共有 
+<script type="math/tex">\frac{n}{2} + 1</script>
+ 个节点，如果说时间复杂度是 
+<script type="math/tex">O(n log n)</script>
+ 其实并没有错，但是不够准确，实际时间复杂度是 
+<script type="math/tex">O(n)</script>
+ 。</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79ly1g4hujzq6kaj30vq0l73yv.jpg" alt="" /></p>
+
+<p>从上图可知，对每个非叶子节点的高度求和：</p>
+
+<script type="math/tex; mode=display">S_{1}=1 * h+2^{1} *(h-1)+2^{2} *(h-2)+\cdots+2^{k} *(h-k)+\cdots+2^{n-1} * 1</script>
+
+<p>可得：</p>
+
+<script type="math/tex; mode=display">S_{2}=\quad 2^{1} * h+2^{2} *(h-1)+\cdots+2^{k} *(h-k+1)+\cdots+2^{n-1} * 2+2^{h} * 1</script>
+
+<p>合并：</p>
+
+<script type="math/tex; mode=display">S=S_{2}-S_{1}=-h+2+2^{2}+2^{3}+\cdots+2^{k}+\cdots+2^{n-1}+2^{n}</script>
+
+<p>即：</p>
+
+<script type="math/tex; mode=display">S=-h+\left(2^{n}-2\right)+2^{n}=2^{n+1}-h-2</script>
+
+<p>因为 
+<script type="math/tex">h = log_2 n</script>
+ ，代入 S 得到 
+<script type="math/tex">S = O(n)</script>
+。</p>
+
+<h2 id="排序">排序</h2>
+
+<p>堆化后将堆顶元素放在最后，重复直到结束：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// n 表示数据的个数，数组 a 中的数据从下标 1 到 n 的位置。
+public static void sort(int[] a, int n) {
+  buildHeap(a, n);
+  int k = n;
+  while (k &gt; 1) {
+    swap(a, 1, k);
+    --k;
+    heapify(a, k, 1);
+  }
+}
+</code></pre></div></div>
+
+<h2 id="复杂度">复杂度</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">操作</th>
+      <th style="text-align: center">时间复杂度</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">插入元素</td>
+      <td style="text-align: center">O(log n)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">删除元素</td>
+      <td style="text-align: center">O(log n)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">建堆</td>
+      <td style="text-align: center">O(n)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">排序</td>
+      <td style="text-align: center">O(n log n)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="常见问题">常见问题</h2>
+
+<ol>
+  <li>为什么快速排序比堆排序的性能好？</li>
+</ol>
+
+<p>一，数据访问方式：快速排序顺序访问，堆排序跳跃访问，对 CPU 缓存不友好。</p>
+
+<p>二，数据交换次数：对于基于比较的排序算法来说，整个排序过程就是由两个基本的操作组成的，比较和交换（或移动）。快速排序数据交换的次数不会比逆序度多。但是堆排序的第一步是建堆，建堆的过程会打乱数据原有的相对先后顺序，导致原数据的有序度降低。比如，对于一组已经有序的数据来说，经过建堆之后，数据反而变得无序。</p>
+
+<ol>
+  <li>假设有 100 个小文件，每个文件的大小是 100MB，每个文件中存储的都是有序的字符串。怎么将这些 100 个小文件合并成一个有序的大文件？</li>
+</ol>
+
+<p>使用堆实现优先队列。从各个文件选取一行，堆化后将堆顶删除加入大文件，再从堆顶对应的文件中选择下一行加入堆。直到结束。删除堆顶数据和往堆中插入数据的时间复杂度都是 O(logn)，n 表示堆中的数据个数，这里就是 100。</p>
+
+<ol>
+  <li>实现定时器。</li>
+</ol>
+
+<p>用优先级队列来解决。按照任务设定的执行时间，将任务存储在优先级队列中，队列首部（也就是小顶堆的堆顶）存储的是最先执行的任务。这样，定时器就不需要每隔 1 秒就扫描一遍任务列表了。它拿队首任务的执行时间点，与当前时间点相减，得到一个时间间隔 T。当 T 秒时间过去之后，定时器取优先级队列中队首的任务执行。然后再计算新的队首任务的执行时间点与当前时间点的差值，把这个值作为定时器执行下一个任务需要等待的时间。</p>
+
+<ol>
+  <li>怎么用堆求 Top K ？</li>
+</ol>
+
+<p>建小顶堆保持 Top K 数据。</p>
+
+<ol>
+  <li>求动态数据的中位数。</li>
+</ol>
+
+<p>使用一个大顶堆（保存前半部分）和一个小顶堆（保存后半部分）来保存数据。实际上这个方法可以用来求取任何比例位置的数字。</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79ly1g4hul5holtj30vq0kpjrz.jpg" alt="" /></p>
+
+<h2 id="算法题">算法题</h2>
+
+<h3 id="leetcode-23-merge-k-sorted-lists">LeetCode 23. Merge k Sorted Lists</h3>
+
+<p>合并 k 个有序列表。</p>
+
+<p>使用上述的有限队列，将各个列表第一个元素插入堆。堆顶删除，获取其下一个元素（如果有）插入堆。时间复杂度 O(N log k)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">Queue</span> <span class="kn">import</span> <span class="n">PriorityQueue</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">mergeKLists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lists</span><span class="p">):</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">point</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">PriorityQueue</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lists</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">l</span><span class="p">:</span>
+                <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">l</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">q</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="n">val</span><span class="p">,</span> <span class="n">node</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">point</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="nb">next</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="nb">next</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+                <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">node</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="n">node</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">head</span><span class="o">.</span><span class="nb">next</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-215-kth-largest-element-in-an-array">LeetCode 215. Kth Largest Element in an Array</h3>
+
+<p>求数组中第 K 大元素。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1"># 解法一：元素少的情况下直接 sort 就好
+# Time: O(nlogn) | Space: O(1)
+</span><span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">findKthLargest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="n">nums</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="o">-</span><span class="n">k</span><span class="p">]</span>
+
+<span class="c1"># 解法二：使用max heap，堆化后 pop 就可以得到结果
+# Time: O(n + klog(n)) | Space: O(n)
+</span><span class="kn">import</span> <span class="nn">heapq</span>
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">findKthLargest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">]</span>  <span class="c1"># heapq.heapify 后是 min heap，所以需要使用负数模拟max heap
+</span>        <span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">'inf'</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">res</span>
+
+<span class="c1"># 解法三：使用 min heap
+# Time: O(k) + O((n-k) * logk) | Space: O(K)
+</span><span class="kn">import</span> <span class="nn">heapq</span>
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">findKthLargest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="n">min_heap</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="s">'-inf'</span><span class="p">)]</span> <span class="o">*</span> <span class="n">k</span>  <span class="c1"># 初始化一个 min heap
+</span>        <span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">min_heap</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="n">min_heap</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>  <span class="c1"># 如果数字大于堆顶元素，则把堆顶元素删除，然后将数字插入
+</span>                <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">min_heap</span><span class="p">)</span>
+                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">min_heap</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">min_heap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-347-top-k-frequent-elements">LeetCode 347. Top K Frequent Elements</h3>
+
+<p>Given a non-empty array of integers, return the k most frequent elements.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+</code></pre></div></div>
+
+<p>计数，然后使用堆取Top K。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">topKFrequent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">heapq</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">count</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">count</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+</code></pre></div></div>
+
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-intro/" title="link to Elasticsearch 实战（01）综述">Elasticsearch 实战（01）综述</a></h2>
+       <p class="excerpt">综述Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分析，其高性能和易扩展、易使用性受到众多公司的青睐。这个系列文章基于 Elasticsearch 7.0 进行探索和实践，参考 极客时间的 《 Elasticsearch核心技术与实战 》 系列专栏。分布式架构集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot &amp; Warm 架构。集成方式      支持多种编程语言类库，如 Java/.NE...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-26 18:46:01 +0800" class="post-list__meta--date date">2019-06-26</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-intro/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/alg-tree/" title="link to 数据结构和算法（08）：二叉树">数据结构和算法（08）：二叉树</a></h2>
+       <p class="excerpt">存储  链式存储  顺序存储访问方式二叉查找树定义二叉查找树 ： 在树中的任意一个节点，其左子树中的每个节点的值，都要小于这个节点的值，而右子树节点的值都大于这个节点的值。查找插入删除删除操作有三种情况：      要删除的节点没有子节点，直接删除        要删除的几点只有一个子节点，则将其父节点指向其子节点        有两个子节点，则找到右子树中的最小节点，替换到要删除的节点。如下  输出有序序列中序 遍历二叉查找树，可以输出有序的数据序列，时间复杂度是 。支持重复数据时间复杂...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-05 00:02:08 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/alg-tree/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+
+  
+
+  <!-- Gitalk 评论 start  -->
+  
+    <!-- Link Gitalk 的支持文件  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: '6005df5e831456f4482b',
+        clientSecret: 'ffc57d242198e14cdb68b7457a765d0b719415fb',
+        repo: 'caotouchan.github.io',
+        owner: 'CaoTouChan',
+        admin: ['CaoTouChan'],
+        id: window.location.pathname,
+      });
+      gitalk.render('gitalk-container');
+    </script>
+  
+  <!-- Gitalk end -->
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">本站由 <a href="https://caotouchan.github.io">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
