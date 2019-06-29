@@ -1,0 +1,211 @@
+---
+layout: post
+title: 数据结构和算法（02）：栈
+date: 2019-06-05 01:02:01.000000000 +09:00
+---
+## 关键点
+
+* 当某个数据集合只涉及在一端插入和删除数据，并且满足先进后出的特性时，首选“栈”这种数据结构。
+
+* 用数组实现的栈，叫作 **顺序栈**；用链表实现的栈，叫作 **链式栈**。
+
+* 时间复杂度 O(1)，空间复杂度 O(1)。
+
+* 对于支持动态扩容的顺序栈，出栈时间复杂度是 O(1)，入栈时间复杂度是 O(n) —— 原始数组需要拷贝。
+
+## 算法题
+
+### LeetCode 1047. Remove All Adjacent Duplicates In String
+
+移除字符串中相邻的相同字符，比如：
+
+```
+Input: "abbaca"
+Output: "ca"
+Explanation: 移除 “bb” 后，为“aaca” ，则需要继续移除 “aa” 为 “ca ”
+```
+
+使用一个栈，检测最后的字符是否和当前遍历的字符相等，是的话就出栈，否则入栈。代码如下：
+
+```python
+class Solution:
+    def removeDuplicates(self, S: str) -> str:
+        ans = []
+        for s in S:
+            if ans and s == ans[-1]:
+                ans.pop()
+            else:
+                ans.append(s)
+        return ''.join(ans)
+```
+
+### LeetCode 155. Min Stack
+
+实现一个 Stack 的 pop()、push()、top()、getMin() 方法，要求这些操作都是常数时间复杂度。
+
+此题的难点是在常数时间获取最小元素。如果只使用一个常数记录最小值，则在 pop() 操作之后需要遍历一次 stack 以获取最小元素，这是达不到要求的。
+
+实际上，可以使用一个记录最小值的 stack —— minStack 来辅助操作。考虑一下，其实如果当前要入栈的元素大于最小值，是无需记录的 —— 因为即便这个值出栈，也不会影响到最小值的情况。所以，只需要考虑在入栈时记录小于等于 minStack 栈顶元素的值，同时记录最小值计数。代码如下：
+
+```python
+class MinStack(object):
+
+    def __init__(self):
+        self.stack = []
+        self.minCache = []
+
+    def push(self, x):
+        self.stack.append(x)
+        if len(self.minCache) == 0 or x < self.minCache[-1][0]:
+            self.minCache.append([x, 1])
+        elif x == self.minCache[-1][0]:
+            self.minCache[-1][1] += 1
+
+    def pop(self):
+        x = self.stack.pop()
+        if x == self.minCache[-1][0]:
+            if self.minCache[-1][1] == 1:
+                self.minCache.pop()
+            else:
+                self.minCache[-1][1] -= 1
+        return x
+
+    def top(self):
+        return self.stack[-1] if len(self.stack) else None
+
+    def getMin(self):
+        return self.minCache[-1][0]
+```
+
+
+### LeetCode 20. Valid Parentheses
+
+给定一个由 '(', ')', '{', '}', '[' 和 ']' 组成的字符串，判断它是否各自互相匹配。
+
+对 '(', '{', '[' 入栈，其他字符则对栈顶元素进行 pop 操作，看看是否匹配。
+
+### LeetCode 739. Daily Temperatures
+
+给定一个记录每天气温的列表，返回一个数组，其中每个元素对应一天，元素值是在这一天需要等多少天才能等到气温升高。比如：
+
+```
+input: [73, 74, 75, 71, 69, 72, 76, 73]
+output: [1, 1, 4, 2, 1, 1, 0, 0]
+```
+
+解题思路是：使用栈保存一个值降序的数组索引。从数组尾部开始访问，如果当前访问元素大于栈顶，则弹出栈顶（弹出的元素无需再考虑，因为只需要温度升高的，这个值不会再用到），直到无元素或者栈顶比当前元素大。代码如下：
+
+```python
+class Solution:
+    def dailyTemperatures(self, T: List[int]) -> List[int]:
+        res, stack = [0 for _ in range(len(T))], []
+        for i in range(len(T)-1, -1, -1):
+            while stack and T[stack[-1]] <= T[i]:
+                stack.pop()
+            if stack:
+                res[i] = stack[-1] - i
+            stack.append(i)
+        return res
+```
+
+### LeetCode 94. Binary Tree Inorder Traversal
+
+中序遍历二叉树。
+
+```python
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        res = []
+        stack = []
+        while stack or root:
+            while root:
+                stack.append(root)
+                root = root.left
+            root = stack.pop()
+            res.append(root.val)
+            root = root.right
+        return res
+```
+
+### LeetCode 144. Binary Tree Preorder Traversal
+
+前序遍历二叉树。
+
+```python
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        res, stack = [], []
+        while stack or root:
+            while root:
+                res.append(root.val)
+                stack.append(root)
+                root = root.left
+            root = stack.pop()
+            root = root.right
+        return res
+```
+
+### LeetCode 145. Binary Tree Postorder Traversal
+
+后序遍历二叉树。
+
+对于当前节点，如果可以访问，意味着两种情况之一：① 当前节点没有左右子节点 ② 当前节点的左右子节点已经访问过。对于第 ② 种情况，只需要设置一个 pre 节点记录上一次访问的节点，如果是当前节点的右节点（若有）或者左节点（若无右节点），则直接访问。否则，将右节点、左节点依次入栈（注意顺序）。代码如下：
+
+```python
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -> List[int]:
+        if not root:
+            return []
+        res, stack, pre = [], [root], None
+        while stack:
+            top = stack[-1]
+            if (not top.left and not top.right) or (top.right and pre is top.right) or (not top.right and pre is top.left):
+                res.append(top.val)
+                stack.pop()
+                pre = top
+                continue
+            if top.right:
+                stack.append(top.right)
+            if top.left:
+                stack.append(top.left)
+        return res
+```
+
+### LeetCode 456. 132 Pattern
+
+对给定整数序列，判断是否存在 $$a_i \lt a_k \lt a_j , st. i \lt j \lt k$$。
+
+首先，遍历数组得到当前元素之前的最小值数组，即 $$minNum[i] = min(nums[:i+1])$$。经过这一步，我们可以直接保证 $$a_i < a_j$$ 成立。
+
+然后，从后往前遍历数组构造一个栈。那么有几种情况：
+
+1.  栈顶等于最小值，此时直接跳过 —— 因为 $$a_i < a_j$$ 条件不成立。
+2. 栈顶大于最小值，栈为空 或者 栈顶元素大于当前值，则将 num[i] 入栈 —— 因为 $$a_k < a_j$$ 不成立，即不存在小于当前元素的值。
+3. 栈顶大于最小值，栈顶元素 等于 当前值，跳过。
+4. 栈顶大于最小值，栈顶元素 小于 当前值。此时，如果栈顶元素大于最小值，则返回 True；否则，将栈顶元素出栈；循环此过程，知道栈为空或者返回 True。
+
+```python
+class Solution:
+    def find132pattern(self, nums: List[int]) -> bool:
+        minNum, stack, m = [], [], float('+inf')
+        
+        for n in nums:
+            m = min(m, n)
+            minNum.append(m)
+        print(minNum)
+            
+        for i in range(len(nums)-1, -1, -1):
+            if nums[i] == minNum[i]:
+                continue
+            if len(stack) == 0 or stack[-1] > nums[i]:
+                stack.append(nums[i])
+            elif stack[-1] == nums[i]:
+                continue
+            else:
+                while stack:
+                    if stack[-1] <= minNum[i]:
+                        stack.pop()
+                    else:
+                        return True
+        return False
+```
