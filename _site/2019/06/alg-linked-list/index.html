@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>数据结构和算法（01）：链表</title>
+  <meta name="description" content="链表结构">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="数据结构和算法（01）：链表">
+  <meta name="twitter:description" content="链表结构">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="数据结构和算法（01）：链表">
+  <meta property="og:description" content="链表结构">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/06/alg-linked-list/">
+  <link rel="alternate" type="application/rss+xml" title="陈草头" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- 数学公式 -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/7.1.0/mermaid.min.js"></script>
+<script>
+    var config = {
+        startOnLoad:true,
+        flowchart:{
+            useMaxWidth:false,
+            htmlLabels:true
+        }
+    };
+    mermaid.initialize(config);
+    $(function(){
+        var elements = document.getElementsByClassName("language-mermaid");
+        for (var i = elements.length; i--;) {
+            element = elements[i];
+            var graphDefinition = element.innerText;
+            if (graphDefinition) {
+                var svg = mermaid.render('ha_mermaid_' + i, graphDefinition, function(svg){});
+                if (svg) {
+                    var svgElement = document.createElement('div');
+                    preNode = element.parentNode;
+                    svgElement.innerHTML = svg;
+                    svgElement.setAttribute('class', 'mermaid');
+                    svgElement.setAttribute('data-processed', 'true');
+                    preNode.parentNode.replaceChild(svgElement, preNode);
+                }
+            }
+        }
+    });
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 陈草头 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="陈草头 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 陈草头" class="blog-button">陈草头</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">越名教而任自然</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        <!-- 
+        <p class="panel-cover__description"><a href="https://caotouchan.github.io" target="_blank">我的主页</a></p>
+         -->
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">博客</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/lookka520" title="@lookka520 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/caotouchan" title="@caotouchan 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:caotouchan@outlook.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-06-05 00:01:01 +0800" itemprop="datePublished" class="post-meta__date date">2019-06-05</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">数据结构和算法（01）：链表</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="链表结构">链表结构</h2>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4hslsz71zj30h4061mxb.jpg" alt="" /></p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79ly1g4hsm586h2j30h5062wen.jpg" alt="" /></p>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4hsmejoe8j30h6065weo.jpg" alt="" /></p>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4hsml8sv9j30gw07kq3a.jpg" alt="" /></p>
+
+<h2 id="时间复杂度以及双向链表的优势">时间复杂度以及双向链表的优势</h2>
+
+<p>理论上，单链表的插入、删除操作时间复杂度都是 O(1) ，而随机访问元素的时间复杂度是 O(n)。</p>
+
+<p>在实际的软件开发中，从链表中删除一个数据无外乎这两种情况：</p>
+
+<ol>
+  <li>删除结点中“值等于某个给定值”的结点；</li>
+  <li>删除给定指针指向的结点。</li>
+</ol>
+
+<p>对于第一种情况，无论是单链表还是双向链表，单纯删除操作时间复杂度是 O(1)，但是遍历查找复杂度是 O(n)。</p>
+
+<p>对于第二种情况，双向链表可以直接获取前驱节点再执行操作，时间复杂度是 O(1)。</p>
+
+<p>对于一个有序链表，双向链表的按值查询的效率比较高 —— 因为可以记录上次查找的位置 p，每次查询时，根据要查找的值与 p 的大小关系，决定是往前还是往后查找，所以平均只需要查找一半的数据。</p>
+
+<h2 id="和数组的对比">和数组的对比</h2>
+
+<ul>
+  <li>数组</li>
+</ul>
+
+<ol>
+  <li>连续内存空间，可以借助 CPU 缓存机制，访问效率高。</li>
+  <li>大小固定，扩容时数组拷贝费时</li>
+</ol>
+
+<ul>
+  <li>链表</li>
+</ul>
+
+<ol>
+  <li>不是连续存储，无法有效预读。</li>
+  <li>天然支持动态扩容</li>
+</ol>
+
+<h2 id="相关算法题总结">相关算法题总结</h2>
+
+<h3 id="leetcode-876-middle-of-the-linked-list">LeetCode 876. Middle of the Linked List</h3>
+
+<p>寻找单向链表的中间节点。</p>
+
+<p>可以设置两个指针 fast 和 slow 指向 head。以 fast 步长为 2，slow 步长为 1开始循环遍历链表。当 fast 指针遍历到尾节点或者 NULL 时结束循环。此时，slow 指向的节点就是中间节点。</p>
+
+<h3 id="leetcode-206-reverse-linked-list">LeetCode 206. Reverse Linked List</h3>
+
+<p>反转单向链表。</p>
+
+<p>设链表为 head -&gt; … -&gt; cur -&gt; a -&gt; b。则获取 a 之后，cur.next = b，a.next= head，head = a。完成一个反转。循环直至结束。</p>
+
+<p>核心代码如下。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span>
+<span class="k">while</span> <span class="n">cur</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">cur</span><span class="o">.</span><span class="nb">next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="nb">next</span>
+        <span class="n">cur</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="nb">next</span>
+        <span class="n">n</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">n</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">break</span>
+<span class="k">return</span> <span class="n">head</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-237-delete-node-in-a-linked-list">LeetCode 237. Delete Node in a Linked List</h3>
+
+<p>给定 node 指针删除单向链表节点。</p>
+
+<p>直接使用 node.next.val 替换 node.val，然后改变指针指向。</p>
+
+<h3 id="leetcode-21-merge-two-sorted-lists">LeetCode 21. Merge Two Sorted Lists</h3>
+
+<p>合并两个排序链表。</p>
+
+<p>设置冗余节点 dummy 作为头结点。双指针遍历链表接到 dummy 之后，返回 dummy.next。</p>
+
+<h3 id="leetcode-83-remove-duplicates-from-sorted-list">LeetCode 83. Remove Duplicates from Sorted List</h3>
+
+<p>移除排序链表的重复元素。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">head</span>
+<span class="k">while</span> <span class="n">cur</span> <span class="ow">and</span> <span class="n">cur</span><span class="o">.</span><span class="nb">next</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">cur</span><span class="o">.</span><span class="nb">next</span><span class="o">.</span><span class="n">val</span> <span class="o">==</span> <span class="n">cur</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+        <span class="n">cur</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="nb">next</span><span class="o">.</span><span class="nb">next</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="nb">next</span>
+<span class="k">return</span> <span class="n">head</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-141-linked-list-cycle">LeetCode 141. Linked List Cycle</h3>
+
+<p>检查链表是否循环链表。</p>
+
+<p>设置快慢指针 fast （步长为 2） 和 slow （步长为 1）。如果有一个遍历到空值，则不是循环链表。如果有有一个追上另一个（表现为 fast.val 等于 slow.val），则存在循环。</p>
+
+<h3 id="leetcode-234-palindrome-linked-list">LeetCode 234. Palindrome Linked List</h3>
+
+<p>检查单向链表是否回文链表。</p>
+
+<p>首先找到链表的中间节点（见 LeetCode 876）。此时 slow 为中间节点。</p>
+
+<p>然后反转 slow 之后的节点（见 LeetCode 206）。</p>
+
+<p>此时，如果是回文链表则可以从头指针和中间节点指针后遍历得到相同的值。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">isPalindrome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">):</span>
+        <span class="s">"""
+        :type head: ListNode
+        :rtype: bool
+        """</span>
+        <span class="n">slow</span> <span class="o">=</span> <span class="n">fast</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="k">while</span> <span class="n">fast</span> <span class="ow">and</span> <span class="n">fast</span><span class="o">.</span><span class="nb">next</span><span class="p">:</span>
+            <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">.</span><span class="nb">next</span><span class="o">.</span><span class="nb">next</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="nb">next</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">while</span> <span class="n">slow</span><span class="p">:</span>
+            <span class="n">nextNode</span> <span class="o">=</span> <span class="n">slow</span><span class="o">.</span><span class="nb">next</span>
+            <span class="n">slow</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">slow</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">nextNode</span>
+        <span class="k">while</span> <span class="n">node</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">val</span> <span class="o">!=</span> <span class="n">head</span><span class="o">.</span><span class="n">val</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="nb">next</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="nb">next</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-203-remove-linked-list-elements">LeetCode 203. Remove Linked List Elements</h3>
+
+<p>移除链表中值为 val 的所有元素。</p>
+
+<p>设置 dummy 指针指向 head 节点。设置 cur = dummy。遍历链表，如 cur.next 等于 val，则 cur.next = cur.next.next。返回 dummy.next。</p>
+
+<h3 id="leetcode-160-intersection-of-two-linked-lists">LeetCode 160. Intersection of Two Linked Lists</h3>
+
+<p>获取两个单项链表的交点（如下图，返回 8），不相交则返回 NULL。</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4hsmvvf4oj30cd03umx1.jpg" alt="" /></p>
+
+<p>设置指针 pa 和 pb 指向各自链表的访问位置，开始遍历链表。</p>
+
+<p>当遍历到 null 节点时指针指向另一个链表。如果这个过程中遍历到值相等的节点，则返回。</p>
+
+<blockquote>
+  <p>设 len(A) = a + c，a 为相交节点及之前节点长度，c 为之后。len(B) = b + c。
+如果存在相交节点，则有 (a + c) + b == (b + c) + a</p>
+</blockquote>
+
+<h3 id="leetcode-328-odd-even-linked-list">LeetCode 328. Odd Even Linked List</h3>
+
+<p>将单向链表中，索引计数为双数的节点，接到索引计数为单数的节点后。如：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL
+Output: 1-&gt;3-&gt;5-&gt;2-&gt;4-&gt;NULL
+</code></pre></div></div>
+
+<p>代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">oddEvenList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListNode</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">head</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">head</span>
+        <span class="n">odd_head</span> <span class="o">=</span> <span class="n">odd</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="n">even_head</span> <span class="o">=</span> <span class="n">even</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="nb">next</span>
+        <span class="k">while</span> <span class="n">odd</span> <span class="ow">and</span> <span class="n">even</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">even</span><span class="o">.</span><span class="nb">next</span><span class="p">:</span>
+                <span class="n">odd</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">even</span><span class="o">.</span><span class="nb">next</span>
+                <span class="n">odd</span> <span class="o">=</span> <span class="n">odd</span><span class="o">.</span><span class="nb">next</span>
+                <span class="n">even</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">odd</span><span class="o">.</span><span class="nb">next</span>
+                <span class="n">even</span> <span class="o">=</span> <span class="n">even</span><span class="o">.</span><span class="nb">next</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="n">odd</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">even_head</span>  <span class="c1"># 记得把 odd 指针指向 even 链表部分的 “头” 节点
+</span>        <span class="k">return</span> <span class="n">head</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-86-partition-list">LeetCode 86. Partition List</h3>
+
+<p>给定链表和一个值 x，把链表中小于 x 的节点全部放到大于等于 x 的节点前，这两部分（小于 和 大于等于）需要保留各自的原始顺序。比如：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: head = 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;2, x = 3
+Output: 1-&gt;2-&gt;2-&gt;4-&gt;3-&gt;5
+</code></pre></div></div>
+
+<p>设置两个链表partition 各自的 dummy 指针和当前指针。遍历链表，如果当前的节点小于 x ，则接到 小于的那部分，反之为大于等于那部分，更新当前指针和遍历链表的指针。代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">partition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListNode</span><span class="p">:</span>
+        <span class="n">dummy_lt</span> <span class="o">=</span> <span class="n">lt</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">dummy_gt</span> <span class="o">=</span> <span class="n">gt</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">head</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">head</span><span class="o">.</span><span class="n">val</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">:</span>
+                <span class="n">lt</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">head</span>
+                <span class="n">lt</span> <span class="o">=</span> <span class="n">lt</span><span class="o">.</span><span class="nb">next</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">gt</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">head</span>
+                <span class="n">gt</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="nb">next</span>
+            <span class="n">head</span> <span class="o">=</span> <span class="n">head</span><span class="o">.</span><span class="nb">next</span>
+        <span class="n">gt</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">lt</span><span class="o">.</span><span class="nb">next</span> <span class="o">=</span> <span class="n">dummy_gt</span><span class="o">.</span><span class="nb">next</span>
+        <span class="k">return</span> <span class="n">dummy_lt</span><span class="o">.</span><span class="nb">next</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-148-sort-list">LeetCode 148. Sort List</h3>
+
+<p>对链表进行排序，要求 O(n log n) 的时间复杂度和常数空间复杂度。</p>
+
+<p>首先找到中间节点，然后使用归并排序就可以了。</p>
+
+<h3 id="leetcode-19-remove-nth-node-from-end-of-list">LeetCode 19. Remove Nth Node From End of List</h3>
+
+<h3 id="leetcode-82-remove-duplicates-from-sorted-list-ii">LeetCode 82. Remove Duplicates from Sorted List II</h3>
+
+<h3 id="leetcode-142-linked-list-cycle-ii">LeetCode 142. Linked List Cycle II</h3>
+
+<h3 id="leetcode-2-add-two-numbers">LeetCode 2. Add Two Numbers</h3>
+
+<h3 id="leetcode-143-reorder-list">LeetCode 143. Reorder List</h3>
+
+<h3 id="leetcode-61-rotate-list">LeetCode 61. Rotate List</h3>
+
+<h3 id="leetcode-138-copy-list-with-random-pointer">LeetCode 138. Copy List with Random Pointer</h3>
+
+<h3 id="leetcode-25-reverse-nodes-in-k-group">LeetCode 25. Reverse Nodes in k-Group</h3>
+
+<h3 id="leetcode-23-merge-k-sorted-lists">LeetCode 23. Merge k Sorted Lists</h3>
+
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-intro/" title="link to Elasticsearch 实战（01）综述">Elasticsearch 实战（01）综述</a></h2>
+       <p class="excerpt">综述Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分析，其高性能和易扩展、易使用性受到众多公司的青睐。这个系列文章基于 Elasticsearch 7.0 进行探索和实践，参考 极客时间的 《 Elasticsearch核心技术与实战 》 系列专栏。分布式架构集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot &amp; Warm 架构。集成方式      支持多种编程语言类库，如 Java/.NE...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-26 18:46:01 +0800" class="post-list__meta--date date">2019-06-26</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-intro/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/05/model-compress/" title="link to 模型压缩">模型压缩</a></h2>
+       <p class="excerpt">Network Pruning （网络剪枝）从权重和神经元的角度考虑，网络经常是 over-parameterized 的。所以，我们通过剪枝来缩小网络规模。(Yann Le Cun et al., 1990)流程graph TD;A(预训练网络_网络较大) --&gt; B[评估重要性];B --&gt; C[去除部分_网络较小];C --&gt; D[微调];D --&gt; E{符合条件吗};E --&gt;|是|F[更小的网络];E --&gt;|否|B  重要性的评估可以有：  ...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-05-30 14:50:01 +0800" class="post-list__meta--date date">2019-05-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/05/model-compress/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+
+  
+
+  <!-- Gitalk 评论 start  -->
+  
+    <!-- Link Gitalk 的支持文件  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: '6005df5e831456f4482b',
+        clientSecret: 'ffc57d242198e14cdb68b7457a765d0b719415fb',
+        repo: 'caotouchan.github.io',
+        owner: 'CaoTouChan',
+        admin: ['CaoTouChan'],
+        id: window.location.pathname,
+      });
+      gitalk.render('gitalk-container');
+    </script>
+  
+  <!-- Gitalk end -->
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">本站由 <a href="https://caotouchan.github.io">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
