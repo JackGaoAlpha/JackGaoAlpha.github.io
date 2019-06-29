@@ -5,8 +5,8 @@
     <description>90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 29 Jun 2019 10:05:49 +0800</pubDate>
-    <lastBuildDate>Sat, 29 Jun 2019 10:05:49 +0800</lastBuildDate>
+    <pubDate>Sat, 29 Jun 2019 10:37:44 +0800</pubDate>
+    <lastBuildDate>Sat, 29 Jun 2019 10:37:44 +0800</lastBuildDate>
     <generator>Jekyll v3.8.5</generator>
     
       <item>
@@ -895,6 +895,310 @@ bin/logstash &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; /YOUR_PATH_of_logs
         <pubDate>Wed, 26 Jun 2019 18:46:01 +0800</pubDate>
         <link>http://localhost:4000/2019/06/ES-intro/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/06/ES-intro/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>数据结构和算法（04）：排序</title>
+        <description>&lt;h2 id=&quot;各类排序算法图解&quot;&gt;各类排序算法图解&lt;/h2&gt;
+
+&lt;h3 id=&quot;冒泡排序&quot;&gt;冒泡排序&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4hthrr1wzj30gu0az75s.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;插入排序&quot;&gt;插入排序&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4htiakjjmj30950auta1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;选择排序&quot;&gt;选择排序&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4htih8x6mj309d071wf5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;归并排序&quot;&gt;归并排序&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79ly1g4htiop01yj309507pdh1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;快速排序&quot;&gt;快速排序&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4htix69nkj309008pq36.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;桶排序&quot;&gt;桶排序&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79ly1g4htj6ba46j309705t0t8.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;计数排序&quot;&gt;计数排序&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4htjdp50qj30c00fn75y.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;基数排序&quot;&gt;基数排序&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79ly1g4htjka75qj309a04x749.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;排序算法比较&quot;&gt;排序算法比较&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;算法&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;时间复杂度（平均）&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;时间复杂度（最好）&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;时间复杂度（最坏）&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;基于比较&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;原地排序&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;是否稳定&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;冒泡&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;插入&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;选择&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;否&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;快排&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(nlogn)&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(nlogn)&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;否&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;归并&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(nlogn)&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(nlogn)&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(nlogn)&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;否&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;桶&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;否&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;否&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;计数&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(n+k)&lt;/script&gt; [k 是数据范围]&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;否&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;否&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;基数&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;O(dn)&lt;/script&gt; [d 是维度]&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt; &lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;否&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;否&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;是&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;常见问题&quot;&gt;常见问题&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;插入排序和冒泡排序的时间复杂度相同，都是 &lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;，在实际的软件开发里，为什么我们更倾向于使用插入排序算法而不是冒泡排序算法呢？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;从代码实现上来看，冒泡排序的数据交换要比插入排序的数据移动要复杂，冒泡排序需要 3 个赋值操作，而插入排序只需要 1 个。示例代码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;冒泡排序中数据的交换操作：&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 交换&lt;/span&gt;
+   &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;插入排序中数据的移动操作：&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 数据移动&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;插入排序可以怎么优化？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F&quot;&gt;&lt;strong&gt;希尔排序&lt;/strong&gt;&lt;/a&gt;  是简单插入排序经过改进之后的一个更高效的版本，也称为缩小增量排序。它把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。其最坏时间复杂度依然为 &lt;script type=&quot;math/tex&quot;&gt;O(n^2)&lt;/script&gt;，一些经过优化的增量序列如 Hibbard 经过复杂证明可使得最坏时间复杂度为 &lt;script type=&quot;math/tex&quot;&gt;O(n^{3/2})&lt;/script&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79ly1g4htjuxowcj30hc0jpq4j.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/chengxiao/p/6104371.html&quot;&gt;图片来源&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如何根据年龄给 100 万用户排序？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;有几种时间复杂度是 &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt; 的排序算法：桶排序、计数排序、基数排序。因为这些排序算法的时间复杂度是线性的，所以叫作 &lt;strong&gt;线性排序&lt;/strong&gt; 。&lt;/p&gt;
+
+&lt;p&gt;假设年龄的范围最小 1 岁，最大不超过 120 岁。我们可以遍历这 100 万用户，根据年龄将其划分到这 120 个桶里，然后依次顺序遍历这 120 个桶中的元素。这样就得到了按照年龄排序的 100 万用户数据。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;快排在最坏情况下的时间复杂度是 &lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;，而归并排序可以做到平均情况、最坏情况下的时间复杂度都是 &lt;script type=&quot;math/tex&quot;&gt;O(nlogn)&lt;/script&gt;，为什么使用归并排序的情况其实并不多？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;归并排序并不是原地排序算法，空间复杂度是 &lt;script type=&quot;math/tex&quot;&gt;O(n)&lt;/script&gt;。所以，夸张点讲，如果要排序 100MB 的数据，除了数据本身占用的内存之外，排序算法还要额外再占用 100MB 的内存空间，空间耗费就翻倍了。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;如何优化快速排序？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果数据原来就是 &lt;strong&gt;有序的或者接近有序的&lt;/strong&gt;，每次分区点都选择最后一个数据，那快速排序算法时间复杂度就会退化为 &lt;script type=&quot;math/tex&quot;&gt;O(n^{2})&lt;/script&gt;。所以，关键在于 &lt;strong&gt;选择合理的分区点&lt;/strong&gt;。选择的方法比较常用的有：&lt;/p&gt;
+
+&lt;p&gt;① 三数取中法：取首、尾、中三个数的中间值作为分区点。数据较大时可以取五个数、十个数之类。&lt;/p&gt;
+
+&lt;p&gt;② 随机法：每次从要排序的区间中，随机选择一个元素作为分区点。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;快排使用了递归，如何 “避免” 堆栈溢出？&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;① 限制递归深度。一旦递归过深超过阈值，就停止递归。&lt;/p&gt;
+
+&lt;p&gt;② 通过在堆上模拟实现一个函数调用栈（如 Glibc 中的 &lt;code class=&quot;highlighter-rouge&quot;&gt;qsort()&lt;/code&gt; 函数），手动模拟递归压栈、出栈的过程，这样就没有了系统栈大小的限制。&lt;/p&gt;
+
+&lt;h2 id=&quot;算法题&quot;&gt;算法题&lt;/h2&gt;
+
+&lt;h3 id=&quot;leetcode-922-sort-array-by-parity-ii&quot;&gt;LeetCode 922. Sort Array By Parity II&lt;/h3&gt;
+
+&lt;p&gt;将数组排序，要求奇数位置的元素是奇数，偶数位置的元素是偶数。&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sortArrayByParityII&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;even&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;odd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;leetcode-349-intersection-of-two-arrays&quot;&gt;LeetCode 349. Intersection of Two Arrays&lt;/h3&gt;
+
+&lt;p&gt;求两个数组的交集。&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# 解法一
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;intersection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+		
+&lt;span class=&quot;c1&quot;&gt;# 解法二
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;set_intersection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;intersection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;set1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;set2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_intersection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_intersection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;set1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;leetcode-350-intersection-of-two-arrays-ii&quot;&gt;LeetCode 350. Intersection of Two Arrays II&lt;/h3&gt;
+
+&lt;p&gt;两个数组的交集，注意相同元素可以出现多次。解题思路是使用哈希表计数后返回交集。&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;intersect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collections&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elements&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;leetcode-242-valid-anagram&quot;&gt;LeetCode 242. Valid Anagram&lt;/h3&gt;
+
+&lt;p&gt;字符串 s 是 字符串 t 的 Anagram 是指 s 调换字符顺序可以变成 t，如：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Input: s = &quot;anagram&quot;, t = &quot;nagaram&quot;
+Output: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;一种解法是两个字符串排序后进行对比。第二种解法是使用哈希表对字符进行计数。&lt;/p&gt;
+
+&lt;h3 id=&quot;leetcode-75-sort-colors&quot;&gt;LeetCode 75. Sort Colors&lt;/h3&gt;
+
+&lt;p&gt;将包含 0, 1, 2 三种数字的数组排序。&lt;/p&gt;
+
+&lt;p&gt;这个问题也叫荷兰旗问题（三色旗排序）。讲解参考 &lt;a href=&quot;https://www.youtube.com/watch?v=ER4ivZosqCg&quot;&gt;链接&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;sortColors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;elif&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;mid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;leetcode-179-largest-number&quot;&gt;LeetCode 179. Largest Number&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Input: [3,30,34,5,9]
+Output: &quot;9534330&quot;
+
+Input: [10,2]
+Output: &quot;210&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;两两拼接后排序。&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LargerNumKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__lt__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;
+        
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Solution&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;largestNumber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;largest_num&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sorted&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nums&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LargerNumKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'0'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;largest_num&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'0'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;largest_num&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 05 Jun 2019 00:02:04 +0800</pubDate>
+        <link>http://localhost:4000/2019/06/alg-sort/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/06/alg-sort/</guid>
         
         
       </item>
@@ -2312,515 +2616,6 @@ CMD [&quot;./app&quot;]
         <pubDate>Mon, 27 May 2019 14:50:01 +0800</pubDate>
         <link>http://localhost:4000/2019/05/struc-04/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/05/struc-04/</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>结构化学习（3）：结构化 SVM</title>
-        <description>&lt;p&gt;上一篇文章 &lt;a href=&quot;https://caotouchan.github.io/2019/05/struc-02/&quot;&gt;《结构化学习（2）：结构化线性模型》&lt;/a&gt; 提出一个线性模型来解决结构化学习。&lt;/p&gt;
-
-&lt;p&gt;对于&lt;strong&gt;问题一&lt;/strong&gt;（定义 $F(x,y)$），在这个模型中，我们预设 $F(x, y)$ 是 linear 的，其中加入了很多人工的特征。但是 &lt;strong&gt;如果 $F(x,y)$不是线性的呢 ？ 如果我们不想要做这么多人工特征工程呢 ？&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;对于&lt;strong&gt;问题二&lt;/strong&gt; (解决 arg max 问题)，我们&lt;strong&gt;穷举&lt;/strong&gt;所有可能得 $y$。我们是否能找到一些方法简化这个问题？ 事实上，在不同问题上，我们可能会有不同的方法来应对这个问题。比如 ——&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Object Detection : Branch and Bound algorithm 、Selective Search&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Sequence Labeling : Viterbi Algorithm&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;使用什么算法来应对这个问题，取决于 $\phi(x,y)$。如果不知道如何解这个 QP，也可以使用 &lt;strong&gt;Genetic Algorithm&lt;/strong&gt; 来尝试解决。&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;OPEN QUESTION: 如果 Inference 阶段无法得到一个确切的结果呢？&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;对于 &lt;strong&gt;问题 3&lt;/strong&gt; ，我们的目标是给定数据找到 $F(x,y)$）。下文将讲解这个问题。&lt;/p&gt;
-
-&lt;h2 id=&quot;线性可分-structured-perceptron&quot;&gt;线性可分 （Structured Perceptron）&lt;/h2&gt;
-
-&lt;h3 id=&quot;算法描述&quot;&gt;算法描述&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www.caotouchan.tech/2019/05/25/%E7%BB%93%E6%9E%84%E5%8C%96%E5%AD%A6%E4%B9%A0%EF%BC%882%EF%BC%89%EF%BC%9A%E7%BB%93%E6%9E%84%E5%8C%96%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/&quot;&gt;上一篇文章&lt;/a&gt; 中，我们对提出的线性模型的解决方案描述如下：&lt;/p&gt;
-
-&lt;p&gt;对于输入：
-&lt;script type=&quot;math/tex&quot;&gt;\text { Input: training data set }\left\{\left(x^{1}, \hat{y}^{1}\right)\left(x^{2}, \hat{y}^{2}\right) \ldots,\left(x^{r}, \hat{y}^{r}\right) \ldots\right\}&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;我们的输出是：
-&lt;script type=&quot;math/tex&quot;&gt;\text { Output: weight vector w }&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;算法如下：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;$ 初始化 \space w = 0$&lt;/p&gt;
-
-  &lt;p&gt;$do : $&lt;/p&gt;
-
-  &lt;p&gt;$\space \space 对于每个训练样本对\space \left(x^{r}, \hat{y}^{r}\right) $&lt;/p&gt;
-
-  &lt;p&gt;$\space \space \space \space 找到标签\space \tilde{y}^{r} \space 以最大化 \space w \cdot \phi\left(x^{r}, y\right) ：$&lt;/p&gt;
-
-  &lt;p&gt;$\space \space \space \space\space \space \space \space \widetilde{y}^{r}=\arg \max _{y \in Y} w \cdot \phi\left(x^{r}, y\right)(\text { 问题 2 } )$&lt;/p&gt;
-
-  &lt;p&gt;$ \space \space \space \space \text { 如果 } \tilde{y}^{r} \neq \hat{y}^{r}, \text { 更新 } \mathbf{w} ： $&lt;/p&gt;
-
-  &lt;p&gt;$\space \space \space \space\space \space \space \space w \rightarrow w+\phi\left(x^{r}, \hat{y}^{r}\right)-\phi\left(x^{r}, \widetilde{y}^{r}\right) $&lt;/p&gt;
-
-  &lt;p&gt;$ 直到 w 不再更新 \rightarrow 结束循环$&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;收敛性及其证明&quot;&gt;收敛性及其证明&lt;/h3&gt;
-
-&lt;p&gt;这个算法是否会收敛？实际上，它是否收敛和 $y$ 的空间没有关系：&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;在线性可分的案例中，只需要更新最多 $(R / \delta)^{2}$ 次，就能找到 $\widehat{W}$ 。
-其中，$\delta$ 是间隔（ margin ），$R$ 是 $\phi(x, y)$ 和 $\phi\left(x, y^{\prime}\right)$ 之间的最大距离&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;证明如下。&lt;/p&gt;
-
-&lt;p&gt;算法的更新公式是：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;w^{k}=w^{k-1}+\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)&lt;/script&gt;
-
-&lt;p&gt;设$\delta$ 是间隔（ margin ），$R$ 是 $\phi(x, y)$ 和 $\phi\left(x, y^{\prime}\right)$ 之间的最大距离，$\rho_{\mathrm{k}} $ 是 $\hat{\boldsymbol{w}} $ 和 $\mathbf{w}^{\mathbf{k}}$ 之间的夹角，则：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\cos \rho_{k}=\frac{\hat{w}}{\|\hat{w}\|} \cdot \frac{w^{k}}{\left\|w^{k}\right\|}&lt;/script&gt;
-
-&lt;p&gt;其中：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{w} \cdot w^{k}=\hat{w} \cdot\left(w^{k-1}+\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)\right)&lt;/script&gt;
-
-&lt;p&gt;即：
-&lt;script type=&quot;math/tex&quot;&gt;\hat{w} \cdot w^{k}= \hat{w} \cdot w^{k-1}+\hat{w} \cdot \phi\left(x^{n}, \hat{y}^{n}\right)-\hat{w} \cdot \phi\left(x^{n}, \tilde{y}^{n}\right)&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;所以：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{w} \cdot w^{k} \geq \hat{w} \cdot w^{k-1}+\delta&lt;/script&gt;
-
-&lt;p&gt;也就是：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\hat{w} \cdot w^{1} \geq \hat{w} \cdot w^{0}+\delta} \\ {\hat{w} \cdot w^{1} \geq \delta}\end{array}
-
-\begin{array}{l}{\hat{w} \cdot w^{2} \geq \hat{w} \cdot w^{1}+\delta} \\ {\hat{w} \cdot w^{2} \geq 2 \delta}\end{array}
-
-\begin{array}{l}{...} \\ {...}\end{array}&lt;/script&gt;
-
-&lt;p&gt;所以可以得到：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{w} \cdot w^{k} \geq k \delta&lt;/script&gt;
-
-&lt;p&gt;也就是 $\hat{w}$ 和 $w^{k}$ 的内积在增加。&lt;/p&gt;
-
-&lt;p&gt;不是一般性的，有：$|\widehat{W}|=1$ （ $\hat{w} \cdot \phi\left(x^{n}, \hat{y}^{n}\right) \geq \hat{w} \cdot \phi\left(x^{n}, y\right)+\delta$ 进行正则）&lt;/p&gt;
-
-&lt;p&gt;如果我们能&lt;strong&gt;证明 ${\left|w^{k}\right|}$ 增加不那么快&lt;/strong&gt;，那么相当于知道 $\hat{w}$ 和 $w^{k}$  两者的距离逐渐接近 —— 越来越收敛。&lt;/p&gt;
-
-&lt;p&gt;由 ：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;w^{k}=w^{k-1}+\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)&lt;/script&gt;
-
-&lt;p&gt;有：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\left\|w^{k}\right\|^{2}=\| w^{k-1}+\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left.\left(x^{n}, \widetilde{y}^{n}\right)\right|^{2}} \\ {=\left\|w^{k-1}\right\|^{2}+\| \phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left.\left(x^{n}, \widetilde{y}^{n}\right)\right|^{2}+2 w^{k-1} \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)\right)}\end{array}&lt;/script&gt;
-
-&lt;p&gt;因为更新过程是做 $arg \space max$ 操作，然后纠正方向，故&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;w^{k-1} \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, \widetilde{y}^{n}\right)\right) \lt 0&lt;/script&gt;
-
-&lt;p&gt;而&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\| \phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left.\left(x^{n}, \widetilde{y}^{n}\right)\right|^{2} \gt 0&lt;/script&gt;
-
-&lt;p&gt;由上可知：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\left\|w^{k}\right\|^{2} \leq\left\|\boldsymbol{w}^{k-1}\right\|^{2}+\mathbf{R}^{2}&lt;/script&gt;
-
-&lt;p&gt;所以可以得到 $\left|w^{k}\right|^{2} $ 的 upper bound：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\left\|w^{1}\right\|^{2} \leq\left\|w^{0}\right\|^{2}+\mathrm{R}^{2}=\mathrm{R}^{2}} \\
-{\left\|w^{2}\right\|^{2} \leq\left\|w^{1}\right\|^{2}+\mathrm{R}^{2} \leq 2 \mathrm{R}^{2}} \\
-... \\
-{\left\|w^{k}\right\|^{2} \leq k \mathrm{R}^{2}}\end{array}&lt;/script&gt;
-
-&lt;p&gt;到此，我们有：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{aligned} \cos \rho_{k}=&amp; \frac{\hat{w}}{\|\hat{w}\|} \cdot \frac{w^{k}}{\left\|w^{k}\right\|} \\ &amp; \geq \frac{k \delta}{\sqrt{k R^{2}}}=\sqrt{k} \frac{\delta}{R} \end{aligned} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gsyl1p5ej30qy0m0q4k.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;所以：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\sqrt{k} \frac{\delta}{R} \leq 1} \\ {k \leq\left(\frac{R}{\delta}\right)^{2}}\end{array}&lt;/script&gt;
-
-&lt;p&gt;到此，收敛性得以证明。&lt;/p&gt;
-
-&lt;h2 id=&quot;非线性可分&quot;&gt;非线性可分&lt;/h2&gt;
-
-&lt;p&gt;当数据非线性可分的时候，有些 weight vector 也会比其他的 weight vectors 好，如下图，$W^{\prime}$ 好于 $W^{\prime \prime}$：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gszdjr6tj30tw0go0tk.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;定义代价函数&quot;&gt;定义代价函数&lt;/h3&gt;
-
-&lt;p&gt;定义代价函数 $C$ 来衡量 $w$ 有多差，然后选择 $w$ 来最小化 $C$ 。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt0k4iyij31000giwfk.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;PS : 选择最大间距那个（$\max _{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]$） 而不是前三个之和、前十个和的均值或者其他，是因为我们（假设）问题二的 $arg \space max$ 已经被解决。如果使用其他来进行计算，实际上是复杂化了这个问题。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;随机梯度下降求解&quot;&gt;随机梯度下降求解&lt;/h3&gt;
-
-&lt;p&gt;那么如何求解梯度 $\nabla C^{n}$ 呢 ？&lt;/p&gt;
-
-&lt;p&gt;考虑公式 $C^{n}=\max _{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)$ 中 $\max _{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]$ ，$y$ 会随着 $w$ 的不同而变化。&lt;/p&gt;
-
-&lt;p&gt;假设下图是 $w$ 的空间，$\operatorname{argmax}_{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]$ 在不同的$w$ 下对应不同的 $y$ ($y^{\prime}、y^{\prime\prime}、y^{\prime\prime\prime} … $)：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gt0y8e61j30uw0j6wev.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;也就是在各自的 region 中，$\operatorname{argmax}_{y}\left[w \cdot \phi\left(x^{n}, y\right)\right] = y^{\prime} 、y^{\prime\prime}、y^{\prime\prime\prime} … $。&lt;/p&gt;
-
-&lt;p&gt;我们知道，$y^{\prime} = w \cdot \phi\left(x^{n}, y^{\prime}\right) -w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)$，故 $\nabla C^{n} =\phi\left(x^{n}, y^{\prime}\right) -\phi\left(x^{n}, \hat{y}^{n}\right)$。$y^{\prime\prime}、y^{\prime\prime\prime} …$ 类似。也就是，在避开边界的地方，实际都是可微的。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt19k5ivj30y60jmdhh.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;所以，更新算法为：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt1jc0hzj30y60jw407.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;衡量错误-修改代价函数&quot;&gt;衡量错误 （修改代价函数）&lt;/h2&gt;
-
-&lt;p&gt;上文中我们把所有的错误视为一样的代价。但实际上不同的错误，可能有的错的少，有的错的多。所以，实际上把错误进行量化会更好。&lt;/p&gt;
-
-&lt;h3 id=&quot;加入-margin&quot;&gt;加入 margin&lt;/h3&gt;
-
-&lt;p&gt;这种衡量的标准在不同的 case 会有所差异。考虑下边的 case：&lt;/p&gt;
-
-&lt;p&gt;定义 $\Delta(\hat{y}, y) : \hat{y} \text { 和 } y \text { 之间的不同 } (&amp;gt;0) $&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt1ub0obj30z40g8wg1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;修改下代价函数为：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C^{n}=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \widehat{y}^{n}\right)&lt;/script&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt24pf29j30qw0hiwfb.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在之前的算法中，我们在每一次迭代里选择训练数据 $ {x^{n}, \hat{y}^{n}} $：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\tilde{y}^{n}=\max _{y}\left[w \cdot \phi\left(x^{n}, y\right)\right]} \\ \\
-{\nabla C^{n}(w)=\phi\left(x^{n}, \tilde{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)} \\ \\
-{w \rightarrow w-\eta\left[\phi\left(x^{n}, \tilde{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)\right]}\end{array}&lt;/script&gt;
-
-&lt;p&gt;一句上述思想修改下：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\overline{y}^{n}=\arg \max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]} \\ \\
-{\nabla C^{n}(w)=\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)} \\ \\
-{w \rightarrow w-\eta\left[\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)\right]}\end{array}&lt;/script&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;上述方法实际上引入了一个新的问题 ： $\Delta\left(\hat{y}^{n}, y\right)$ 。所以设计 $\Delta$ 函数的时候需要考虑是否会使得问题更加复杂。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;另一个视角&quot;&gt;另一个视角&lt;/h3&gt;
-
-&lt;p&gt;最小化代价函数实际上（有可能）等于最小化训练集错误的 upper bound：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C^{\prime}=\sum_{n=1}^{N} \Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right) \leq C=\sum_{n=1}^{N} C^{n}&lt;/script&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;证明&lt;/strong&gt; ：$\Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right) \leq C^{n}$&lt;/p&gt;
-
-  &lt;p&gt;首先，$C^{n}=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)$
-由 $\tilde{y}^{n}=\arg \max _{y} w \cdot \phi\left(x^{n}, y\right)$ 知：$\left[w \cdot \phi\left(x^{n}, \tilde{y}^{n}\right)-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)\right] \geq 0$
-所以：
-&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-\begin{aligned} 
-\Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right) 
-&amp;\leq \Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right)+\left[w \cdot \phi\left(x^{n}, \tilde{y}^{n}\right)-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)\right] \\ 
-&amp;=\left[\Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right)+w \cdot \varphi\left(x^{n}, \tilde{y}^{n}\right)\right]-w \cdot \varphi\left(x^{n}, \hat{y}^{n}\right)\\ 
-&amp; \leq \max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \varphi\left(x^{n}, y\right)\right]-w \cdot \varphi\left(x^{n}, \hat{y}^{n}\right)\\ 
-&amp;=C^{n} \end{aligned} %]]&gt;&lt;/script&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;其他代价函数&quot;&gt;其他代价函数&lt;/h3&gt;
-
-&lt;p&gt;要使得 $\Delta\left(\hat{y}^{n}, \tilde{y}^{n}\right) \leq C^{n}$，也可以选择其他代价函数，比如：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\frac{\text {Margin rescaling:}}{C^{n}=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)}} \\ \\ {\frac{\text {Slack variable rescaling:}}{C^{n}=\max _{\Delta} \Delta\left(\hat{y}^{n}, y\right)\left[1+w \cdot \phi\left(x^{n}, y\right)-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)\right]}}\end{array}&lt;/script&gt;
-
-&lt;h2 id=&quot;正则化&quot;&gt;正则化&lt;/h2&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C=\sum_{n=1}^{N} C^{n} \quad \longrightarrow \quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} C^{n}&lt;/script&gt;
-
-&lt;p&gt;其中，$C^{n}=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \widehat{y}^{n}\right)$。&lt;/p&gt;
-
-&lt;p&gt;每一轮迭代，选择训练数据 ${x^{n}, \hat{y}^{n}}$：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\overline{y}^{n}=\operatorname{argmax}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]} \\ \\
-{\nabla C^{n}=\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)+w} \\ \\
-{w \rightarrow w-\eta\left[\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)\right]-\eta w} \\ \\
-{\quad=(1-\eta) w-\eta\left[\phi\left(x^{n}, \overline{y}^{n}\right)-\phi\left(x^{n}, \hat{y}^{n}\right)\right]}\end{array}&lt;/script&gt;
-
-&lt;h2 id=&quot;结构化-svm--structured-svm-&quot;&gt;结构化 SVM （ Structured SVM ）&lt;/h2&gt;
-
-&lt;h3 id=&quot;目标&quot;&gt;目标&lt;/h3&gt;
-
-&lt;p&gt;由之前的工作，得到：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{aligned} \text { Find } &amp; \text { minimizing } C \\ C &amp;=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} C^{n} \\ C^{n} &amp;=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right) \end{aligned} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;即：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C^{n}+w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)=\max _{y}\left[\Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)\right]&lt;/script&gt;
-
-&lt;p&gt;因为目标是最小化 $C$，故其等价于：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { For } \forall y :} \\ \\
-{\quad C^{n}+w \cdot \phi\left(x^{n}, \hat{y}^{n}\right) \geq \Delta\left(\hat{y}^{n}, y\right)+w \cdot \phi\left(x^{n}, y\right)} \\ \\
-{\quad w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)-w \cdot \phi\left(x^{n}, y\right) \geq \Delta\left(\hat{y}^{n}, y\right)-C^{n}}\end{array}&lt;/script&gt;
-
-&lt;p&gt;也就是，最小化的目标描述等价于：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
-{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
- {\text { For } \forall n :} \\ \\
-{\quad \text { For } \forall y :} \\ \\
- {\quad \quad w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)-w \cdot \phi\left(x^{n}, y\right) \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}}\end{array}&lt;/script&gt;
-
-&lt;p&gt;其中的 $\varepsilon^{n}$ 称为松弛变量（ slack variable ）。&lt;/p&gt;
-
-&lt;p&gt;因为 $\mathrm{y}=\hat{y}^{n}$ 时，有 $w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)-w \cdot \phi\left(x^{n}, \hat{y}^{n}\right) \geq \Delta\left(\hat{y}^{n}, \hat{y}^{n}\right)-\varepsilon^{n}$，故： $\varepsilon^{n} \geq 0$。所以，原来的目标转化为：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
-{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
- {\text { For } \forall n :} \\ \\
-{\quad \text { For } \forall y \neq \hat{y}^{n} :} \\ \\
- {\quad \quad w \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, y\right)\right) \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}, \varepsilon^{n} \geq 0}\end{array}&lt;/script&gt;
-
-&lt;h3 id=&quot;例子&quot;&gt;例子&lt;/h3&gt;
-
-&lt;p&gt;举个直观的例子来解释下这个目标。考虑下图目标检测的例子：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt2hulekj30hk0ahjrr.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;我们需要每个正确的方框和错误的方框之间的距离 满足：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gt2vsjfcj30oz06o3z0.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;但是可能并没有一个 $w$ 会满足这样的条件，所以加入松弛因子来放宽这个限制：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gt33pjfbj30pp06egm5.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;当然，我们希望 $\varepsilon$ 的值越小越好。&lt;/p&gt;
-
-&lt;h3 id=&quot;求解&quot;&gt;求解&lt;/h3&gt;
-
-&lt;p&gt;由上文可以得到目标是：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
-{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
- {\text { For } \forall n :} \\ \\
-{\quad \text { For } \forall y \neq \hat{y}^{n} :} \\ \\
- {\quad \quad w \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, y\right)\right) \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}, \varepsilon^{n} \geq 0}\end{array}&lt;/script&gt;
-
-&lt;p&gt;这是一个 Quadratic Programming (QP) Problem，可以使用各种 QP Problem Solver 来求解，比如 SVM package 的 Solver。但是上述公式中，约束很多，需要寻找一种办法来求解这个问题。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt3deqb2j30qi0ja40h.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;结构化-svm-中的切面算法-cutting-plane-algorithm-&quot;&gt;结构化 SVM 中的切面算法（ Cutting Plane Algorithm ）&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gt3nesiij30bb09zq33.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;图：Depiction of the learning QP and approximated feasibility region &lt;a href=&quot;http://abnerguzman.com/publications/gkb_aistats13.pdf&quot;&gt;来源&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;如上图，解空间约束在一个 “ 平面 ” 内，这个平面带着很多约束。我们将其抽象为下图 $\left(w, \varepsilon^{1}, \ldots, \varepsilon^{N}\right)$ 组成的参数空间。（简化为二维）&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gt3yxzmbj30ci0cggme.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;在不带约束的情况下，最优解容易求得在右下角的蓝点处。但是因为约束（图中各种直线），使得难以求得最优解。&lt;/p&gt;
-
-&lt;p&gt;假设约束下可选参数范围限制在图中间的钻石形状区域。可以看出，大部分约束是无关紧要的（比如图中的绿色线）。所以，如果我们能将 $y$ 限制带一个小集合 $A^{n}$ （称作 Working Set）中，那么将会大大简化求解过程。&lt;/p&gt;
-
-&lt;p&gt;找到 $A^{n}$ 的过程如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gt47gu6sj30oe0eet9z.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;由上可知，找 $A^{n}$ 的主要思路就是每次找到一些元素加入到 $A^{n}$ 中。首先，初始化 $\mathbb{A}^{1} \ldots \mathbb{A}^{N}$，当 $y$ 限制在一个小集合 $\mathbb{A}^{n} $ 时，就可以当做一个 QP Problem 来求解了。然后，我们求得 $w$ ，将新成员加入 $\mathbb{A}^{n} $，然后循环求解。&lt;/p&gt;
-
-&lt;p&gt;以下图解这个过程。&lt;/p&gt;
-
-&lt;p&gt;首先，初始化 $A^{n} = null$ （没有约束），然后求解这个 QP Problem，得到  $w$ 在蓝色星星处。&lt;/p&gt;
-
-&lt;p&gt;然后，寻找没有满足的约束（图中红色线），从中挑选出 the most violated one （下文讲解如何找出）—— 假设是 $\mathrm{y}^{\prime}$ ，将它加入  $\mathbb{A}^{n} $ ：
-&lt;script type=&quot;math/tex&quot;&gt;\begin{equation}
-\mathrm{A}^{n}=\mathrm{A}^{n} \cup\left\{y^{\prime}\right\}
-\end{equation}&lt;/script&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt4gko3rj30b50a9wez.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;重复这个过程，直到求的最优解 w3 处蓝色星星所在位置。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt4oz0k6j30aj07vt95.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;从当前 $A^{n}$ 给定 $\mathrm{w}^{\prime} $ 和 $ \varepsilon^{\prime}$， 如何找到 the most violated one 呢？&lt;/p&gt;
-
-&lt;p&gt;由约束条件 $w \cdot(\phi(x, \hat{y})-\phi(x, y)) \geq \Delta(\hat{y}, y)-\varepsilon$ 可知，不满足于约束意味着 $w^{\prime} \cdot(\phi(x, \hat{y})-\phi(x, y))&amp;lt;\Delta(\hat{y}, y)-\varepsilon^{\prime}$，所以衡量 Violation 的程度为：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta(\hat{y}, y)-\varepsilon^{\prime}-w^{\prime} \cdot(\phi(x, \hat{y})-\phi(x, y))&lt;/script&gt;
-
-&lt;p&gt;因为 $\varepsilon^{\prime}$ 、$w^{\prime}$ 是 fixed 的，$\phi(x, \hat{y})$ 也不影响计算，上式等同于：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Delta(\hat{y}, y)+w^{\prime} \cdot \phi(x, y)&lt;/script&gt;
-
-&lt;p&gt;所以，The most violated one 是：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\arg \max _{y}[\Delta(\hat{y}, y)+w \cdot \phi(x, y)]&lt;/script&gt;
-
-&lt;p&gt;综上，利用切面算法求解的过程如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/large/006tNc79gy1g4gt4xqe0mj30na0ghjsh.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;其中的 QP 为：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt56pvd9j30m807wt93.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;以下图解这个过程：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/large/006tNc79gy1g4gt5hin68j30ob0i5gmg.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt5rtj1xj30pi0jftal.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt628neqj30od0j675s.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt6aiga5j30pl0jc765.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;多分类-svm&quot;&gt;多分类 SVM&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Problem 1: Evaluation&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如果有 K 个分类，那么就有 K 个 weight vectors &lt;script type=&quot;math/tex&quot;&gt;\left\{w^{1}, w^{2}, \cdots, w^{K}\right\}&lt;/script&gt;。那么有：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{y \in\{1,2, \cdots, k, \cdots, K\}} \\ \\
-{F(x, y)=w^{y} \cdot \vec{x}} \\ \\
-{\vec{x} : \text { vector representation of x}}\end{array}&lt;/script&gt;
-
-&lt;p&gt;表示成：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;F(x, y)=w \cdot \phi(x, y)&lt;/script&gt;
-
-&lt;p&gt;其中：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;w=\left( \begin{array}{c}{w^{1}} \\ {w^{2}} \\ {\vdots} \\ {w^{k}} \\ {\vdots} \\ {w^{K}}\end{array}\right) 
-\phi(x, y)=\left( \begin{array}{c}{0} \\ {0} \\ {\vdots} \\ {\vec{x}} \\ {\vdots} \\ {0}\end{array}\right)&lt;/script&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Problem 2: Inference&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{F(x, y)=w^{y} \cdot \vec{x}} \\ \\ 
-{\hat{y}=\arg \max _{y \in\{1,2, \cdots, k, \cdots, K\}} F(x, y)} \\\\ 
-{\quad=\arg \max _{y \in\{1,2, \cdots, k, k\}} w^{y} \cdot \vec{x}}\end{array}&lt;/script&gt;
-
-&lt;p&gt;一般来说，分类都是比较少的，所以可以直接枚举。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Problem 3: Training&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;由前边可知：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
-{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
- {\text { For } \forall n :} \\ \\
-{\quad \text { For } \forall y \neq \hat{y}^{n} :} \\ \\
- {\quad \quad w \cdot\left(\phi\left(x^{n}, \hat{y}^{n}\right)-\phi\left(x^{n}, y\right)\right) \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}, \varepsilon^{n} \geq 0}\end{array}&lt;/script&gt;
-
-&lt;p&gt;因为：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{w \cdot \phi\left(x^{n}, \hat{y}^{n}\right)=w^{\hat{y}^{n}} \cdot \vec{x}} \\ {w \cdot \phi\left(x^{n}, y\right)=w^{y} \cdot \vec{x}}\end{array}&lt;/script&gt;
-
-&lt;p&gt;故调整为：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{l}{\text { Find } w, \varepsilon^{1}, \cdots, \varepsilon^{N} \text { minimizing } C} \\ \\ 
-{\quad C=\frac{1}{2}\|w\|^{2}+\lambda \sum_{n=1}^{N} \varepsilon^{n}} \\ \\
- {\text { For } \forall n :} \\ \\
-{\quad \text { For } \forall y \neq \hat{y}^{n} :} \\ \\
- {\quad \quad \left(w^{\hat{y}^{n}}-w^{y}\right) \cdot \vec{x} \geq \Delta\left(\hat{y}^{n}, y\right)-\varepsilon^{n}, \varepsilon^{n} \geq 0}\end{array}&lt;/script&gt;
-
-&lt;p&gt;因为 $\Delta\left(\hat{y}^{n}, y\right)$ 代表的只是 &lt;code class=&quot;highlighter-rouge&quot;&gt;N * ( K-1 )&lt;/code&gt; 个约束，所以可以自行定义一些约束，比如：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{array}{c}{y \in\{d o g, c a t, b u s, c a r\}} \\ {\Delta\left(\hat{y}^{n}=\operatorname{dog}, y=c a t\right)=1} \\ {\Delta\left(\hat{y}^{n}=\operatorname{dog}, y=b u s\right)=100} \\ {\quad \text { (defined as your wish) }}\end{array}&lt;/script&gt;
-
-&lt;h2 id=&quot;二分类-svm&quot;&gt;二分类 SVM&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt6kzolhj30p70e4dgj.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;beyond-structured-svm&quot;&gt;Beyond Structured SVM&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;使用 DNN 生成特征&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt6ujrrxj30nm06v0st.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Ref: Hao Tang, Chao-hong Meng, Lin-shan Lee, “An initial attempt for phoneme
-recognition using Structured Support Vector Machine (SVM),” ICASSP, 2010
-Shi-Xiong Zhang, Gales, M.J.F., “Structured SVMs for Automatic Speech
-Recognition,” in Audio, Speech, and Language Processing, IEEE Transactions on,
-vol.21, no.3, pp.544-555, March 2013&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;联合训练 SVM 和 DNN&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/large/006tNc79gy1g4gt727ztuj30o2091aab.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Ref: Shi-Xiong Zhang, Chaojun Liu, Kaisheng Yao, and Yifan Gong, “DEEP NEURAL SUPPORT VECTOR MACHINES FOR SPEECH RECOGNITION”, Interspeech 2015&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;使用结构化 SVM 代替 DNN&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/006tNc79gy1g4gt7a2gflj30nx06omxb.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Ref: Yi-Hsiu Liao, Hung-yi Lee, Lin-shan Lee, “Towards Structured Deep Neural Network for Automatic Speech Recognition”, ASRU, 2015&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;有：&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C=\frac{1}{2}\|\theta\|^{2}+\frac{1}{2}\left\|\theta^{\prime}\right\|^{2}+\lambda \sum_{n=1}^{N} C^{n}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C^{n}=\max _{v}\left[\Delta\left(\hat{y}^{n}, y\right)+F\left(x^{n}, y\right)\right]-F\left(x^{n}, \hat{y}^{n}\right)&lt;/script&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=YjvGVVrCrhQ&amp;amp;list=PLJV_el3uVTsNHQKxv49vpq7NSn-zim18V&amp;amp;index=3&quot;&gt;台灣大學 李宏毅 《Structured Learning 3: Structured SVM》&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-        <pubDate>Sun, 26 May 2019 12:50:01 +0800</pubDate>
-        <link>http://localhost:4000/2019/05/struc-03/</link>
-        <guid isPermaLink="true">http://localhost:4000/2019/05/struc-03/</guid>
         
         
       </item>

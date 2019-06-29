@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>数据结构和算法（04）：排序</title>
+  <meta name="description" content="各类排序算法图解">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="数据结构和算法（04）：排序">
+  <meta name="twitter:description" content="各类排序算法图解">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="数据结构和算法（04）：排序">
+  <meta property="og:description" content="各类排序算法图解">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/06/alg-sort/">
+  <link rel="alternate" type="application/rss+xml" title="陈草头" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- 数学公式 -->
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+
+
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 陈草头 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="陈草头 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 陈草头" class="blog-button">陈草头</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">越名教而任自然</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">90 后 | 广东人 | 现居住于帝都 | 算法攻城狮</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        <!-- 
+        <p class="panel-cover__description"><a href="https://caotouchan.github.io" target="_blank">我的主页</a></p>
+         -->
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="访问博客" class="blog-button">博客</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/lookka520" title="@lookka520 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/caotouchan" title="@caotouchan 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:caotouchan@outlook.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-06-05 00:02:04 +0800" itemprop="datePublished" class="post-meta__date date">2019-06-05</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">数据结构和算法（04）：排序</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="各类排序算法图解">各类排序算法图解</h2>
+
+<h3 id="冒泡排序">冒泡排序</h3>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4hthrr1wzj30gu0az75s.jpg" alt="" /></p>
+
+<h3 id="插入排序">插入排序</h3>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4htiakjjmj30950auta1.jpg" alt="" /></p>
+
+<h3 id="选择排序">选择排序</h3>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4htih8x6mj309d071wf5.jpg" alt="" /></p>
+
+<h3 id="归并排序">归并排序</h3>
+
+<p><img src="http://ww2.sinaimg.cn/large/006tNc79ly1g4htiop01yj309507pdh1.jpg" alt="" /></p>
+
+<h3 id="快速排序">快速排序</h3>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4htix69nkj309008pq36.jpg" alt="" /></p>
+
+<h3 id="桶排序">桶排序</h3>
+
+<p><img src="http://ww4.sinaimg.cn/large/006tNc79ly1g4htj6ba46j309705t0t8.jpg" alt="" /></p>
+
+<h3 id="计数排序">计数排序</h3>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79ly1g4htjdp50qj30c00fn75y.jpg" alt="" /></p>
+
+<h3 id="基数排序">基数排序</h3>
+
+<p><img src="http://ww1.sinaimg.cn/large/006tNc79ly1g4htjka75qj309a04x749.jpg" alt="" /></p>
+
+<h2 id="排序算法比较">排序算法比较</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>算法</th>
+      <th style="text-align: right">时间复杂度（平均）</th>
+      <th style="text-align: center">时间复杂度（最好）</th>
+      <th style="text-align: center">时间复杂度（最坏）</th>
+      <th style="text-align: center">基于比较</th>
+      <th style="text-align: center">原地排序</th>
+      <th style="text-align: center">是否稳定</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>冒泡</td>
+      <td style="text-align: right"><script type="math/tex">O(n^{2})</script></td>
+      <td style="text-align: center"><script type="math/tex">O(n)</script></td>
+      <td style="text-align: center"><script type="math/tex">O(n^{2})</script></td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">是</td>
+    </tr>
+    <tr>
+      <td>插入</td>
+      <td style="text-align: right"><script type="math/tex">O(n^{2})</script></td>
+      <td style="text-align: center"><script type="math/tex">O(n)</script></td>
+      <td style="text-align: center"><script type="math/tex">O(n^{2})</script></td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">是</td>
+    </tr>
+    <tr>
+      <td>选择</td>
+      <td style="text-align: right"><script type="math/tex">O(n^{2})</script></td>
+      <td style="text-align: center"><script type="math/tex">O(n^{2})</script></td>
+      <td style="text-align: center"><script type="math/tex">O(n^{2})</script></td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">否</td>
+    </tr>
+    <tr>
+      <td>快排</td>
+      <td style="text-align: right"><script type="math/tex">O(nlogn)</script></td>
+      <td style="text-align: center"><script type="math/tex">O(nlogn)</script></td>
+      <td style="text-align: center"><script type="math/tex">O(n^{2})</script></td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">否</td>
+    </tr>
+    <tr>
+      <td>归并</td>
+      <td style="text-align: right"><script type="math/tex">O(nlogn)</script></td>
+      <td style="text-align: center"><script type="math/tex">O(nlogn)</script></td>
+      <td style="text-align: center"><script type="math/tex">O(nlogn)</script></td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">是</td>
+    </tr>
+    <tr>
+      <td>桶</td>
+      <td style="text-align: right"><script type="math/tex">O(n)</script></td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">是</td>
+    </tr>
+    <tr>
+      <td>计数</td>
+      <td style="text-align: right"><script type="math/tex">O(n+k)</script> [k 是数据范围]</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">是</td>
+    </tr>
+    <tr>
+      <td>基数</td>
+      <td style="text-align: right"><script type="math/tex">O(dn)</script> [d 是维度]</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">是</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="常见问题">常见问题</h2>
+
+<ol>
+  <li>插入排序和冒泡排序的时间复杂度相同，都是 <script type="math/tex">O(n^{2})</script>，在实际的软件开发里，为什么我们更倾向于使用插入排序算法而不是冒泡排序算法呢？</li>
+</ol>
+
+<p>从代码实现上来看，冒泡排序的数据交换要比插入排序的数据移动要复杂，冒泡排序需要 3 个赋值操作，而插入排序只需要 1 个。示例代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">冒泡排序中数据的交换操作：</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">a</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">a</span><span class="o">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="o">])</span> <span class="o">{</span> <span class="c1">// 交换</span>
+   <span class="kt">int</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">a</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+   <span class="n">a</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">a</span><span class="o">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="o">];</span>
+   <span class="n">a</span><span class="o">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">;</span>
+   <span class="n">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="err">插入排序中数据的移动操作：</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">a</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">a</span><span class="o">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">a</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>  <span class="c1">// 数据移动</span>
+<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+  <span class="k">break</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>插入排序可以怎么优化？</li>
+</ol>
+
+<p><a href="https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F"><strong>希尔排序</strong></a>  是简单插入排序经过改进之后的一个更高效的版本，也称为缩小增量排序。它把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。其最坏时间复杂度依然为 <script type="math/tex">O(n^2)</script>，一些经过优化的增量序列如 Hibbard 经过复杂证明可使得最坏时间复杂度为 <script type="math/tex">O(n^{3/2})</script>。</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006tNc79ly1g4htjuxowcj30hc0jpq4j.jpg" alt="" /></p>
+<blockquote>
+  <p><a href="https://www.cnblogs.com/chengxiao/p/6104371.html">图片来源</a></p>
+</blockquote>
+
+<ol>
+  <li>如何根据年龄给 100 万用户排序？</li>
+</ol>
+
+<p>有几种时间复杂度是 <script type="math/tex">O(n)</script> 的排序算法：桶排序、计数排序、基数排序。因为这些排序算法的时间复杂度是线性的，所以叫作 <strong>线性排序</strong> 。</p>
+
+<p>假设年龄的范围最小 1 岁，最大不超过 120 岁。我们可以遍历这 100 万用户，根据年龄将其划分到这 120 个桶里，然后依次顺序遍历这 120 个桶中的元素。这样就得到了按照年龄排序的 100 万用户数据。</p>
+
+<ol>
+  <li>快排在最坏情况下的时间复杂度是 <script type="math/tex">O(n^{2})</script>，而归并排序可以做到平均情况、最坏情况下的时间复杂度都是 <script type="math/tex">O(nlogn)</script>，为什么使用归并排序的情况其实并不多？</li>
+</ol>
+
+<p>归并排序并不是原地排序算法，空间复杂度是 <script type="math/tex">O(n)</script>。所以，夸张点讲，如果要排序 100MB 的数据，除了数据本身占用的内存之外，排序算法还要额外再占用 100MB 的内存空间，空间耗费就翻倍了。</p>
+
+<ol>
+  <li>如何优化快速排序？</li>
+</ol>
+
+<p>如果数据原来就是 <strong>有序的或者接近有序的</strong>，每次分区点都选择最后一个数据，那快速排序算法时间复杂度就会退化为 <script type="math/tex">O(n^{2})</script>。所以，关键在于 <strong>选择合理的分区点</strong>。选择的方法比较常用的有：</p>
+
+<p>① 三数取中法：取首、尾、中三个数的中间值作为分区点。数据较大时可以取五个数、十个数之类。</p>
+
+<p>② 随机法：每次从要排序的区间中，随机选择一个元素作为分区点。</p>
+
+<ol>
+  <li>快排使用了递归，如何 “避免” 堆栈溢出？</li>
+</ol>
+
+<p>① 限制递归深度。一旦递归过深超过阈值，就停止递归。</p>
+
+<p>② 通过在堆上模拟实现一个函数调用栈（如 Glibc 中的 <code class="highlighter-rouge">qsort()</code> 函数），手动模拟递归压栈、出栈的过程，这样就没有了系统栈大小的限制。</p>
+
+<h2 id="算法题">算法题</h2>
+
+<h3 id="leetcode-922-sort-array-by-parity-ii">LeetCode 922. Sort Array By Parity II</h3>
+
+<p>将数组排序，要求奇数位置的元素是奇数，偶数位置的元素是偶数。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sortArrayByParityII</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="n">odd</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">even</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">A</span><span class="p">[</span><span class="n">even</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">while</span> <span class="n">A</span><span class="p">[</span><span class="n">odd</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">odd</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="n">A</span><span class="p">[</span><span class="n">even</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">odd</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">odd</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">even</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">A</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-349-intersection-of-two-arrays">LeetCode 349. Intersection of Two Arrays</h3>
+
+<p>求两个数组的交集。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 解法一
+</span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">nums1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">nums2</span><span class="p">))</span>
+		
+<span class="c1"># 解法二
+</span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">set_intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">set1</span><span class="p">,</span> <span class="n">set2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set1</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">set2</span><span class="p">]</span>
+        
+    <span class="k">def</span> <span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">):</span>
+        <span class="n">set1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">nums1</span><span class="p">)</span>
+        <span class="n">set2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">nums2</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">set1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">set2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_intersection</span><span class="p">(</span><span class="n">set1</span><span class="p">,</span> <span class="n">set2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_intersection</span><span class="p">(</span><span class="n">set2</span><span class="p">,</span> <span class="n">set1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-350-intersection-of-two-arrays-ii">LeetCode 350. Intersection of Two Arrays II</h3>
+
+<p>两个数组的交集，注意相同元素可以出现多次。解题思路是使用哈希表计数后返回交集。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">intersect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">,</span> <span class="p">(</span><span class="n">nums1</span><span class="p">,</span> <span class="n">nums2</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">((</span><span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">elements</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-242-valid-anagram">LeetCode 242. Valid Anagram</h3>
+
+<p>字符串 s 是 字符串 t 的 Anagram 是指 s 调换字符顺序可以变成 t，如：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: s = "anagram", t = "nagaram"
+Output: true
+</code></pre></div></div>
+
+<p>一种解法是两个字符串排序后进行对比。第二种解法是使用哈希表对字符进行计数。</p>
+
+<h3 id="leetcode-75-sort-colors">LeetCode 75. Sort Colors</h3>
+
+<p>将包含 0, 1, 2 三种数字的数组排序。</p>
+
+<p>这个问题也叫荷兰旗问题（三色旗排序）。讲解参考 <a href="https://www.youtube.com/watch?v=ER4ivZosqCg">链接</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">sortColors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">head</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">mid</span> <span class="o">&lt;=</span> <span class="n">tail</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">nums</span><span class="p">[</span><span class="n">head</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">head</span><span class="p">]</span>
+                <span class="n">head</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">mid</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">nums</span><span class="p">[</span><span class="n">tail</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">],</span> <span class="n">nums</span><span class="p">[</span><span class="n">tail</span><span class="p">]</span>
+                <span class="n">tail</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mid</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h3 id="leetcode-179-largest-number">LeetCode 179. Largest Number</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: [3,30,34,5,9]
+Output: "9534330"
+
+Input: [10,2]
+Output: "210"
+</code></pre></div></div>
+
+<p>两两拼接后排序。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LargerNumKey</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span> <span class="o">&gt;</span> <span class="n">y</span><span class="o">+</span><span class="n">x</span>
+        
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">largestNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
+        <span class="n">largest_num</span> <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">nums</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">LargerNumKey</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s">'0'</span> <span class="k">if</span> <span class="n">largest_num</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'0'</span> <span class="k">else</span> <span class="n">largest_num</span>
+</code></pre></div></div>
+
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/ES-intro/" title="link to Elasticsearch 实战（01）综述">Elasticsearch 实战（01）综述</a></h2>
+       <p class="excerpt">综述Elasticsearch 是一个分布式搜索引擎，可以实现大数据近实时分析，其高性能和易扩展、易使用性受到众多公司的青睐。这个系列文章基于 Elasticsearch 7.0 进行探索和实践，参考 极客时间的 《 Elasticsearch核心技术与实战 》 系列专栏。分布式架构集群规模可以从单个扩展到数百个节点，从服务和数据两个维度实现高可用和水平拓展。 ES 支持不用的节点类型，支持 Hot &amp; Warm 架构。集成方式      支持多种编程语言类库，如 Java/.NE...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-26 18:46:01 +0800" class="post-list__meta--date date">2019-06-26</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/ES-intro/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/06/alg-stack/" title="link to 数据结构和算法（02）：栈">数据结构和算法（02）：栈</a></h2>
+       <p class="excerpt">关键点      当某个数据集合只涉及在一端插入和删除数据，并且满足先进后出的特性时，首选“栈”这种数据结构。        用数组实现的栈，叫作 顺序栈；用链表实现的栈，叫作 链式栈。        时间复杂度 O(1)，空间复杂度 O(1)。        对于支持动态扩容的顺序栈，出栈时间复杂度是 O(1)，入栈时间复杂度是 O(n) —— 原始数组需要拷贝。  算法题LeetCode 1047. Remove All Adjacent Duplicates In String移除字...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-06-05 00:02:01 +0800" class="post-list__meta--date date">2019-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2019/06/alg-stack/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+
+  
+
+  <!-- Gitalk 评论 start  -->
+  
+    <!-- Link Gitalk 的支持文件  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+    <div id="gitalk-container"></div>
+
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: '6005df5e831456f4482b',
+        clientSecret: 'ffc57d242198e14cdb68b7457a765d0b719415fb',
+        repo: 'caotouchan.github.io',
+        owner: 'CaoTouChan',
+        admin: ['CaoTouChan'],
+        id: window.location.pathname,
+      });
+      gitalk.render('gitalk-container');
+    </script>
+  
+  <!-- Gitalk end -->
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">本站由 <a href="https://caotouchan.github.io">@caotouchan</a> 创建，采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/CaoTouChan/caotouchan.github.io">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>

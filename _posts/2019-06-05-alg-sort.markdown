@@ -1,0 +1,227 @@
+---
+layout: post
+title: 数据结构和算法（04）：排序
+date: 2019-06-05 01:02:04.000000000 +09:00
+---
+## 各类排序算法图解
+
+### 冒泡排序
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4hthrr1wzj30gu0az75s.jpg)
+
+### 插入排序
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4htiakjjmj30950auta1.jpg)
+
+### 选择排序
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4htih8x6mj309d071wf5.jpg)
+
+### 归并排序
+
+![](http://ww2.sinaimg.cn/large/006tNc79ly1g4htiop01yj309507pdh1.jpg)
+
+### 快速排序
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4htix69nkj309008pq36.jpg)
+
+### 桶排序
+
+![](http://ww4.sinaimg.cn/large/006tNc79ly1g4htj6ba46j309705t0t8.jpg)
+
+### 计数排序
+
+![](http://ww3.sinaimg.cn/large/006tNc79ly1g4htjdp50qj30c00fn75y.jpg)
+
+### 基数排序
+
+![](http://ww1.sinaimg.cn/large/006tNc79ly1g4htjka75qj309a04x749.jpg)
+
+## 排序算法比较
+
+| 算法        | 时间复杂度（平均）   |  时间复杂度（最好）  |  时间复杂度（最坏）  |  基于比较  |  原地排序  |  是否稳定  |
+| --------   | -----:  | :----:  | :----:  | :----:  | :----:  | :----:  |
+| 冒泡     | $$O(n^{2})$$  |   $$O(n)$$     |  $$O(n^{2})$$  |  是  |  是  |  是  |
+| 插入        | $$O(n^{2})$$  |   $$O(n)$$     |  $$O(n^{2})$$  |  是  |  是  |  是  |
+| 选择        | $$O(n^{2})$$  |   $$O(n^{2})$$     |  $$O(n^{2})$$  |  是  |  是  |  否  |
+| 快排        |   $$O(nlogn)$$    |  $$O(nlogn)$$  |  $$O(n^{2})$$  |  是  |  是  |  否  |
+| 归并        |    $$O(nlogn)$$    |  $$O(nlogn)$$ |  $$O(nlogn)$$  |  是  |  否  |  是  |
+| 桶        |    $$O(n)$$    |    |    |  否  |  否  |  是  |
+| 计数        |    $$O(n+k)$$ [k 是数据范围]    |    |    |  否  |  否  |  是  |
+| 基数        |    $$O(dn)$$ [d 是维度]   |    |    |  否  |  否  |  是  |
+
+## 常见问题
+
+1. 插入排序和冒泡排序的时间复杂度相同，都是 $$O(n^{2})$$，在实际的软件开发里，为什么我们更倾向于使用插入排序算法而不是冒泡排序算法呢？
+
+从代码实现上来看，冒泡排序的数据交换要比插入排序的数据移动要复杂，冒泡排序需要 3 个赋值操作，而插入排序只需要 1 个。示例代码如下：
+
+```java
+冒泡排序中数据的交换操作：
+if (a[j] > a[j+1]) { // 交换
+   int tmp = a[j];
+   a[j] = a[j+1];
+   a[j+1] = tmp;
+   flag = true;
+}
+
+插入排序中数据的移动操作：
+if (a[j] > value) {
+  a[j+1] = a[j];  // 数据移动
+} else {
+  break;
+}
+```
+
+2. 插入排序可以怎么优化？
+
+[**希尔排序**](https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F)  是简单插入排序经过改进之后的一个更高效的版本，也称为缩小增量排序。它把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。其最坏时间复杂度依然为 $$O(n^2)$$，一些经过优化的增量序列如 Hibbard 经过复杂证明可使得最坏时间复杂度为 $$O(n^{3/2})$$。
+
+![](http://ww3.sinaimg.cn/large/006tNc79ly1g4htjuxowcj30hc0jpq4j.jpg)
+> [图片来源](https://www.cnblogs.com/chengxiao/p/6104371.html)
+
+3. 如何根据年龄给 100 万用户排序？
+
+有几种时间复杂度是 $$O(n)$$ 的排序算法：桶排序、计数排序、基数排序。因为这些排序算法的时间复杂度是线性的，所以叫作 **线性排序** 。
+
+假设年龄的范围最小 1 岁，最大不超过 120 岁。我们可以遍历这 100 万用户，根据年龄将其划分到这 120 个桶里，然后依次顺序遍历这 120 个桶中的元素。这样就得到了按照年龄排序的 100 万用户数据。
+
+4. 快排在最坏情况下的时间复杂度是 $$O(n^{2})$$，而归并排序可以做到平均情况、最坏情况下的时间复杂度都是 $$O(nlogn)$$，为什么使用归并排序的情况其实并不多？
+
+归并排序并不是原地排序算法，空间复杂度是 $$O(n)$$。所以，夸张点讲，如果要排序 100MB 的数据，除了数据本身占用的内存之外，排序算法还要额外再占用 100MB 的内存空间，空间耗费就翻倍了。
+
+5. 如何优化快速排序？
+
+如果数据原来就是 **有序的或者接近有序的**，每次分区点都选择最后一个数据，那快速排序算法时间复杂度就会退化为 $$O(n^{2})$$。所以，关键在于 **选择合理的分区点**。选择的方法比较常用的有：
+
+① 三数取中法：取首、尾、中三个数的中间值作为分区点。数据较大时可以取五个数、十个数之类。
+
+② 随机法：每次从要排序的区间中，随机选择一个元素作为分区点。
+
+6. 快排使用了递归，如何 “避免” 堆栈溢出？
+
+① 限制递归深度。一旦递归过深超过阈值，就停止递归。
+
+② 通过在堆上模拟实现一个函数调用栈（如 Glibc 中的 `qsort()` 函数），手动模拟递归压栈、出栈的过程，这样就没有了系统栈大小的限制。
+
+## 算法题
+
+### LeetCode 922. Sort Array By Parity II
+
+将数组排序，要求奇数位置的元素是奇数，偶数位置的元素是偶数。
+
+```python
+class Solution(object):
+    def sortArrayByParityII(self, A):
+        odd = 1
+        for even in xrange(0, len(A), 2):
+            if A[even] % 2:
+                while A[odd] % 2:
+                    odd += 2
+                A[even], A[odd] = A[odd], A[even]
+        return A
+```
+
+### LeetCode 349. Intersection of Two Arrays
+
+求两个数组的交集。
+
+```python
+# 解法一
+class Solution:
+    def intersection(self, nums1, nums2):
+        return list(set(nums1) & set(nums2))
+		
+# 解法二
+class Solution:
+    def set_intersection(self, set1, set2):
+        return [x for x in set1 if x in set2]
+        
+    def intersection(self, nums1, nums2):
+        set1 = set(nums1)
+        set2 = set(nums2)
+        
+        if len(set1) < len(set2):
+            return self.set_intersection(set1, set2)
+        else:
+            return self.set_intersection(set2, set1)
+```
+
+### LeetCode 350. Intersection of Two Arrays II
+
+两个数组的交集，注意相同元素可以出现多次。解题思路是使用哈希表计数后返回交集。
+
+```python
+class Solution(object):
+    def intersect(self, nums1, nums2):
+        a, b = map(collections.Counter, (nums1, nums2))
+        return list((a & b).elements())
+```
+
+### LeetCode 242. Valid Anagram
+
+字符串 s 是 字符串 t 的 Anagram 是指 s 调换字符顺序可以变成 t，如：
+
+```
+Input: s = "anagram", t = "nagaram"
+Output: true
+```
+
+一种解法是两个字符串排序后进行对比。第二种解法是使用哈希表对字符进行计数。
+
+
+### LeetCode 75. Sort Colors
+
+将包含 0, 1, 2 三种数字的数组排序。
+
+这个问题也叫荷兰旗问题（三色旗排序）。讲解参考 [链接](https://www.youtube.com/watch?v=ER4ivZosqCg)
+
+```python
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        head, mid, tail = 0, 0, len(nums) - 1
+        while mid <= tail:
+            if nums[mid] == 0:
+                nums[head], nums[mid] = nums[mid], nums[head]
+                head += 1
+                mid += 1
+            elif nums[mid] == 2:
+                nums[tail], nums[mid] = nums[mid], nums[tail]
+                tail -= 1
+            else:
+                mid += 1
+```
+
+### LeetCode 179. Largest Number
+
+```
+Input: [3,30,34,5,9]
+Output: "9534330"
+
+Input: [10,2]
+Output: "210"
+```
+
+两两拼接后排序。
+
+```python
+class LargerNumKey(str):
+    def __lt__(x, y):
+        return x+y > y+x
+        
+class Solution:
+    def largestNumber(self, nums):
+        largest_num = ''.join(sorted(map(str, nums), key=LargerNumKey))
+        return '0' if largest_num[0] == '0' else largest_num
+```
+
+
+
+
+
+
+
+
+
+
+
